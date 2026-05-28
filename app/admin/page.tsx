@@ -4,6 +4,7 @@ import { CATEGORIES } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
 import { isSupabaseConfigured } from "@/lib/posts";
 import { ArrowRight, Plus, Pencil } from "lucide-react";
+import { DeletePostButton } from "@/components/admin/DeletePostButton";
 
 export const metadata = { title: "Admin · Dashboard" };
 
@@ -117,14 +118,17 @@ export default async function AdminDashboardPage() {
                       {formatDate(p.updatedAt)}
                     </td>
                     <td className="px-5 py-4 text-right">
-                      <Link
-                        href={`/admin/posts/${p.id}/edit`}
-                        className="inline-flex items-center gap-1 text-xs text-ink-600 hover:text-ink-900"
-                      >
-                        <Pencil size={12} />
-                        Edit
-                        <ArrowRight size={12} />
-                      </Link>
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/admin/posts/${p.id}/edit`}
+                          className="inline-flex items-center gap-1 rounded-full border border-ink-900/15 px-2.5 py-1 text-xs text-ink-600 transition-colors hover:bg-parchment-deep/40 hover:text-ink-900"
+                        >
+                          <Pencil size={11} />
+                          Edit
+                          <ArrowRight size={11} />
+                        </Link>
+                        <DeletePostButton id={p.id} title={p.title} />
+                      </div>
                     </td>
                   </tr>
                 ))}
