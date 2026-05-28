@@ -20,6 +20,7 @@ A modern, animation-heavy theological journal & biblical literacy platform — w
 | 1 | Boilerplate · Homepage (Hero, bento grid, 4 category sections, 3D flip cards, masonry, footer) | ✅ |
 | 2 | Category/archive pages with filtering animations · Single post reading layout (progress bar + sticky TOC) | ✅ |
 | 3 | Supabase schema · Admin auth · CMS dashboard · WYSIWYG editor · CRUD · Image upload | ✅ |
+| 4 | Dark mode · ID/EN i18n · `/kontak` page + Contact section + email integration | ✅ |
 
 ## Getting started — Phase 3 setup
 
@@ -59,7 +60,7 @@ npm run seed
 ```
 
 This will:
-- Create the admin user (default: `admin@sinnersaved.com` / `sinnersaved123` — override via `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_ADMIN_NAME` env vars)
+- Create the admin user — **email: `andreassina6a@gmail.com`** / **password: `admin11!`** (override via `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SEED_ADMIN_NAME` env vars)
 - Promote that user's profile to `role='admin'`
 - Insert all 9 sample posts as Tiptap JSON + pre-rendered HTML
 
@@ -82,6 +83,12 @@ npm run dev
 | `/admin/posts/[id]/edit` | Edit form (same layout) — also has Delete and Preview buttons |
 
 The middleware (`middleware.ts`) gates `/admin/*` to authenticated admins; non-admins are bounced to `/admin/login`.
+
+## Public extras (Phase 4)
+
+- **`/kontak`** — dedicated contact page with a copyable email address (`andreassina6a@gmail.com`) and three pre-filled mailto cards: Pertanyaan / Kritik / Saran. Reachable from Navbar and Footer.
+- **Dark mode** — class-based (`html.dark`), no-flash bootstrap script, `<ThemeToggle>` in the Navbar. Respects `prefers-color-scheme` on first visit, then persists in `localStorage`.
+- **i18n (ID / EN)** — UI chrome translates between Indonesian and English via a small dictionary (`lib/i18n/dictionary.ts`). The `<LocaleToggle>` lives next to the theme toggle. The chosen locale is stored in a cookie so server-rendered surfaces (post date, category labels) match instantly. Editorial body copy stays in its original language.
 
 ### Editor features
 

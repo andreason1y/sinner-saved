@@ -3,14 +3,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Mail } from "lucide-react";
 import { CATEGORIES } from "@/lib/categories";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { LocaleToggle } from "@/components/i18n/LocaleToggle";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const { t } = useLocale();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -27,18 +31,18 @@ export function Navbar() {
       className={cn(
         "sticky top-0 z-50 transition-[backdrop-filter,background-color,border-color] duration-500",
         scrolled
-          ? "border-b border-ink-900/10 bg-parchment/80 backdrop-blur-xl"
+          ? "border-b border-ink-900/10 bg-parchment/80 backdrop-blur-xl dark:border-white/10 dark:bg-ink-950/70"
           : "border-b border-transparent bg-parchment/0"
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-4 lg:px-8">
         {/* Brand */}
         <Link href="/" className="group flex items-baseline gap-2">
-          <span className="serif-display text-2xl tracking-tightest text-ink-900">
-            Sinner<span className="italic text-sacred-500">Saved</span>
+          <span className="serif-display text-2xl tracking-tightest text-ink-900 dark:text-ink-50">
+            Sinner<span className="italic text-sacred-500 dark:text-sacred-300">Saved</span>
           </span>
-          <span className="hidden text-[10px] uppercase tracking-[0.32em] text-ink-500 sm:inline">
-            est. 2026
+          <span className="hidden text-[10px] uppercase tracking-[0.32em] text-ink-500 dark:text-ink-400 sm:inline">
+            {t.nav.establishment}
           </span>
         </Link>
 
@@ -56,9 +60,9 @@ export function Navbar() {
               <Link
                 href={`/kategori/${cat.slug}`}
                 className={cn(
-                  "px-4 py-2 text-sm font-medium tracking-wide text-ink-700 transition-colors",
-                  "hover:text-ink-900",
-                  activeCategory === cat.slug && "text-ink-900"
+                  "px-4 py-2 text-sm font-medium tracking-wide text-ink-700 transition-colors dark:text-ink-200",
+                  "hover:text-ink-900 dark:hover:text-ink-50",
+                  activeCategory === cat.slug && "text-ink-900 dark:text-ink-50"
                 )}
               >
                 {cat.name}
@@ -67,46 +71,39 @@ export function Navbar() {
                 {activeCategory === cat.slug && (
                   <motion.div
                     layoutId="nav-underline"
-                    className="absolute -bottom-0.5 left-3 right-3 h-px bg-ink-900"
+                    className="absolute -bottom-0.5 left-3 right-3 h-px bg-ink-900 dark:bg-ink-50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 380,
-                      damping: 30,
-                    }}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
               </AnimatePresence>
 
-              {/* Mega-dropdown */}
               <AnimatePresence>
                 {activeCategory === cat.slug && (
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 4 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 26,
-                    }}
+                    transition={{ type: "spring", stiffness: 260, damping: 26 }}
                     className="absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3"
                   >
-                    <div className="overflow-hidden rounded-2xl border border-ink-900/10 bg-white/95 shadow-card-hover backdrop-blur-xl">
-                      <div className="border-b border-ink-900/5 bg-parchment-deep/30 px-4 py-3">
-                        <p className="serif-display text-sm text-ink-900">
+                    <div className="overflow-hidden rounded-2xl border border-ink-900/10 bg-white/95 shadow-card-hover backdrop-blur-xl dark:border-white/10 dark:bg-ink-900/95">
+                      <div className="border-b border-ink-900/5 bg-parchment-deep/30 px-4 py-3 dark:border-white/5 dark:bg-white/[0.03]">
+                        <p className="serif-display text-sm text-ink-900 dark:text-ink-50">
                           {cat.name}
                         </p>
-                        <p className="text-xs text-ink-500">{cat.tagline}</p>
+                        <p className="text-xs text-ink-500 dark:text-ink-400">
+                          {cat.tagline}
+                        </p>
                       </div>
                       <ul className="p-2">
                         {cat.subcategories.map((sub) => (
                           <li key={sub.slug}>
                             <Link
                               href={`/kategori/${cat.slug}/${sub.slug}`}
-                              className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-ink-700 transition-colors hover:bg-parchment-deep/50 hover:text-ink-900"
+                              className="flex items-center justify-between rounded-lg px-3 py-2 text-sm text-ink-700 transition-colors hover:bg-parchment-deep/50 hover:text-ink-900 dark:text-ink-200 dark:hover:bg-white/5 dark:hover:text-ink-50"
                             >
                               <span>{sub.name}</span>
                               <span className="text-ink-400 transition-transform group-hover:translate-x-0.5">
@@ -122,19 +119,22 @@ export function Navbar() {
               </AnimatePresence>
             </div>
           ))}
+          <Link
+            href="/kontak"
+            className="ml-1 inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium tracking-wide text-ink-700 transition-colors hover:text-ink-900 dark:text-ink-200 dark:hover:text-ink-50"
+          >
+            <Mail size={13} className="opacity-70" />
+            {t.nav.contact}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
+          <LocaleToggle />
+          <ThemeToggle />
           <button
-            aria-label="Cari"
-            className="hidden h-9 w-9 items-center justify-center rounded-full border border-ink-900/10 bg-white/60 text-ink-700 transition-colors hover:bg-white lg:inline-flex"
-          >
-            <Search size={16} />
-          </button>
-          <button
-            aria-label={open ? "Tutup menu" : "Buka menu"}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             onClick={() => setOpen((o) => !o)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ink-900/10 bg-white/60 text-ink-700 lg:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ink-900/10 bg-white/60 text-ink-700 dark:border-white/10 dark:bg-white/[0.04] dark:text-ink-100 lg:hidden"
           >
             {open ? <X size={16} /> : <Menu size={16} />}
           </button>
@@ -149,7 +149,7 @@ export function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 220, damping: 28 }}
-            className="overflow-hidden border-t border-ink-900/10 bg-parchment/95 backdrop-blur-xl lg:hidden"
+            className="overflow-hidden border-t border-ink-900/10 bg-parchment/95 backdrop-blur-xl dark:border-white/10 dark:bg-ink-950/95 lg:hidden"
           >
             <nav className="mx-auto max-w-7xl px-5 py-5">
               <ul className="flex flex-col gap-4">
@@ -158,15 +158,27 @@ export function Navbar() {
                     <Link
                       href={`/kategori/${cat.slug}`}
                       onClick={() => setOpen(false)}
-                      className="serif-display block text-2xl text-ink-900"
+                      className="serif-display block text-2xl text-ink-900 dark:text-ink-50"
                     >
                       {cat.name}
                     </Link>
-                    <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-ink-500">
+                    <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
                       {cat.subcategories.map((s) => s.name).join(" · ")}
                     </p>
                   </li>
                 ))}
+                <li>
+                  <Link
+                    href="/kontak"
+                    onClick={() => setOpen(false)}
+                    className="serif-display block text-2xl text-ink-900 dark:text-ink-50"
+                  >
+                    {t.nav.contact}
+                  </Link>
+                  <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
+                    Kritik · Saran · Pertanyaan
+                  </p>
+                </li>
               </ul>
             </nav>
           </motion.div>

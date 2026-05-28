@@ -7,18 +7,21 @@ import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RuangTeologi({ posts }: { posts: Post[] }) {
+  const { t, locale } = useLocale();
   if (posts.length === 0) return null;
 
   return (
     <section id="ruang-teologi" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeader
-          eyebrow="02 / Ruang Teologi"
-          title="Berpikir dengan tertib di hadapan Allah."
-          blurb="Bedah doktrin, apologetika, dan kritik yang sehat — supaya iman bukan sekadar perasaan, tapi keyakinan yang teruji."
+          eyebrow={t.ruangTeologi.eyebrow}
+          title={t.ruangTeologi.title}
+          blurb={t.ruangTeologi.blurb}
           href="/kategori/ruang-teologi"
+          hrefLabel={t.feature.archive.replace(" →", "")}
         />
 
         <StaggerContainer className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -26,12 +29,7 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
             <FadeInUp key={post.id}>
               <motion.div
                 whileHover={{ y: -6, scale: 1.012 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 22,
-                  mass: 0.6,
-                }}
+                transition={{ type: "spring", stiffness: 260, damping: 22, mass: 0.6 }}
               >
                 <Link
                   href={`/${post.mainCategory}/${post.slug}`}
@@ -63,8 +61,8 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
                       {post.excerpt}
                     </p>
                     <div className="mt-6 flex items-center justify-between text-xs text-ink-300">
-                      <span>{formatDate(post.createdAt)}</span>
-                      <span className="link-underline">Baca →</span>
+                      <span>{formatDate(post.createdAt, locale)}</span>
+                      <span className="link-underline">{t.feature.readMore} →</span>
                     </div>
                   </div>
                 </Link>
