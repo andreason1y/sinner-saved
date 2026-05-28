@@ -38,7 +38,6 @@ type Dict = {
     factsHint: string;
     didYouKnow: string;
     flipBack: string;
-    factsSource: string;
     latest: string;
     seeMore: string;
   };
@@ -136,7 +135,6 @@ const id: Dict = {
     factsHint: "Hover atau klik untuk membuka",
     didYouKnow: "Tahukah kamu?",
     flipBack: "Balik kartu",
-    factsSource: "✦ Sumber: catatan studi pribadi",
     latest: "Tulisan terbaru di Ruang Alkitab",
     seeMore: "Selengkapnya →",
   },
@@ -246,7 +244,6 @@ const en: Dict = {
     factsHint: "Hover or tap to flip",
     didYouKnow: "Did you know?",
     flipBack: "Flip card",
-    factsSource: "✦ Source: personal study notes",
     latest: "Latest in Ruang Alkitab",
     seeMore: "See all →",
   },

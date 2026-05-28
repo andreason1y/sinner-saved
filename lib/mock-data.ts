@@ -306,44 +306,46 @@ export function getRelatedPosts(post: Post, limit = 3): Post[] {
 export const BIBLICAL_FACTS: BiblicalFact[] = [
   {
     id: "bf1",
-    question: "Berapa lama Nuh membangun bahtera?",
+    question:
+      "Mengapa Yesus menangis di kubur Lazarus padahal Ia akan membangkitkannya?",
     answer:
-      "Tradisi rabinik dan beberapa penafsir Kristen menghitung sekitar 75–120 tahun, walau Alkitab tidak menyebut angka pasti — yang pasti, sangat lama, dan ditertawakan tetangganya.",
-    reference: "Kejadian 6:3, 6:14",
+      "Karena harapan tidak meniadakan duka. Yesus tidak menyangkal kesedihan demi alasan teologis. Empati yang sejati tetap sah meskipun kita tahu akhir cerita — dan ini berarti: dukacita Anda hari ini bukan tanda iman yang lemah.",
+    reference: "Yohanes 11:33–35",
   },
   {
     id: "bf2",
-    question: "Apa kata Yunani untuk 'kasih karunia'?",
+    question: "Mengapa Iblis mengutip Mazmur untuk mencobai Yesus?",
     answer:
-      "Charis (χάρις) — bukan sekadar 'pemberian gratis', tapi kemurahan yang sengaja diberikan kepada yang tidak layak menerimanya.",
-    reference: "Efesus 2:8",
+      "Karena ayat tanpa konteks adalah senjata. Iblis mengutip Mazmur 91 secara harfiah tapi mengabaikan tujuannya. Kitab Suci hanya menjadi pelita ketika dibaca sebagai keseluruhan, bukan sebagai potongan yang melayani agenda kita.",
+    reference: "Matius 4:5–7",
   },
   {
     id: "bf3",
-    question: "Berapa kitab dalam Perjanjian Lama Ibrani?",
+    question: "Apa beda doa Yunus di perut ikan dengan keluhan Yunus di pohon jarak?",
     answer:
-      "24 kitab dalam pembagian Tanakh (TaNaKh: Torah, Nevi'im, Ketuvim) — meski isinya identik dengan 39 kitab PL Kristen, hanya pembagiannya yang berbeda.",
-    reference: "Lukas 24:44",
+      "Di laut, Yunus berdoa dari kerendahan total. Di darat, ia mengeluh dari kepuasan parsial. Anugerah lebih mudah diterima ketika kita kehilangan segalanya daripada ketika kita kehilangan sebagian dari kemudahan kita.",
+    reference: "Yunus 2 vs Yunus 4",
   },
   {
     id: "bf4",
-    question: "Siapa orang yang paling lama hidup dalam Alkitab?",
+    question: "Mengapa Allah menyuruh Abraham mempersembahkan Ishak yang Ia berikan sendiri?",
     answer:
-      "Metusalah, kakek Nuh — 969 tahun. Namanya berarti kira-kira 'ketika ia mati, ia akan dikirim' — dan tahun kematiannya bertepatan dengan air bah.",
-    reference: "Kejadian 5:27",
+      "Karena ujian iman bukan apakah kita melepaskan dosa kita, tapi apakah kita melepaskan berkat kita. Apa yang Allah berikan dapat menjadi berhala kalau kita menggenggamnya lebih erat daripada Pemberinya.",
+    reference: "Kejadian 22:1–14",
   },
   {
     id: "bf5",
-    question: "Apa arti 'Imanuel'?",
+    question: "Mengapa Yesus menyebut Petrus 'Iblis' segera setelah memujinya?",
     answer:
-      "Dari Ibrani: Immanu (bersama kita) + El (Allah) = 'Allah beserta kita'. Bukan janji jarak jauh, tapi kehadiran yang dekat dan menjelma.",
-    reference: "Yesaya 7:14, Matius 1:23",
+      "Karena pikiran manusiawi — sehalus apa pun — bisa menjadi musuh salib. Petrus mengaku Yesus sebagai Mesias dengan benar, lalu segera menasihati-Nya untuk menghindari penderitaan. Niat baik tanpa pemahaman salib adalah suara yang sama yang berkata di taman, 'engkau tidak akan mati.'",
+    reference: "Matius 16:16–23",
   },
   {
     id: "bf6",
-    question: "Berapa kali kata 'jangan takut' muncul di Alkitab?",
+    question:
+      "Apa arti 'Allahku, mengapa Engkau meninggalkan Aku' jika Yesus tahu Mazmur 22 berakhir kemenangan?",
     answer:
-      "Sekitar 365 kali dalam berbagai variasi — sering dikutip sebagai 'satu untuk setiap hari', meski perhitungannya tergantung versi terjemahan.",
-    reference: "Yesaya 41:10",
+      "Yesus tidak putus asa — Ia mengaktifkan seluruh Mazmur dengan mengutip baris pertama. Tetapi pada saat itu Ia juga sungguh-sungguh menanggung pemisahan yang seharusnya menjadi bagian kita. Ratapan dan kemenangan, dua-duanya, adalah Injil.",
+    reference: "Matius 27:46; Mazmur 22",
   },
 ];

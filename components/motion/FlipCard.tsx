@@ -16,7 +16,7 @@ export function FlipCard({ front, back, className }: FlipCardProps) {
 
   return (
     <div
-      className={cn("perspective h-72 w-full", className)}
+      className={cn("perspective h-80 w-full", className)}
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
       onClick={() => setFlipped((f) => !f)}
