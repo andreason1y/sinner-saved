@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, NoFlashScript } from "@/components/theme/ThemeProvider";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
@@ -8,6 +9,26 @@ import {
   LOCALES,
   type Locale,
 } from "@/lib/i18n/dictionary";
+
+// Self-host Google fonts at build time. Eliminates the render-blocking
+// <link> to fonts.googleapis.com, ships only the subsets/weights we use,
+// and lets Next.js inline a `font-display: swap` declaration + preload.
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-inter",
+  preload: true,
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-playfair",
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: {
@@ -47,19 +68,12 @@ export default function RootLayout({
       : DEFAULT_LOCALE;
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`${inter.variable} ${playfair.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
-          rel="stylesheet"
-        />
         {/* No-flash dark-mode bootstrap. Runs before hydration. */}
         <script dangerouslySetInnerHTML={{ __html: NoFlashScript }} />
       </head>

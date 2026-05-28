@@ -8,8 +8,12 @@
   --muted: #6b6655;
   --accent: #d18420;
   --line: rgba(19, 17, 13, 0.08);
-  --font-inter: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-playfair: "Playfair Display", "Iowan Old Style", Georgia, serif;
+  /*
+   * --font-inter / --font-playfair are now provided by `next/font/google`
+   * (set on <html> via inter.variable / playfair.variable). System-font
+   * fallbacks are listed inline at every consumer (e.g. body, .serif-display)
+   * so unstyled text still looks reasonable before the webfont swaps in.
+   */
 }
 
 html.dark {
@@ -36,7 +40,12 @@ body {
       rgba(209, 132, 32, 0) 60%
     ),
     linear-gradient(180deg, #f5f1e8 0%, #f7f4ec 100%);
-  background-attachment: fixed;
+  /*
+   * `background-attachment: fixed` triggers a full-screen repaint on every
+   * scroll frame on most mobile browsers (and many desktop ones). The same
+   * "fixed glow" look is achieved with the section-level `bg-radial-glow`
+   * decorations, so we let the body background scroll normally.
+   */
   transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 

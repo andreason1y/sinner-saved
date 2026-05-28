@@ -10,7 +10,11 @@ import {
   getPostsByMainCategory,
 } from "@/lib/posts";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+// Refresh every 5 min in production. Public posts barely change between
+// publishes; this keeps the homepage cached at the edge instead of
+// re-rendering on every request.
+export const revalidate = 300;
 
 export default async function HomePage() {
   const [featured, alkitab, teologi, lensa, sinnersNote] = await Promise.all([

@@ -4,7 +4,8 @@ import { CATEGORIES, getCategory } from "@/lib/categories";
 import { getPostsByMainCategory } from "@/lib/posts";
 import { CategoryArchive } from "@/components/post/CategoryArchive";
 
-export const dynamic = "force-dynamic";
+// ISR — regenerate the archive page at most every 5 min.
+export const revalidate = 300;
 
 export function generateStaticParams() {
   return CATEGORIES.map((c) => ({ main: c.slug }));
