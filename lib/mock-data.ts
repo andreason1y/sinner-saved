@@ -1,4 +1,86 @@
-import type { BiblicalFact, Post } from "./types";
+import type { BiblicalFact, ContentBlock, Post } from "./types";
+
+const SAMPLE_AUTHOR = {
+  name: "Andre Asoni",
+  bio: "Penulis SinnerSaved. Sedang belajar membaca Alkitab dengan jujur dan menulis dengan tertib. Bukan teolog, hanya seorang pendosa yang diselamatkan.",
+};
+
+// A reusable rich content body (Phase 3 WYSIWYG will serialize to this shape).
+function sampleContent(opening: string): ContentBlock[] {
+  return [
+    { type: "paragraph", text: opening },
+    {
+      type: "heading",
+      level: 2,
+      text: "Membaca dengan tenang",
+      id: "membaca-dengan-tenang",
+    },
+    {
+      type: "paragraph",
+      text: "Salah satu hal yang saya pelajari pelan-pelan adalah bahwa Alkitab tidak selalu memberi jawaban yang rapi. Ia justru sering memunculkan pertanyaan yang lebih besar dari yang kita bawa di awal. Dan itu bukan kelemahan; itu adalah caranya menarik kita masuk lebih dalam.",
+    },
+    {
+      type: "scripture",
+      text: "Sebab firman Allah hidup dan kuat dan lebih tajam daripada pedang bermata dua manapun; ia menusuk amat dalam sampai memisahkan jiwa dan roh, sendi-sendi dan sumsum.",
+      reference: "Ibrani 4:12",
+    },
+    {
+      type: "paragraph",
+      text: "Saya pikir di sinilah kerendahan hati menjadi alat eksegesis yang penting — sama pentingnya dengan kamus Yunani atau peta sejarah. Kalau kita masuk ke dalam teks dengan asumsi bahwa kita sudah tahu jawabannya, kita akan keluar dengan persis apa yang kita bawa masuk. Tidak lebih.",
+    },
+    {
+      type: "heading",
+      level: 2,
+      text: "Tiga prinsip kecil",
+      id: "tiga-prinsip-kecil",
+    },
+    {
+      type: "list",
+      ordered: true,
+      items: [
+        "Baca konteks sebelum baca ayat. Pasal sebelum kalimat. Kitab sebelum pasal.",
+        "Tanya: kepada siapa awalnya teks ini ditulis? Apa yang sudah mereka tahu?",
+        "Biarkan teks yang sulit tetap sulit dulu — jangan terburu-buru menjinakkannya.",
+      ],
+    },
+    {
+      type: "blockquote",
+      text: "We need to learn to read the Bible as the Bible, not as a quarry from which to dig out our favorite stones.",
+      cite: "Eugene Peterson",
+    },
+    {
+      type: "heading",
+      level: 3,
+      text: "Catatan sebuah kata",
+      id: "catatan-sebuah-kata",
+    },
+    {
+      type: "paragraph",
+      text: "Kata Yunani untuk 'kasih karunia' adalah charis (χάρις). Tapi yang menarik bukan etimologinya — yang menarik adalah bagaimana Paulus terus-menerus mengulanginya di hampir setiap pembukaan suratnya, seolah-olah ia takut kita akan lupa.",
+    },
+    {
+      type: "code",
+      lang: "Greek",
+      caption: "Roma 1:7 dalam Yunani Koine",
+      code: "χάρις ὑμῖν καὶ εἰρήνη ἀπὸ θεοῦ πατρὸς ἡμῶν\nκαὶ κυρίου Ἰησοῦ Χριστοῦ.",
+    },
+    {
+      type: "paragraph",
+      text: "Charis hymin kai eirēnē — kasih karunia bagimu, dan damai sejahtera. Urutannya selalu sama: kasih karunia dulu. Damai datang sesudahnya, sebagai buah, bukan sebagai prasyarat.",
+    },
+    { type: "divider" },
+    {
+      type: "heading",
+      level: 2,
+      text: "Penutup yang tidak menutup",
+      id: "penutup-yang-tidak-menutup",
+    },
+    {
+      type: "paragraph",
+      text: "Tulisan ini bukan kesimpulan. Ia lebih seperti kursi kayu di pojok perpustakaan — tempat saya duduk sebentar, mencatat apa yang saya baca, lalu kembali ke rak untuk mencari kitab berikutnya. Saya berharap Anda yang membaca ini juga sedang melakukan hal yang sama, di pojok ruangan Anda sendiri.",
+    },
+  ];
+}
 
 // Phase 1 mock content. Will be replaced by Supabase queries in Phase 3.
 export const MOCK_POSTS: Post[] = [
@@ -17,6 +99,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-05-22T09:00:00Z",
     updatedAt: "2026-05-22T09:00:00Z",
     readingMinutes: 7,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Pertama kali saya mendengar khotbah tentang 'agape vs phileo' di Yohanes 21, saya langsung terpesona. Penjelasannya rapi: Yesus tiga kali bertanya 'apakah engkau mengasihi (agape) Aku?', dan Petrus tiga kali menjawab 'aku mengasihi-Mu (phileo).' Lalu di pertanyaan ketiga, Yesus turun ke level Petrus dan memakai phileo juga. Manis sekali. Tapi waktu saya buka teks Yunaninya, ceritanya tidak sesederhana itu."
+    ),
   },
   {
     id: "p2",
@@ -33,6 +119,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-05-19T09:00:00Z",
     updatedAt: "2026-05-19T09:00:00Z",
     readingMinutes: 11,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Setiap dekade, ada satu generasi teolog yang mencoba menggeser salib dari pusat. Kadang dengan alasan pastoral — 'gambar Allah yang menghukum Anak-Nya itu kejam' — kadang dengan alasan filosofis. Saya mengerti niatnya. Tapi saya tetap belum yakin kita bisa kehilangan substitusi tanpa juga kehilangan Injil itu sendiri."
+    ),
   },
   {
     id: "p3",
@@ -49,6 +139,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-05-15T09:00:00Z",
     updatedAt: "2026-05-15T09:00:00Z",
     readingMinutes: 9,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Dietrich Bonhoeffer menulis Nachfolge — yang kita kenal sebagai The Cost of Discipleship — di tahun 1937. Ia berusia 31. Tujuh tahun kemudian, ia digantung di kamp Flossenbürg, dua minggu sebelum kamp itu dibebaskan oleh tentara Sekutu. Saya tidak bisa membaca bukunya tanpa mengingat ujung kalimat hidupnya."
+    ),
   },
   {
     id: "p4",
@@ -63,6 +157,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-05-12T09:00:00Z",
     updatedAt: "2026-05-12T09:00:00Z",
     readingMinutes: 4,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Pukul dua pagi. Saya berdoa, tapi rasanya seperti berbicara ke langit-langit kamar. Tidak ada gema, tidak ada hangat, tidak ada apa-apa. Saya bertanya pada diri sendiri: apakah Allah sedang diam, atau saya yang sudah lupa bagaimana cara mendengar?"
+    ),
   },
   {
     id: "p5",
@@ -79,6 +177,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-05-08T09:00:00Z",
     updatedAt: "2026-05-08T09:00:00Z",
     readingMinutes: 8,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Kita sering membayangkan Yerusalem di zaman Yesus seperti latar drama Natal anak Sekolah Minggu — bersih, sunyi, dan agak sepia. Tapi Yerusalem abad pertama adalah kota yang sesak, sengit, dan secara politik genting. Sebuah kota yang sedang diduduki, dan rakyatnya tahu itu setiap kali mereka berjumpa tentara Romawi di tikungan jalan."
+    ),
   },
   {
     id: "p6",
@@ -95,6 +197,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-05-05T09:00:00Z",
     updatedAt: "2026-05-05T09:00:00Z",
     readingMinutes: 6,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Petrus menulis 'siap sedia memberi pertanggungan jawab kepada tiap-tiap orang yang meminta pertanggungan jawab dari kamu tentang pengharapan yang ada padamu' — lalu, hampir tidak ada yang mengutip lanjutannya — 'tetapi haruslah dengan lemah lembut dan hormat.' Apologetika yang baik bukan hanya tentang argumen yang benar; ia juga tentang cara menyampaikan yang manusiawi."
+    ),
   },
   {
     id: "p7",
@@ -111,6 +217,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-05-02T09:00:00Z",
     updatedAt: "2026-05-02T09:00:00Z",
     readingMinutes: 7,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Setiap aplikasi yang kita buka pagi ini meminta hal yang sama dari kita: tampilkan versi yang lebih bersih dari dirimu. Lebih cerah, lebih percaya diri, lebih sukses. Filter bukan hanya menutupi pori-pori — ia juga, secara halus, menutupi anugerah."
+    ),
   },
   {
     id: "p8",
@@ -125,6 +235,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-04-29T09:00:00Z",
     updatedAt: "2026-04-29T09:00:00Z",
     readingMinutes: 5,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Iman saya dulu sangat rapi. Saya tahu jawaban yang benar untuk hampir setiap pertanyaan; saya bisa mengutip ayat di tempat yang tepat; doa saya tersusun seperti sketsa pidato. Lalu hidup terjadi, dan semua kerapian itu rontok satu per satu. Yang tersisa, akhirnya, adalah doa yang sangat pendek: 'Tuhan, kasihanilah aku.'"
+    ),
   },
   {
     id: "p9",
@@ -141,6 +255,10 @@ export const MOCK_POSTS: Post[] = [
     createdAt: "2026-04-25T09:00:00Z",
     updatedAt: "2026-04-25T09:00:00Z",
     readingMinutes: 12,
+    author: SAMPLE_AUTHOR,
+    content: sampleContent(
+      "Kalau Anda membaca Roma satu kali dalam satu duduk — yang sebenarnya cara Paulus mengharapkan suratnya dibaca — Anda akan sampai di pasal 9 dengan kepala sedikit pusing. Argumennya berat, kalimatnya panjang, dan implikasinya tidak ramah untuk PR Sekolah Minggu."
+    ),
   },
 ];
 
@@ -153,8 +271,36 @@ export function getFeaturedPosts(limit = 5): Post[] {
     .slice(0, limit);
 }
 
-export function getPostsByCategory(slug: string, limit = 6): Post[] {
-  return MOCK_POSTS.filter((p) => p.mainCategory === slug).slice(0, limit);
+export function getPostsByCategory(slug: string, limit?: number): Post[] {
+  const filtered = MOCK_POSTS.filter((p) => p.mainCategory === slug).sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
+}
+
+export function getPostsByCategoryAndSub(
+  main: string,
+  sub: string | null
+): Post[] {
+  const all = getPostsByCategory(main);
+  if (!sub) return all;
+  return all.filter((p) => p.subCategory === sub);
+}
+
+export function getPostBySlug(slug: string): Post | undefined {
+  return MOCK_POSTS.find((p) => p.slug === slug);
+}
+
+export function getRelatedPosts(post: Post, limit = 3): Post[] {
+  return MOCK_POSTS.filter(
+    (p) => p.id !== post.id && p.mainCategory === post.mainCategory
+  )
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, limit);
 }
 
 export const BIBLICAL_FACTS: BiblicalFact[] = [
