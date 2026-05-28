@@ -27,6 +27,15 @@ export default function AdminLoginPage({ searchParams }: Props) {
           </p>
         )}
         <LoginForm next={searchParams?.next} />
+        <p className="mt-6 text-center text-[11px] uppercase tracking-[0.22em] text-ink-400">
+          DB baru?{" "}
+          <a
+            href="/admin/setup"
+            className="text-ink-700 underline-offset-4 hover:underline"
+          >
+            Buka halaman setup
+          </a>
+        </p>
       </div>
     </div>
   );

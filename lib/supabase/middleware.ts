@@ -34,7 +34,14 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isAdminRoute = path.startsWith("/admin") && path !== "/admin/login";
+  // /admin/setup is the bootstrap page — it has to be reachable BEFORE
+  // any admin user exists, so we exempt it from the auth gate. The
+  // server actions it calls are themselves guarded by the service-role
+  // key being present and by Supabase's own RLS once schema is applied.
+  const isAdminRoute =
+    path.startsWith("/admin") &&
+    path !== "/admin/login" &&
+    path !== "/admin/setup";
 
   if (isAdminRoute) {
     if (!user) {
