@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import type { Post } from "@/lib/types";
 import { PostCard } from "./PostCard";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { CATEGORIES } from "@/lib/categories";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RelatedPosts({
   posts,
@@ -11,27 +14,28 @@ export function RelatedPosts({
   posts: Post[];
   parentCategorySlug: string;
 }) {
+  const { t } = useLocale();
   if (posts.length === 0) return null;
   const cat = CATEGORIES.find((c) => c.slug === parentCategorySlug);
 
   return (
-    <section className="border-t border-ink-900/10 bg-parchment-deep/40 py-24">
+    <section className="border-t border-ink-900/10 bg-parchment-deep/40 py-24 dark:border-white/10 dark:bg-white/[0.02]">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <div className="mb-10 flex items-end justify-between gap-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-sacred-600">
-              Selanjutnya di {cat?.name ?? "kategori ini"}
+            <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
+              {t.post.relatedEyebrow(cat?.name ?? "")}
             </p>
-            <h2 className="serif-display mt-3 text-3xl leading-tight tracking-tightest text-ink-900 sm:text-4xl">
-              Bacaan terkait.
+            <h2 className="serif-display mt-3 text-3xl leading-tight tracking-tightest text-ink-900 dark:text-ink-50 sm:text-4xl">
+              {t.post.relatedTitle}
             </h2>
           </div>
           {cat && (
             <Link
               href={`/kategori/${cat.slug}`}
-              className="hidden text-sm text-ink-700 link-underline sm:inline"
+              className="hidden text-sm text-ink-700 link-underline dark:text-ink-200 sm:inline"
             >
-              Lihat semua →
+              {t.post.seeAll}
             </Link>
           )}
         </div>

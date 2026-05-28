@@ -7,12 +7,14 @@ import { CATEGORIES } from "@/lib/categories";
 import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 function categoryName(slug: string) {
   return CATEGORIES.find((c) => c.slug === slug)?.name ?? "—";
 }
 
 export function FeaturedBento({ posts }: { posts: Post[] }) {
+  const { t, locale } = useLocale();
   if (posts.length === 0) return null;
   const [hero, ...rest] = posts;
 
@@ -21,23 +23,22 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="mb-12 flex items-end justify-between gap-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-sacred-600">
-              Terbaru
+            <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
+              {t.feature.eyebrow}
             </p>
-            <h2 className="serif-display mt-3 text-4xl leading-[1.05] tracking-tightest text-ink-900 sm:text-5xl">
-              Yang sedang saya pikirkan.
+            <h2 className="serif-display mt-3 text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-5xl">
+              {t.feature.title}
             </h2>
           </div>
           <Link
             href="/arsip"
-            className="hidden text-sm text-ink-700 link-underline sm:inline"
+            className="hidden text-sm text-ink-700 link-underline dark:text-ink-200 sm:inline"
           >
-            Arsip lengkap →
+            {t.feature.archive}
           </Link>
         </div>
 
         <StaggerContainer className="grid auto-rows-[minmax(200px,auto)] grid-cols-1 gap-5 sm:grid-cols-6 lg:grid-cols-12">
-          {/* Hero feature — spans 7 cols x 2 rows */}
           {hero && (
             <FadeInUp className="sm:col-span-6 lg:col-span-7 lg:row-span-2">
               <Link
@@ -63,7 +64,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                     <span>{categoryName(hero.mainCategory)}</span>
                     <span className="opacity-50">·</span>
                     <span className="text-ink-200">
-                      {formatDate(hero.createdAt)}
+                      {formatDate(hero.createdAt, locale)}
                     </span>
                   </div>
                   <h3 className="serif-display mt-4 max-w-3xl text-3xl leading-tight text-ink-50 sm:text-5xl">
@@ -73,7 +74,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                     {hero.excerpt}
                   </p>
                   <div className="mt-6 inline-flex items-center gap-2 text-sm text-ink-100">
-                    <span className="link-underline">Baca tulisan ini</span>
+                    <span className="link-underline">{t.feature.readMore}</span>
                     <motion.span
                       initial={{ x: 0 }}
                       whileHover={{ x: 4 }}
@@ -87,59 +88,51 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
             </FadeInUp>
           )}
 
-          {/* Secondary cards */}
-          {rest.slice(0, 4).map((post, idx) => {
-            // Layout: 2 medium tiles + 2 wide tiles for variety
-            const span =
-              idx < 2
-                ? "sm:col-span-3 lg:col-span-5"
-                : "sm:col-span-3 lg:col-span-5";
-            return (
-              <FadeInUp key={post.id} className={span}>
-                <Link
-                  href={`/${post.mainCategory}/${post.slug}`}
-                  className="group relative block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover"
-                >
-                  <div className="grid h-full grid-cols-5">
-                    {post.cover && (
-                      <div className="relative col-span-2 aspect-[4/5] overflow-hidden">
-                        <Image
-                          src={post.cover}
-                          alt={post.title}
-                          fill
-                          sizes="(min-width: 1024px) 20vw, 40vw"
-                          className="object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.08]"
-                        />
-                      </div>
-                    )}
-                    <div
-                      className={`flex flex-col justify-between p-5 ${
-                        post.cover ? "col-span-3" : "col-span-5"
-                      }`}
-                    >
-                      <div>
-                        <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600">
-                          {categoryName(post.mainCategory)}
-                        </p>
-                        <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900">
-                          {post.title}
-                        </h3>
-                        <p className="mt-2 line-clamp-2 text-sm text-ink-600">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                      <div className="mt-4 flex items-center justify-between text-xs text-ink-500">
-                        <span>{formatDate(post.createdAt)}</span>
-                        {post.readingMinutes && (
-                          <span>{post.readingMinutes} menit baca</span>
-                        )}
-                      </div>
+          {rest.slice(0, 4).map((post) => (
+            <FadeInUp key={post.id} className="sm:col-span-3 lg:col-span-5">
+              <Link
+                href={`/${post.mainCategory}/${post.slug}`}
+                className="group relative block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover dark:bg-ink-900 dark:ring-white/10"
+              >
+                <div className="grid h-full grid-cols-5">
+                  {post.cover && (
+                    <div className="relative col-span-2 aspect-[4/5] overflow-hidden">
+                      <Image
+                        src={post.cover}
+                        alt={post.title}
+                        fill
+                        sizes="(min-width: 1024px) 20vw, 40vw"
+                        className="object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.08]"
+                      />
+                    </div>
+                  )}
+                  <div
+                    className={`flex flex-col justify-between p-5 ${
+                      post.cover ? "col-span-3" : "col-span-5"
+                    }`}
+                  >
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
+                        {categoryName(post.mainCategory)}
+                      </p>
+                      <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">
+                        {post.title}
+                      </h3>
+                      <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
+                        {post.excerpt}
+                      </p>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between text-xs text-ink-500 dark:text-ink-400">
+                      <span>{formatDate(post.createdAt, locale)}</span>
+                      {post.readingMinutes && (
+                        <span>{t.feature.readingTime(post.readingMinutes)}</span>
+                      )}
                     </div>
                   </div>
-                </Link>
-              </FadeInUp>
-            );
-          })}
+                </div>
+              </Link>
+            </FadeInUp>
+          ))}
         </StaggerContainer>
       </div>
     </section>

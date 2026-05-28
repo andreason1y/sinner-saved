@@ -12,6 +12,14 @@
   --font-playfair: "Playfair Display", "Iowan Old Style", Georgia, serif;
 }
 
+html.dark {
+  --background: #0b0a08;
+  --foreground: #f0ece2;
+  --muted: #9c9684;
+  --accent: #eebc63;
+  --line: rgba(245, 241, 232, 0.08);
+}
+
 html,
 body {
   background-color: var(--background);
@@ -29,11 +37,25 @@ body {
     ),
     linear-gradient(180deg, #f5f1e8 0%, #f7f4ec 100%);
   background-attachment: fixed;
+  transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+html.dark body {
+  background-image: radial-gradient(
+      80% 60% at 50% 0%,
+      rgba(238, 188, 99, 0.06) 0%,
+      rgba(238, 188, 99, 0) 60%
+    ),
+    linear-gradient(180deg, #0b0a08 0%, #100e0a 100%);
 }
 
 ::selection {
   background: #13110d;
   color: #f5f1e8;
+}
+html.dark ::selection {
+  background: #eebc63;
+  color: #0b0a08;
 }
 
 /* Layered grain texture (subtle, editorial) */
@@ -45,6 +67,10 @@ body {
   background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   opacity: 0.5;
   mix-blend-mode: multiply;
+}
+html.dark .grain-overlay::before {
+  mix-blend-mode: screen;
+  opacity: 0.18;
 }
 
 /* 3D flip card primitives */
@@ -99,6 +125,9 @@ body {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(6px);
 }
+html.dark .pill {
+  background: rgba(255, 255, 255, 0.04);
+}
 
 /* Reading rhythm helper */
 .serif-display {
@@ -136,8 +165,6 @@ body {
   margin-bottom: 1.25rem;
 }
 
-
-
 /* ============================================================
  * Post body — `.post-prose` styles the HTML produced by the
  * Tiptap editor at admin save time. Mirrors the look of the
@@ -147,9 +174,12 @@ body {
   margin-top: 1.5rem;
 }
 .post-prose p {
-  font-size: 1.125rem; /* 18px */
+  font-size: 1.125rem;
   line-height: 1.8;
   color: rgb(35 33 27);
+}
+html.dark .post-prose p {
+  color: rgb(216 212 197);
 }
 .post-prose h2,
 .post-prose h3 {
@@ -158,6 +188,10 @@ body {
   letter-spacing: -0.02em;
   color: rgb(19 17 13);
   scroll-margin-top: 7rem;
+}
+html.dark .post-prose h2,
+html.dark .post-prose h3 {
+  color: rgb(247 246 242);
 }
 .post-prose h2 {
   font-size: clamp(1.75rem, 3vw, 2.25rem);
@@ -176,12 +210,22 @@ body {
   text-underline-offset: 3px;
   transition: text-decoration-color 200ms ease;
 }
+html.dark .post-prose a {
+  color: rgb(238 188 99);
+  text-decoration-color: rgba(238, 188, 99, 0.45);
+}
 .post-prose a:hover {
   text-decoration-color: rgba(209, 132, 32, 1);
+}
+html.dark .post-prose a:hover {
+  text-decoration-color: rgba(238, 188, 99, 1);
 }
 .post-prose strong {
   font-weight: 600;
   color: rgb(19 17 13);
+}
+html.dark .post-prose strong {
+  color: rgb(247 246 242);
 }
 .post-prose em {
   font-style: italic;
@@ -192,6 +236,10 @@ body {
   font-size: 1.125rem;
   line-height: 1.8;
   color: rgb(35 33 27);
+}
+html.dark .post-prose ul,
+html.dark .post-prose ol {
+  color: rgb(216 212 197);
 }
 .post-prose ul {
   list-style: disc;
@@ -204,6 +252,9 @@ body {
 }
 .post-prose ol li::marker {
   color: rgb(141 75 24);
+}
+html.dark .post-prose ol li::marker {
+  color: rgb(238 188 99);
 }
 .post-prose li + li {
   margin-top: 0.5rem;
@@ -218,6 +269,10 @@ body {
   font-style: italic;
   color: rgb(35 33 27);
 }
+html.dark .post-prose blockquote {
+  color: rgb(232 226 207);
+  border-left-color: rgb(238 188 99);
+}
 .post-prose pre {
   overflow-x: auto;
   border-radius: 1rem;
@@ -228,6 +283,11 @@ body {
   line-height: 1.6;
   box-shadow: 0 1px 2px rgba(19, 17, 13, 0.06),
     0 8px 24px -8px rgba(19, 17, 13, 0.18);
+}
+html.dark .post-prose pre {
+  background: rgb(20 18 14);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4),
+    0 8px 24px -8px rgba(0, 0, 0, 0.5);
 }
 .post-prose pre code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
@@ -241,6 +301,10 @@ body {
   border-radius: 0.375rem;
   font-size: 0.9em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+}
+html.dark .post-prose code:not(pre code) {
+  background: rgba(238, 188, 99, 0.15);
+  color: rgb(245 215 156);
 }
 .post-prose img {
   border-radius: 1rem;
@@ -259,7 +323,14 @@ body {
     transparent 100%
   );
 }
-/* Scripture/callout — Tiptap stores these as <blockquote class="scripture"> */
+html.dark .post-prose hr {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(245, 241, 232, 0.18) 50%,
+    transparent 100%
+  );
+}
 .post-prose blockquote.scripture {
   margin-block: 2.5rem;
   padding: 1.75rem 2rem;
@@ -268,6 +339,10 @@ body {
   border: 1px solid rgb(245 215 156);
   border-radius: 1rem;
   font-style: normal;
+}
+html.dark .post-prose blockquote.scripture {
+  background: rgba(238, 188, 99, 0.06);
+  border-color: rgba(238, 188, 99, 0.25);
 }
 .post-prose blockquote.scripture::before {
   content: "Kitab Suci";
@@ -279,4 +354,7 @@ body {
   text-transform: uppercase;
   color: rgb(141 75 24);
   margin-bottom: 0.75rem;
+}
+html.dark .post-prose blockquote.scripture::before {
+  color: rgb(238 188 99);
 }

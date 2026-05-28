@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import type { Post } from "@/lib/types";
 import { CATEGORIES } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 function subName(mainSlug: string, subSlug: string) {
   const cat = CATEGORIES.find((c) => c.slug === mainSlug);
@@ -25,13 +26,14 @@ export function PostCard({
 }) {
   const sub = subName(post.mainCategory, post.subCategory);
   const href = `/${post.mainCategory}/${post.slug}`;
+  const { locale, t } = useLocale();
 
   if (variant === "compact") {
     return (
       <motion.article layout layoutId={layoutId} className="h-full">
         <Link
           href={href}
-          className="group flex h-full gap-4 rounded-2xl bg-white/60 p-4 shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-card-hover"
+          className="group flex h-full gap-4 rounded-2xl bg-white/60 p-4 shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-card-hover dark:bg-white/[0.03] dark:ring-white/10 dark:hover:bg-white/[0.06]"
         >
           {post.cover && (
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
@@ -46,16 +48,16 @@ export function PostCard({
           )}
           <div className="flex flex-1 flex-col justify-between">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-sacred-600">
+              <p className="text-[10px] uppercase tracking-[0.24em] text-sacred-600 dark:text-sacred-300">
                 {sub}
               </p>
-              <h3 className="serif-display mt-1.5 line-clamp-2 text-base leading-snug text-ink-900">
+              <h3 className="serif-display mt-1.5 line-clamp-2 text-base leading-snug text-ink-900 dark:text-ink-50">
                 {post.title}
               </h3>
             </div>
-            <p className="text-xs text-ink-500">
-              {formatDate(post.createdAt)}
-              {post.readingMinutes && ` · ${post.readingMinutes} menit`}
+            <p className="text-xs text-ink-500 dark:text-ink-400">
+              {formatDate(post.createdAt, locale)}
+              {post.readingMinutes && ` · ${t.feature.readingTime(post.readingMinutes)}`}
             </p>
           </div>
         </Link>
@@ -93,8 +95,8 @@ export function PostCard({
               {post.excerpt}
             </p>
             <div className="mt-5 flex items-center justify-between text-xs text-ink-300">
-              <span>{formatDate(post.createdAt)}</span>
-              <span className="link-underline">Baca →</span>
+              <span>{formatDate(post.createdAt, locale)}</span>
+              <span className="link-underline">{t.feature.readMore} →</span>
             </div>
           </div>
         </Link>
@@ -123,7 +125,7 @@ export function PostCard({
           )}
           <div className="absolute inset-x-0 bottom-0 p-8">
             <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-300">
-              {sub} · {formatDate(post.createdAt)}
+              {sub} · {formatDate(post.createdAt, locale)}
             </p>
             <h3 className="serif-display mt-3 max-w-2xl text-3xl leading-tight text-ink-50 sm:text-4xl">
               {post.title}
@@ -140,7 +142,7 @@ export function PostCard({
     <motion.article layout layoutId={layoutId} className="h-full">
       <Link
         href={href}
-        className="group block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover"
+        className="group block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover dark:bg-ink-900 dark:ring-white/10"
       >
         {post.cover && (
           <div className="relative aspect-[4/3] overflow-hidden">
@@ -154,19 +156,19 @@ export function PostCard({
           </div>
         )}
         <div className="flex flex-1 flex-col p-5">
-          <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600">
+          <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
             {sub}
           </p>
-          <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900">
+          <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">
             {post.title}
           </h3>
-          <p className="mt-2 line-clamp-2 text-sm text-ink-600">
+          <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
             {post.excerpt}
           </p>
-          <div className="mt-4 flex items-center justify-between text-xs text-ink-500">
-            <span>{formatDate(post.createdAt)}</span>
+          <div className="mt-4 flex items-center justify-between text-xs text-ink-500 dark:text-ink-400">
+            <span>{formatDate(post.createdAt, locale)}</span>
             {post.readingMinutes && (
-              <span>{post.readingMinutes} menit baca</span>
+              <span>{t.feature.readingTime(post.readingMinutes)}</span>
             )}
           </div>
         </div>

@@ -4,13 +4,12 @@ import { RuangAlkitab } from "@/components/sections/RuangAlkitab";
 import { RuangTeologi } from "@/components/sections/RuangTeologi";
 import { RuangLensa } from "@/components/sections/RuangLensa";
 import { SinnersNote } from "@/components/sections/SinnersNote";
+import { Contact } from "@/components/sections/Contact";
 import {
   getFeaturedPosts,
   getPostsByMainCategory,
 } from "@/lib/posts";
 
-// Always fetch fresh on each request so newly-published posts appear
-// immediately. Switch to `revalidate = 60` later if traffic warrants ISR.
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
@@ -30,6 +29,7 @@ export default async function HomePage() {
       <RuangTeologi posts={teologi} />
       <RuangLensa posts={lensa} />
       <SinnersNote posts={sinnersNote} />
+      <Contact />
     </>
   );
 }

@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { Mail } from "lucide-react";
 import { CATEGORIES } from "@/lib/categories";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function Footer() {
+  const { t } = useLocale();
+
   return (
-    <footer className="relative mt-32 border-t border-ink-900/10 bg-ink-950 text-ink-100">
+    <footer className="relative mt-32 border-t border-ink-900/10 bg-ink-950 text-ink-100 dark:border-white/5">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 lg:grid-cols-12 lg:px-8">
         {/* Brand block */}
         <div className="lg:col-span-5">
@@ -11,10 +17,26 @@ export function Footer() {
             Sinner<span className="italic text-sacred-300">Saved</span>
           </p>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-300">
-            Jurnal teologi independen — membaca Alkitab dengan jujur, berpikir
-            dengan tertib, dan hidup dalam kasih karunia. Semua tulisan ditulis
-            secara perlahan, bukan reaktif.
+            {t.footer.tagline}
           </p>
+
+          {/* Email contact block */}
+          <div className="mt-8 inline-flex flex-col gap-2 rounded-2xl border border-white/5 bg-white/[0.03] p-5">
+            <p className="text-[10px] uppercase tracking-[0.32em] text-sacred-300">
+              {t.footer.sectionContact}
+            </p>
+            <a
+              href="mailto:andreassina6a@gmail.com"
+              className="serif-display group inline-flex items-center gap-2 text-lg text-ink-50 hover:text-sacred-300"
+            >
+              <Mail size={16} className="opacity-70 transition-transform group-hover:-translate-y-0.5" />
+              andreassina6a@gmail.com
+            </a>
+            <p className="text-xs text-ink-400">
+              {t.contact.blurb.split(".")[0]}.
+            </p>
+          </div>
+
           <p className="mt-8 text-xs uppercase tracking-[0.32em] text-ink-400">
             By a sinner, for sinners — saved by grace alone.
           </p>
@@ -46,12 +68,8 @@ export function Footer() {
 
       <div className="border-t border-white/5">
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-3 px-5 py-6 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <p>
-            © {new Date().getFullYear()} SinnerSaved. Soli Deo Gloria.
-          </p>
-          <p className="opacity-70">
-            Built with Next.js · Tailwind · Framer Motion
-          </p>
+          <p>© {new Date().getFullYear()} SinnerSaved. {t.footer.glory}</p>
+          <p className="opacity-70">{t.footer.builtWith}</p>
         </div>
       </div>
     </footer>

@@ -9,9 +9,11 @@ import { SectionHeader } from "./SectionHeader";
 import { BIBLICAL_FACTS } from "@/lib/mock-data";
 import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RuangAlkitab({ posts }: { posts: Post[] }) {
   const facts = BIBLICAL_FACTS.slice(0, 6);
+  const { t, locale } = useLocale();
 
   return (
     <section
@@ -24,20 +26,20 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
     >
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeader
-          eyebrow="01 / Ruang Alkitab"
-          title="Teks. Konteks. Bahasa asli."
-          blurb="Membaca Kitab Suci dari latar sejarah, budaya, dan bahasa aslinya — tanpa kehilangan kehangatan iman."
+          eyebrow={t.ruangAlkitab.eyebrow}
+          title={t.ruangAlkitab.title}
+          blurb={t.ruangAlkitab.blurb}
           href="/kategori/ruang-alkitab"
+          hrefLabel={t.feature.archive.replace(" →", "")}
         />
 
-        {/* Biblical Facts — flip cards */}
         <div className="mt-16">
-          <div className="mb-6 flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-ink-500">
-            <BookOpen size={14} className="text-sacred-600" />
-            <span>Biblical Facts</span>
-            <span className="ml-auto inline-flex items-center gap-1.5 text-ink-400">
+          <div className="mb-6 flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-ink-500 dark:text-ink-400">
+            <BookOpen size={14} className="text-sacred-600 dark:text-sacred-400" />
+            <span>{t.ruangAlkitab.factsLabel}</span>
+            <span className="ml-auto inline-flex items-center gap-1.5 text-ink-400 dark:text-ink-500">
               <RotateCw size={12} />
-              Hover atau klik untuk membuka
+              {t.ruangAlkitab.factsHint}
             </span>
           </div>
 
@@ -50,7 +52,7 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                       <div className="absolute inset-0 bg-radial-glow opacity-60" />
                       <div className="relative">
                         <p className="text-[10px] uppercase tracking-[0.32em] text-sacred-300">
-                          Tahukah kamu?
+                          {t.ruangAlkitab.didYouKnow}
                         </p>
                         <p className="serif-display mt-6 text-2xl leading-snug text-ink-50">
                           {fact.question}
@@ -60,23 +62,23 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                         <span>{fact.reference}</span>
                         <span className="inline-flex items-center gap-1">
                           <RotateCw size={11} />
-                          Balik kartu
+                          {t.ruangAlkitab.flipBack}
                         </span>
                       </div>
                     </div>
                   }
                   back={
-                    <div className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl bg-parchment-deep p-6 text-ink-900 shadow-card ring-1 ring-ink-900/10">
+                    <div className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl bg-parchment-deep p-6 text-ink-900 shadow-card ring-1 ring-ink-900/10 dark:bg-ink-800 dark:text-ink-50 dark:ring-white/10">
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.32em] text-sacred-700">
+                        <p className="text-[10px] uppercase tracking-[0.32em] text-sacred-700 dark:text-sacred-300">
                           {fact.reference}
                         </p>
-                        <p className="mt-4 text-base leading-relaxed text-ink-800">
+                        <p className="mt-4 text-base leading-relaxed text-ink-800 dark:text-ink-200">
                           {fact.answer}
                         </p>
                       </div>
-                      <p className="mt-4 text-xs text-ink-500">
-                        ✦ Sumber: catatan studi pribadi
+                      <p className="mt-4 text-xs text-ink-500 dark:text-ink-400">
+                        {t.ruangAlkitab.factsSource}
                       </p>
                     </div>
                   }
@@ -86,16 +88,15 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
           </StaggerContainer>
         </div>
 
-        {/* Latest from Ruang Alkitab */}
         {posts.length > 0 && (
           <div className="mt-20">
-            <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.28em] text-ink-500">
-              <span>Tulisan terbaru di Ruang Alkitab</span>
+            <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.28em] text-ink-500 dark:text-ink-400">
+              <span>{t.ruangAlkitab.latest}</span>
               <Link
                 href="/kategori/ruang-alkitab"
-                className="text-ink-700 link-underline"
+                className="text-ink-700 link-underline dark:text-ink-200"
               >
-                Selengkapnya →
+                {t.ruangAlkitab.seeMore}
               </Link>
             </div>
             <StaggerContainer className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -103,7 +104,7 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                 <FadeInUp key={post.id}>
                   <Link
                     href={`/${post.mainCategory}/${post.slug}`}
-                    className="group block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover"
+                    className="group block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover dark:bg-ink-900 dark:ring-white/10"
                   >
                     {post.cover && (
                       <div className="relative aspect-[4/3] overflow-hidden">
@@ -117,17 +118,17 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                       </div>
                     )}
                     <div className="p-5">
-                      <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600">
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
                         {post.subCategory.replace(/-/g, " ")}
                       </p>
-                      <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900">
+                      <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">
                         {post.title}
                       </h3>
-                      <p className="mt-2 line-clamp-2 text-sm text-ink-600">
+                      <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
                         {post.excerpt}
                       </p>
-                      <p className="mt-4 text-xs text-ink-500">
-                        {formatDate(post.createdAt)}
+                      <p className="mt-4 text-xs text-ink-500 dark:text-ink-400">
+                        {formatDate(post.createdAt, locale)}
                       </p>
                     </div>
                   </Link>

@@ -31,9 +31,9 @@ if (!SUPABASE_URL || !SERVICE_ROLE) {
   process.exit(1);
 }
 
-const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || "admin@sinnersaved.com";
-const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || "sinnersaved123";
-const ADMIN_NAME = process.env.SEED_ADMIN_NAME || "Andre Asoni";
+const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || "andreassina6a@gmail.com";
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || "admin11!";
+const ADMIN_NAME = process.env.SEED_ADMIN_NAME || "Andreas Sina";
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE, {
   auth: { persistSession: false, autoRefreshToken: false },

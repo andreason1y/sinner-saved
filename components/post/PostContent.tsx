@@ -23,7 +23,7 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
                 <h2
                   key={idx}
                   id={id}
-                  className="serif-display scroll-mt-28 pt-6 text-3xl leading-snug tracking-tightest text-ink-900 sm:text-4xl"
+                  className="serif-display scroll-mt-28 pt-6 text-3xl leading-snug tracking-tightest text-ink-900 dark:text-ink-50 sm:text-4xl"
                 >
                   {block.text}
                 </h2>
@@ -33,7 +33,7 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
               <h3
                 key={idx}
                 id={id}
-                className="serif-display scroll-mt-28 pt-2 text-2xl leading-snug tracking-tightest text-ink-900"
+                className="serif-display scroll-mt-28 pt-2 text-2xl leading-snug tracking-tightest text-ink-900 dark:text-ink-50"
               >
                 {block.text}
               </h3>
@@ -44,7 +44,7 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
             return (
               <p
                 key={idx}
-                className="text-lg leading-[1.8] text-ink-800 first-letter:text-ink-900"
+                className="text-lg leading-[1.8] text-ink-800 first-letter:text-ink-900 dark:text-ink-200 dark:first-letter:text-ink-50"
               >
                 {block.text}
               </p>
@@ -56,11 +56,11 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
                 key={idx}
                 className="my-10 border-l-2 border-sacred-500 pl-6"
               >
-                <blockquote className="serif-display text-2xl leading-snug italic text-ink-800 sm:text-3xl">
+                <blockquote className="serif-display text-2xl leading-snug italic text-ink-800 dark:text-ink-200 sm:text-3xl">
                   &ldquo;{block.text}&rdquo;
                 </blockquote>
                 {block.cite && (
-                  <figcaption className="mt-3 text-sm uppercase tracking-[0.28em] text-ink-500">
+                  <figcaption className="mt-3 text-sm uppercase tracking-[0.28em] text-ink-500 dark:text-ink-400">
                     — {block.cite}
                   </figcaption>
                 )}
@@ -71,15 +71,15 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
             return (
               <figure
                 key={idx}
-                className="my-10 rounded-2xl border border-sacred-200 bg-sacred-50/50 p-7 sm:p-9"
+                className="my-10 rounded-2xl border border-sacred-200 bg-sacred-50/50 p-7 dark:border-sacred-500/30 dark:bg-sacred-500/[0.06] sm:p-9"
               >
-                <p className="text-xs uppercase tracking-[0.32em] text-sacred-700">
+                <p className="text-xs uppercase tracking-[0.32em] text-sacred-700 dark:text-sacred-300">
                   Kitab Suci
                 </p>
-                <blockquote className="serif-display mt-4 text-xl leading-snug text-ink-900 sm:text-2xl">
+                <blockquote className="serif-display mt-4 text-xl leading-snug text-ink-900 dark:text-ink-50 sm:text-2xl">
                   {block.text}
                 </blockquote>
-                <figcaption className="mt-4 text-sm font-medium tracking-wide text-sacred-700">
+                <figcaption className="mt-4 text-sm font-medium tracking-wide text-sacred-700 dark:text-sacred-300">
                   — {block.reference}
                 </figcaption>
               </figure>
@@ -105,7 +105,7 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
               return (
                 <ol
                   key={idx}
-                  className="ml-6 list-decimal space-y-2 text-lg leading-[1.8] text-ink-800 marker:text-sacred-600"
+                  className="ml-6 list-decimal space-y-2 text-lg leading-[1.8] text-ink-800 dark:text-ink-200 marker:text-sacred-600 dark:marker:text-sacred-400"
                 >
                   {block.items.map((item, i) => (
                     <li key={i}>{item}</li>
@@ -116,7 +116,7 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
             return (
               <ul
                 key={idx}
-                className="ml-6 list-disc space-y-2 text-lg leading-[1.8] text-ink-800 marker:text-sacred-500"
+                className="ml-6 list-disc space-y-2 text-lg leading-[1.8] text-ink-800 dark:text-ink-200 marker:text-sacred-500 dark:marker:text-sacred-400"
               >
                 {block.items.map((item, i) => (
                   <li key={i}>{item}</li>
