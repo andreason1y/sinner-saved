@@ -9,6 +9,7 @@ import {
   getRelatedPosts,
   getPublishedPosts,
 } from "@/lib/posts";
+import { translatePostAction } from "@/lib/actions/translate";
 import { getCategory } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
 import { PostContent } from "@/components/post/PostContent";
@@ -79,8 +80,32 @@ export default async function PostPage({
     category?.subcategories.find((s) => s.slug === post.subCategory)?.name ??
     post.subCategory;
 
-  const html = (post as { contentHtml?: string }).contentHtml ?? "";
+  const rawHtml = (post as { contentHtml?: string }).contentHtml ?? "";
   const blocks = (post as { content?: ContentBlock[] }).content ?? [];
+
+  // Resolve EN content: use cache if present, otherwise translate on demand.
+  let displayTitle = post.title;
+  let displayExcerpt = post.excerpt;
+  let html = rawHtml;
+
+  if (locale === "en") {
+    if (post.titleEn && post.excerptEn && post.contentHtmlEn) {
+      displayTitle = post.titleEn;
+      displayExcerpt = post.excerptEn;
+      html = post.contentHtmlEn;
+    } else if (rawHtml) {
+      const translated = await translatePostAction(post.id, {
+        title: post.title,
+        excerpt: post.excerpt,
+        contentHtml: rawHtml,
+      });
+      if (translated) {
+        displayTitle = translated.titleEn;
+        displayExcerpt = translated.excerptEn;
+        html = translated.contentHtmlEn;
+      }
+    }
+  }
 
   let toc: TocItem[] = [];
   if (html) {
@@ -113,7 +138,7 @@ export default async function PostPage({
         <div className="relative h-[55vh] min-h-[420px] w-full overflow-hidden">
           <Image
             src={post.cover}
-            alt={post.title}
+            alt={displayTitle}
             fill
             priority
             sizes="100vw"
@@ -148,10 +173,10 @@ export default async function PostPage({
             {subName}
           </p>
           <h1 className="serif-display mt-4 text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-6xl">
-            {post.title}
+            {displayTitle}
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-ink-600 dark:text-ink-300 sm:text-xl">
-            {post.excerpt}
+            {displayExcerpt}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-500 dark:text-ink-400">
             <time dateTime={post.createdAt}>
@@ -172,6 +197,11 @@ export default async function PostPage({
       <div className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-8 lg:col-start-2">
+            {locale === "en" && html && (
+              <p className="mb-6 text-xs text-ink-400 dark:text-ink-500">
+                Translated by machine — original in Indonesian.
+              </p>
+            )}
             {html ? <PostBody html={html} /> : <PostContent blocks={blocks} />}
 
             {post.tags && post.tags.length > 0 && (

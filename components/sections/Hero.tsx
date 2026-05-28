@@ -66,7 +66,7 @@ export function Hero() {
                 mass: 0.9,
                 delay: 0.3 + i * 0.08,
               }}
-              className="mr-3 inline-block overflow-hidden align-baseline"
+              className="mr-3 inline-block overflow-hidden align-baseline pb-[0.15em] mb-[-0.15em]"
             >
               <span className="inline-block">
                 {word === lastWord ? (

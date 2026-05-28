@@ -48,6 +48,9 @@ export type Post = {
   updatedAt: string;
   readingMinutes?: number;
   author?: { name: string; bio?: string };
+  titleEn?: string;
+  excerptEn?: string;
+  contentHtmlEn?: string;
 };
 
 export type BiblicalFact = {

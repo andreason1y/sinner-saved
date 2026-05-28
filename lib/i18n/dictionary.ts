@@ -112,9 +112,9 @@ const id: Dict = {
   },
   hero: {
     issue: "Issue 01 — Mei 2026",
-    tagline: "Independent Theological Journal",
+    tagline: "Catatan iman seorang pendosa",
     intro:
-      "SinnerSaved adalah jurnal teologi independen — tempat saya menulis pelan-pelan tentang teks Alkitab, doktrin, budaya, dan catatan-catatan pribadi seorang pendosa yang diselamatkan oleh kasih karunia.",
+      "SinnerSaved adalah tempat saya menulis pelan-pelan — tentang teks Alkitab, doktrin, budaya, dan catatan-catatan jujur seorang pendosa yang diselamatkan oleh kasih karunia.",
     cta: "Mulai membaca",
     explore: "Telusuri kategori →",
   },
@@ -201,7 +201,7 @@ const id: Dict = {
   },
   footer: {
     tagline:
-      "Jurnal teologi independen — membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia. Semua tulisan ditulis secara perlahan, bukan reaktif.",
+      "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
     builtWith: "Built with Next.js · Tailwind · Framer Motion · Supabase",
     glory: "Soli Deo Gloria.",
     sectionContact: "Kontak",
@@ -221,9 +221,9 @@ const en: Dict = {
   },
   hero: {
     issue: "Issue 01 — May 2026",
-    tagline: "Independent Theological Journal",
+    tagline: "Notes of a sinner saved by grace",
     intro:
-      "SinnerSaved is an independent theological journal — a place I write slowly about Scripture, doctrine, culture, and the personal notes of a sinner saved by grace.",
+      "SinnerSaved is a place where I write slowly — about Scripture, doctrine, culture, and the honest notes of a sinner saved by grace.",
     cta: "Start reading",
     explore: "Browse categories →",
   },
@@ -311,7 +311,7 @@ const en: Dict = {
   },
   footer: {
     tagline:
-      "An independent theological journal — reading Scripture honestly, thinking carefully, and living in grace. Every piece is written slowly, not reactively.",
+      "Reading Scripture honestly, thinking carefully, living in grace.",
     builtWith: "Built with Next.js · Tailwind · Framer Motion · Supabase",
     glory: "Soli Deo Gloria.",
     sectionContact: "Contact",

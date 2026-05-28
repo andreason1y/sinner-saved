@@ -19,43 +19,17 @@ type NoteCard = {
   mainCategory: "sinners-note";
 };
 
-const EXTRA_NOTES: NoteCard[] = [
-  {
-    id: "n-extra-1",
-    slug: "anugerah-seperti-hujan",
-    title: "Anugerah itu seperti hujan di musim kering.",
-    excerpt:
-      "Datang tanpa diminta, basah tanpa permisi, dan meninggalkan tanah yang sebelumnya merasa tak akan pernah subur lagi.",
-    createdAt: "2026-04-20T09:00:00Z",
-    subCategory: "refleksi",
-    mainCategory: "sinners-note",
-  },
-  {
-    id: "n-extra-2",
-    slug: "tentang-malu-yang-menjadi-pintu",
-    title: "Tentang malu yang menjadi pintu.",
-    excerpt:
-      "Malu rohani sering dianggap musuh. Tapi bagi saya, ia justru sering jadi pintu kecil menuju ruangan yang dipenuhi cahaya — kalau saya berani membukanya.",
-    createdAt: "2026-04-15T09:00:00Z",
-    subCategory: "catatan",
-    mainCategory: "sinners-note",
-  },
-];
-
 export function SinnersNote({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
-  const items: NoteCard[] = [
-    ...posts.slice(0, 4).map((p) => ({
-      id: p.id,
-      slug: p.slug,
-      title: p.title,
-      excerpt: p.excerpt,
-      createdAt: p.createdAt,
-      subCategory: p.subCategory,
-      mainCategory: "sinners-note" as const,
-    })),
-    ...EXTRA_NOTES,
-  ];
+  const items: NoteCard[] = posts.slice(0, 4).map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    title: p.title,
+    excerpt: p.excerpt,
+    createdAt: p.createdAt,
+    subCategory: p.subCategory,
+    mainCategory: "sinners-note" as const,
+  }));
 
   return (
     <section id="sinners-note" className="relative py-24 sm:py-32">
