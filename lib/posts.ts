@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "./supabase/server";
 import type { Post } from "./types";
@@ -88,15 +89,20 @@ async function queryPublishedPosts(): Promise<Post[]> {
 /**
  * Public reads. If DB has no posts yet (e.g. before seed), fall back to
  * Phase 1/2 mock data so the homepage stays alive.
+ *
+ * Wrapped in React's request-scoped `cache()` so all the homepage helpers
+ * (`getFeaturedPosts`, `getPostsByMainCategory`, `getRelatedPosts`, ...)
+ * share a single DB round-trip per render — even when called in parallel
+ * via `Promise.all`.
  */
-export async function getPublishedPosts(): Promise<Post[]> {
+export const getPublishedPosts = cache(async (): Promise<Post[]> => {
   const fromDb = await queryPublishedPosts();
   if (fromDb.length > 0) return fromDb;
   return MOCK_POSTS.filter((p) => p.status === "published").sort(
     (a, b) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
-}
+});
 
 export async function getFeaturedPosts(limit = 5): Promise<Post[]> {
   const all = await getPublishedPosts();
@@ -112,9 +118,9 @@ export async function getPostsByMainCategory(
   return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
 }
 
-export async function getPostBySlug(
+export const getPostBySlug = cache(async (
   slug: string
-): Promise<(Post & { contentHtml?: string }) | null> {
+): Promise<(Post & { contentHtml?: string }) | null> => {
   if (isSupabaseConfigured()) {
     try {
       const supabase = createClient(
@@ -135,7 +141,7 @@ export async function getPostBySlug(
   }
   const fallback = MOCK_POSTS.find((p) => p.slug === slug);
   return fallback ?? null;
-}
+});
 
 export async function getRelatedPosts(
   post: Post,

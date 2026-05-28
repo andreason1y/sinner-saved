@@ -9,7 +9,7 @@ import {
   getRelatedPosts,
   getPublishedPosts,
 } from "@/lib/posts";
-import { CATEGORIES, getCategory } from "@/lib/categories";
+import { getCategory } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
 import { PostContent } from "@/components/post/PostContent";
 import { PostBody } from "@/components/post/PostBody";
@@ -28,7 +28,11 @@ import {
   type Locale,
 } from "@/lib/i18n/dictionary";
 
-export const dynamic = "force-dynamic";
+// Reading the locale cookie already opts this route into per-request
+// rendering — no need for `force-dynamic`. We still get the benefit of
+// React `cache()` deduping the Supabase call between `generateMetadata`
+// and the page body within the same request.
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   const posts = await getPublishedPosts();
