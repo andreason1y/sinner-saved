@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
-import { getPostsByCategory } from "@/lib/mock-data";
+import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-export function RuangLensa() {
-  const posts = getPostsByCategory("ruang-lensa", 4);
+export function RuangLensa({ posts }: { posts: Post[] }) {
+  if (posts.length === 0) return null;
 
   return (
     <section

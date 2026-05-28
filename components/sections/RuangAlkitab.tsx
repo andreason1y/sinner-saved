@@ -6,11 +6,11 @@ import { BookOpen, RotateCw } from "lucide-react";
 import { FlipCard } from "@/components/motion/FlipCard";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { SectionHeader } from "./SectionHeader";
-import { BIBLICAL_FACTS, getPostsByCategory } from "@/lib/mock-data";
+import { BIBLICAL_FACTS } from "@/lib/mock-data";
+import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-export function RuangAlkitab() {
-  const posts = getPostsByCategory("ruang-alkitab", 3);
+export function RuangAlkitab({ posts }: { posts: Post[] }) {
   const facts = BIBLICAL_FACTS.slice(0, 6);
 
   return (

@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "@/components/motion/Reveal";
-import { getPostsByCategory } from "@/lib/mock-data";
+import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-// Tiny extra notes to give the masonry uneven heights (Phase 1 visual)
+// Tiny extra notes to give the masonry uneven heights (visual filler).
 type NoteCard = {
   id: string;
   slug: string;
@@ -42,10 +42,9 @@ const EXTRA_NOTES: NoteCard[] = [
   },
 ];
 
-export function SinnersNote() {
-  const fromMock = getPostsByCategory("sinners-note", 4);
+export function SinnersNote({ posts }: { posts: Post[] }) {
   const items: NoteCard[] = [
-    ...fromMock.map((p) => ({
+    ...posts.slice(0, 4).map((p) => ({
       id: p.id,
       slug: p.slug,
       title: p.title,
