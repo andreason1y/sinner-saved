@@ -77,9 +77,6 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                           {fact.answer}
                         </p>
                       </div>
-                      <p className="mt-4 text-xs text-ink-500 dark:text-ink-400">
-                        {t.ruangAlkitab.factsSource}
-                      </p>
                     </div>
                   }
                 />
