@@ -14,6 +14,7 @@ type Dict = {
     establishment: string;
     light: string;
     dark: string;
+    contactSubs: string;
   };
   hero: {
     tagline: string;
@@ -116,6 +117,7 @@ const id: Dict = {
     establishment: "est. 2026",
     light: "Mode terang",
     dark: "Mode gelap",
+    contactSubs: "Kritik · Saran · Pertanyaan",
   },
   hero: {
     tagline: "Catatan iman seorang pendosa",
@@ -232,6 +234,7 @@ const en: Dict = {
     establishment: "est. 2026",
     light: "Light mode",
     dark: "Dark mode",
+    contactSubs: "Critique · Suggestions · Questions",
   },
   hero: {
     tagline: "Notes of a sinner saved by grace",

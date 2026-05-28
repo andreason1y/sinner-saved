@@ -182,7 +182,7 @@ export function Navbar() {
                     {t.nav.contact}
                   </Link>
                   <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
-                    Kritik · Saran · Pertanyaan
+                    {t.nav.contactSubs}
                   </p>
                 </li>
               </ul>
