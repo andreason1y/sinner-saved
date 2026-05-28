@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import type { MainCategory, Post } from "@/lib/types";
+import { localizeCategory } from "@/lib/categories";
 import { CategoryFilter } from "./CategoryFilter";
 import { PostCard } from "./PostCard";
 import { useLocale } from "@/components/i18n/LocaleProvider";
@@ -36,7 +37,8 @@ export function CategoryArchive({
   posts: Post[];
 }) {
   const [activeSub, setActiveSub] = useState<string | null>(null);
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  category = localizeCategory(category, locale);
 
   const counts = useMemo(() => {
     const c: Record<string, number> = {};

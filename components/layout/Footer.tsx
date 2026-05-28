@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, localizeCategory } from "@/lib/categories";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function Footer() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <footer className="relative mt-32 border-t border-ink-900/10 bg-ink-950 text-ink-100 dark:border-white/5">
@@ -44,7 +44,9 @@ export function Footer() {
 
         {/* Sitemap */}
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-7">
-          {CATEGORIES.map((cat) => (
+          {CATEGORIES.map((rawCat) => {
+            const cat = localizeCategory(rawCat, locale);
+            return (
             <div key={cat.slug}>
               <p className="text-xs uppercase tracking-[0.22em] text-sacred-300">
                 {cat.name}
@@ -62,7 +64,8 @@ export function Footer() {
                 ))}
               </ul>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

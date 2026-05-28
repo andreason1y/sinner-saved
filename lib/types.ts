@@ -7,6 +7,7 @@ export type MainCategorySlug =
 export type SubCategory = {
   slug: string;
   name: string;
+  nameEn?: string;
 };
 
 export type MainCategory = {
@@ -15,6 +16,9 @@ export type MainCategory = {
   tagline: string;
   blurb: string;
   subcategories: SubCategory[];
+  nameEn?: string;
+  taglineEn?: string;
+  blurbEn?: string;
 };
 
 export type PostStatus = "draft" | "published";

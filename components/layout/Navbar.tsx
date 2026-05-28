@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, Mail } from "lucide-react";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, localizeCategory } from "@/lib/categories";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { LocaleToggle } from "@/components/i18n/LocaleToggle";
@@ -14,7 +14,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -51,7 +51,9 @@ export function Navbar() {
           className="hidden items-center gap-1 lg:flex"
           onMouseLeave={() => setActiveCategory(null)}
         >
-          {CATEGORIES.map((cat) => (
+          {CATEGORIES.map((rawCat) => {
+            const cat = localizeCategory(rawCat, locale);
+            return (
             <div
               key={cat.slug}
               className="relative"
@@ -118,7 +120,8 @@ export function Navbar() {
                 )}
               </AnimatePresence>
             </div>
-          ))}
+            );
+          })}
           <Link
             href="/kontak"
             className="ml-1 inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium tracking-wide text-ink-700 transition-colors hover:text-ink-900 dark:text-ink-200 dark:hover:text-ink-50"
@@ -153,7 +156,9 @@ export function Navbar() {
           >
             <nav className="mx-auto max-w-7xl px-5 py-5">
               <ul className="flex flex-col gap-4">
-                {CATEGORIES.map((cat) => (
+                {CATEGORIES.map((rawCat) => {
+                  const cat = localizeCategory(rawCat, locale);
+                  return (
                   <li key={cat.slug}>
                     <Link
                       href={`/kategori/${cat.slug}`}
@@ -166,7 +171,8 @@ export function Navbar() {
                       {cat.subcategories.map((s) => s.name).join(" · ")}
                     </p>
                   </li>
-                ))}
+                  );
+                })}
                 <li>
                   <Link
                     href="/kontak"
