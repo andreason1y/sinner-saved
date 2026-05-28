@@ -7,7 +7,7 @@ export const CATEGORIES: MainCategory[] = [
     tagline: "Teks. Konteks. Bahasa asli.",
     blurb:
       "Membaca Kitab Suci dari latar sejarah, budaya, dan bahasa aslinya — tanpa kehilangan kehangatan iman.",
-    nameEn: "Ruang Alkitab",
+    nameEn: "Scripture Room",
     taglineEn: "Text. Context. Original tongue.",
     blurbEn:
       "Reading Scripture through its historical, cultural, and original-language context — without losing the warmth of faith.",
@@ -25,7 +25,7 @@ export const CATEGORIES: MainCategory[] = [
     tagline: "Berpikir dengan tertib di hadapan Allah.",
     blurb:
       "Bedah doktrin, apologetika, dan kritik yang sehat — supaya iman bukan sekadar perasaan, tapi keyakinan yang teruji.",
-    nameEn: "Ruang Teologi",
+    nameEn: "Theology Room",
     taglineEn: "Thinking carefully before God.",
     blurbEn:
       "Careful doctrine, apologetics, and healthy critique — so faith is not just feeling, but tested conviction.",
@@ -42,7 +42,7 @@ export const CATEGORIES: MainCategory[] = [
     tagline: "Injil membaca dunia.",
     blurb:
       "Melihat budaya, tokoh, dan zaman lewat lensa Injil — sebuah cara berbeda untuk memandang yang biasa.",
-    nameEn: "Ruang Lensa",
+    nameEn: "Gospel Lens",
     taglineEn: "The Gospel reads the world.",
     blurbEn:
       "Seeing culture, people, and time through the lens of the Gospel — a different way of looking at the familiar.",
