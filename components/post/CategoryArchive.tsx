@@ -5,7 +5,6 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import type { MainCategory, Post } from "@/lib/types";
 import { CategoryFilter } from "./CategoryFilter";
 import { PostCard } from "./PostCard";
-import { Reveal } from "@/components/motion/Reveal";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 const gridVariants: Variants = {
@@ -58,7 +57,11 @@ export function CategoryArchive({
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-radial-glow opacity-70 dark:opacity-30" />
 
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 180, damping: 24 }}
+        >
           <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
             {t.archive.categoryLabel(posts.length)}
           </p>
@@ -68,9 +71,13 @@ export function CategoryArchive({
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-600 dark:text-ink-300">
             {category.blurb}
           </p>
-        </Reveal>
+        </motion.div>
 
-        <Reveal delay={0.1}>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 180, damping: 24, delay: 0.1 }}
+        >
           <div className="mt-12 border-y border-ink-900/10 py-5 dark:border-white/10">
             <CategoryFilter
               subs={category.subcategories}
@@ -81,7 +88,7 @@ export function CategoryArchive({
               allLabel={t.archive.all}
             />
           </div>
-        </Reveal>
+        </motion.div>
 
         <motion.div
           key={activeSub ?? "all"}

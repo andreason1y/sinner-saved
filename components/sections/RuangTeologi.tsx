@@ -11,7 +11,6 @@ import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RuangTeologi({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
-  if (posts.length === 0) return null;
 
   return (
     <section id="ruang-teologi" className="relative py-24 sm:py-32">
@@ -24,6 +23,11 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
           hrefLabel={t.feature.archive.replace(" →", "")}
         />
 
+        {posts.length === 0 ? (
+          <p className="mt-14 text-sm text-ink-500 dark:text-ink-400">
+            {t.archive.emptyBody}
+          </p>
+        ) : (
         <StaggerContainer className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
           {posts.map((post, i) => (
             <FadeInUp key={post.id}>
@@ -70,6 +74,7 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
             </FadeInUp>
           ))}
         </StaggerContainer>
+        )}
       </div>
     </section>
   );
