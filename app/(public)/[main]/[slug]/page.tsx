@@ -6,28 +6,34 @@ import { ChevronLeft } from "lucide-react";
 import {
   getPostBySlug,
   getRelatedPosts,
-  MOCK_POSTS,
-} from "@/lib/mock-data";
+  getPublishedPosts,
+} from "@/lib/posts";
 import { CATEGORIES, getCategory } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
 import { PostContent } from "@/components/post/PostContent";
+import { PostBody } from "@/components/post/PostBody";
 import { ReadingProgress } from "@/components/post/ReadingProgress";
 import {
   TableOfContents,
   type TocItem,
 } from "@/components/post/TableOfContents";
 import { RelatedPosts } from "@/components/post/RelatedPosts";
+import { extractTocFromHtml } from "@/lib/toc";
+import type { ContentBlock } from "@/lib/types";
 
-export function generateStaticParams() {
-  return MOCK_POSTS.map((p) => ({ main: p.mainCategory, slug: p.slug }));
+export const dynamic = "force-dynamic";
+
+export async function generateStaticParams() {
+  const posts = await getPublishedPosts();
+  return posts.map((p) => ({ main: p.mainCategory, slug: p.slug }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: { main: string; slug: string };
-}): Metadata {
-  const post = getPostBySlug(params.slug);
+}): Promise<Metadata> {
+  const post = await getPostBySlug(params.slug);
   if (!post) return {};
   return {
     title: post.title,
@@ -41,12 +47,12 @@ export function generateMetadata({
   };
 }
 
-export default function PostPage({
+export default async function PostPage({
   params,
 }: {
   params: { main: string; slug: string };
 }) {
-  const post = getPostBySlug(params.slug);
+  const post = await getPostBySlug(params.slug);
   if (!post || post.mainCategory !== params.main) notFound();
 
   const category = getCategory(post.mainCategory);
@@ -54,27 +60,34 @@ export default function PostPage({
     category?.subcategories.find((s) => s.slug === post.subCategory)?.name ??
     post.subCategory;
 
-  const blocks = post.content ?? [];
+  // The DB stores HTML; the legacy mock posts use ContentBlock[]. Render
+  // whichever is available — both produce the same `.post-prose` markup.
+  const html = (post as { contentHtml?: string }).contentHtml ?? "";
+  const blocks = (post as { content?: ContentBlock[] }).content ?? [];
 
-  // Build TOC from headings
-  const toc: TocItem[] = blocks
-    .filter(
-      (b): b is Extract<typeof blocks[number], { type: "heading" }> =>
+  // Build TOC from headings (works for both shapes).
+  let toc: TocItem[] = [];
+  if (html) {
+    toc = extractTocFromHtml(html);
+  } else if (blocks.length > 0) {
+    toc = blocks
+      .filter((b): b is Extract<ContentBlock, { type: "heading" }> =>
         b.type === "heading"
-    )
-    .map((h) => ({
-      id:
-        h.id ??
-        h.text
-          .toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, "")
-          .trim()
-          .replace(/\s+/g, "-"),
-      text: h.text,
-      level: h.level,
-    }));
+      )
+      .map((h) => ({
+        id:
+          h.id ??
+          h.text
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .trim()
+            .replace(/\s+/g, "-"),
+        text: h.text,
+        level: h.level,
+      }));
+  }
 
-  const related = getRelatedPosts(post, 3);
+  const related = await getRelatedPosts(post, 3);
 
   return (
     <article className="relative">
@@ -91,7 +104,6 @@ export default function PostPage({
             sizes="100vw"
             className="object-cover"
           />
-          {/* Top scrim for navbar contrast + bottom fade into parchment */}
           <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-parchment/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ink-950/10 to-parchment" />
           <div className="absolute inset-x-0 bottom-0 grain-overlay h-32" />
@@ -126,17 +138,6 @@ export default function PostPage({
             {post.excerpt}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-500">
-            {post.author && (
-              <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink-900 text-xs font-medium uppercase text-parchment">
-                  {post.author.name.charAt(0)}
-                </span>
-                <span className="text-ink-800">{post.author.name}</span>
-              </div>
-            )}
-            <span aria-hidden className="text-ink-300">
-              ·
-            </span>
             <time dateTime={post.createdAt}>{formatDate(post.createdAt)}</time>
             {post.readingMinutes && (
               <>
@@ -154,9 +155,12 @@ export default function PostPage({
       <div className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-8 lg:col-start-2">
-            <PostContent blocks={blocks} />
+            {html ? (
+              <PostBody html={html} />
+            ) : (
+              <PostContent blocks={blocks} />
+            )}
 
-            {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="mt-16 flex flex-wrap gap-2 border-t border-ink-900/10 pt-8">
                 {post.tags.map((tag) => (
@@ -167,28 +171,6 @@ export default function PostPage({
                     #{tag}
                   </span>
                 ))}
-              </div>
-            )}
-
-            {/* Author bio */}
-            {post.author?.bio && (
-              <div className="mt-12 rounded-2xl bg-white/60 p-6 ring-1 ring-ink-900/5 sm:p-8">
-                <div className="flex items-start gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-ink-900 text-sm font-medium uppercase text-parchment">
-                    {post.author.name.charAt(0)}
-                  </span>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.28em] text-sacred-600">
-                      Tentang penulis
-                    </p>
-                    <p className="serif-display mt-1 text-xl text-ink-900">
-                      {post.author.name}
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-ink-600">
-                      {post.author.bio}
-                    </p>
-                  </div>
-                </div>
               </div>
             )}
           </div>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CATEGORIES } from "@/lib/categories";
-import { getFeaturedPosts } from "@/lib/mock-data";
+import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 
@@ -12,8 +12,8 @@ function categoryName(slug: string) {
   return CATEGORIES.find((c) => c.slug === slug)?.name ?? "—";
 }
 
-export function FeaturedBento() {
-  const posts = getFeaturedPosts(5);
+export function FeaturedBento({ posts }: { posts: Post[] }) {
+  if (posts.length === 0) return null;
   const [hero, ...rest] = posts;
 
   return (

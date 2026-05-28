@@ -5,11 +5,11 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
-import { getPostsByCategory } from "@/lib/mock-data";
+import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-export function RuangTeologi() {
-  const posts = getPostsByCategory("ruang-teologi", 4);
+export function RuangTeologi({ posts }: { posts: Post[] }) {
+  if (posts.length === 0) return null;
 
   return (
     <section id="ruang-teologi" className="relative py-24 sm:py-32">

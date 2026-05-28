@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { PageTransition } from "@/components/motion/PageTransition";
 
 export const metadata: Metadata = {
   title: {
@@ -49,11 +46,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-parchment text-ink-900 antialiased">
-        <Navbar />
-        <PageTransition>
-          <main className="relative">{children}</main>
-        </PageTransition>
-        <Footer />
+        {children}
       </body>
     </html>
   );
