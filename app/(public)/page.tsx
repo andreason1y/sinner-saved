@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/Hero";
+import { BibleReadingCard } from "@/components/sections/BibleReadingCard";
 import { FeaturedBento } from "@/components/sections/FeaturedBento";
 import { RuangAlkitab } from "@/components/sections/RuangAlkitab";
 import { RuangTeologi } from "@/components/sections/RuangTeologi";
@@ -28,6 +29,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <BibleReadingCard />
       <FeaturedBento posts={featured} />
       <RuangAlkitab posts={alkitab} />
       <RuangTeologi posts={teologi} />

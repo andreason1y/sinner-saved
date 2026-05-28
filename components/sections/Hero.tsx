@@ -13,6 +13,11 @@ export function Hero() {
   });
   const { t, locale } = useLocale();
 
+  const dateLabel = new Date().toLocaleDateString(
+    locale === "en" ? "en-US" : "id-ID",
+    { weekday: "long", day: "numeric", month: "long", year: "numeric" }
+  );
+
   const titleY = useTransform(scrollYProgress, [0, 1], [0, -120]);
   const subY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const fade = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
@@ -43,7 +48,7 @@ export function Hero() {
         >
           <span className="pill dark:text-ink-100">
             <span className="h-1.5 w-1.5 rounded-full bg-sacred-500" />
-            {t.hero.issue}
+            {dateLabel}
           </span>
           <span className="hidden text-xs uppercase tracking-[0.32em] text-ink-500 dark:text-ink-400 sm:inline">
             {t.hero.tagline}

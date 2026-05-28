@@ -16,11 +16,18 @@ type Dict = {
     dark: string;
   };
   hero: {
-    issue: string;
     tagline: string;
     intro: string;
     cta: string;
     explore: string;
+  };
+  bibleReading: {
+    eyebrow: string;
+    ot: string;
+    nt: string;
+    dayOf: (day: number, total: number) => string;
+    readNow: string;
+    progress: string;
   };
   feature: {
     eyebrow: string;
@@ -111,7 +118,6 @@ const id: Dict = {
     dark: "Mode gelap",
   },
   hero: {
-    issue: "Issue 01 — Mei 2026",
     tagline: "Catatan iman seorang pendosa",
     intro:
       "SinnerSaved adalah tempat saya menulis pelan-pelan — tentang teks Alkitab, doktrin, budaya, dan catatan-catatan jujur seorang pendosa yang diselamatkan oleh kasih karunia.",
@@ -207,6 +213,14 @@ const id: Dict = {
     sectionContact: "Kontak",
     sectionAbout: "Tentang",
   },
+  bibleReading: {
+    eyebrow: "Bacaan Hari Ini",
+    ot: "PL",
+    nt: "PB",
+    dayOf: (d, t) => `Hari ke-${d} dari ${t}`,
+    readNow: "Baca sekarang →",
+    progress: "selesai",
+  },
 };
 
 const en: Dict = {
@@ -220,7 +234,6 @@ const en: Dict = {
     dark: "Dark mode",
   },
   hero: {
-    issue: "Issue 01 — May 2026",
     tagline: "Notes of a sinner saved by grace",
     intro:
       "SinnerSaved is a place where I write slowly — about Scripture, doctrine, culture, and the honest notes of a sinner saved by grace.",
@@ -316,6 +329,14 @@ const en: Dict = {
     glory: "Soli Deo Gloria.",
     sectionContact: "Contact",
     sectionAbout: "About",
+  },
+  bibleReading: {
+    eyebrow: "Today's Reading",
+    ot: "OT",
+    nt: "NT",
+    dayOf: (d, t) => `Day ${d} of ${t}`,
+    readNow: "Read now →",
+    progress: "complete",
   },
 };
 
