@@ -32,24 +32,23 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "SinnerSaved — Theological Journal & Biblical Literacy",
+    default: "SinnerSaved — Catatan Iman",
     template: "%s · SinnerSaved",
   },
   description:
-    "SinnerSaved adalah jurnal teologi independen — membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
+    "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
   keywords: [
-    "teologi",
     "alkitab",
-    "biblical literacy",
+    "iman",
+    "refleksi",
     "doktrin",
     "apologetika",
-    "refleksi",
     "SinnerSaved",
   ],
   openGraph: {
     title: "SinnerSaved",
     description:
-      "Jurnal teologi independen — membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
+      "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
     type: "website",
   },
 };
