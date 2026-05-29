@@ -67,10 +67,10 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                       {formatDate(hero.createdAt, locale)}
                     </span>
                   </div>
-                  <h3 className="serif-display mt-4 max-w-3xl text-3xl leading-tight text-ink-50 sm:text-5xl">
+                  <h3 className="serif-display mt-4 max-w-3xl text-3xl leading-tight text-ink-50 line-clamp-3 sm:text-4xl">
                     {hero.title}
                   </h3>
-                  <p className="mt-3 max-w-xl text-sm text-ink-200 sm:text-base">
+                  <p className="mt-3 max-w-xl text-sm text-ink-200 line-clamp-2 sm:text-base">
                     {hero.excerpt}
                   </p>
                   <div className="mt-6 inline-flex items-center gap-2 text-sm text-ink-100">
@@ -115,7 +115,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                       <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
                         {categoryName(post.mainCategory)}
                       </p>
-                      <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">
+                      <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 line-clamp-2 dark:text-ink-50">
                         {post.title}
                       </h3>
                       <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
