@@ -235,6 +235,7 @@ export function PostForm({
                 value="published"
                 defaultChecked={initial?.status === "published"}
                 label="Publish"
+                variant="publish"
               />
             </div>
           </SidebarBlock>
@@ -394,12 +395,18 @@ function RadioPill({
   value,
   defaultChecked,
   label,
+  variant = "default",
 }: {
   name: string;
   value: string;
   defaultChecked?: boolean;
   label: string;
+  variant?: "default" | "publish";
 }) {
+  const checkedClass =
+    variant === "publish"
+      ? "peer-checked:border-emerald-600 peer-checked:bg-emerald-600 peer-checked:text-white"
+      : "peer-checked:border-ink-900 peer-checked:bg-ink-900 peer-checked:text-parchment";
   return (
     <label className="cursor-pointer">
       <input
@@ -409,7 +416,9 @@ function RadioPill({
         defaultChecked={defaultChecked}
         className="peer sr-only"
       />
-      <span className="inline-flex items-center justify-center rounded-full border border-ink-900/15 bg-white px-3 py-1.5 text-xs text-ink-700 transition-colors peer-checked:border-ink-900 peer-checked:bg-ink-900 peer-checked:text-parchment">
+      <span
+        className={`inline-flex items-center justify-center rounded-full border border-ink-900/15 bg-white px-3 py-1.5 text-xs text-ink-700 transition-colors ${checkedClass}`}
+      >
         {label}
       </span>
     </label>
