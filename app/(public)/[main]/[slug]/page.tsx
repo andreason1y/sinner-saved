@@ -29,11 +29,10 @@ import {
   type Locale,
 } from "@/lib/i18n/dictionary";
 
-// Reading the locale cookie already opts this route into per-request
-// rendering — no need for `force-dynamic`. We still get the benefit of
-// React `cache()` deduping the Supabase call between `generateMetadata`
-// and the page body within the same request.
-export const revalidate = 300;
+// force-dynamic: this page reads the locale cookie per-request, so it
+// must be rendered dynamically. Combining revalidate + cookies() causes
+// "Dynamic server usage" 500 errors on Vercel for paths not pre-generated.
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const posts = await getPublishedPosts();
