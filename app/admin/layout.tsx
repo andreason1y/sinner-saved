@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { signOutAction } from "@/lib/actions/auth";
-import { LogOut, FilePlus, LayoutDashboard, ExternalLink } from "lucide-react";
+import { LogOut, FilePlus, LayoutDashboard, ExternalLink, BarChart2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +49,9 @@ export default async function AdminLayout({
               </NavLink>
               <NavLink href="/admin/posts/new" icon={<FilePlus size={14} />}>
                 Tulisan baru
+              </NavLink>
+              <NavLink href="/admin/stats" icon={<BarChart2 size={14} />}>
+                Statistik
               </NavLink>
               <NavLink href="/" icon={<ExternalLink size={14} />} external>
                 Lihat situs
