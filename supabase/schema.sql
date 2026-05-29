@@ -154,6 +154,25 @@ drop policy if exists "post_covers_admin_delete" on storage.objects;
 create policy "post_covers_admin_delete" on storage.objects
   for delete using (bucket_id = 'post-covers' and public.is_admin());
 
+-- 6) Page views table (analytics) --------------------------------------
+create table if not exists public.page_views (
+  id         uuid default gen_random_uuid() primary key,
+  path       text not null,
+  visitor_id text not null,
+  viewed_at  timestamptz default now() not null
+);
+
+create index if not exists page_views_viewed_at_idx on public.page_views (viewed_at desc);
+create index if not exists page_views_path_idx     on public.page_views (path, viewed_at desc);
+create index if not exists page_views_visitor_idx  on public.page_views (visitor_id, viewed_at desc);
+
+alter table public.page_views enable row level security;
+
+drop policy if exists "Admin reads page_views" on public.page_views;
+create policy "Admin reads page_views" on public.page_views
+  for select to authenticated
+  using (exists (select 1 from public.profiles where id = auth.uid() and role = 'admin'));
+
 -- ======================================================================
 -- Done. Next: run `npm run seed` to populate sample posts and create
 -- the admin user (default: admin@sinnersaved.com / sinnersaved123).
