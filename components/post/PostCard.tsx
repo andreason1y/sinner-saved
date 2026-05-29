@@ -88,7 +88,7 @@ export function PostCard({
             <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-300">
               {sub}
             </p>
-            <h3 className="serif-display mt-3 text-2xl leading-snug text-ink-50">
+            <h3 className="serif-display mt-3 line-clamp-3 text-2xl leading-snug text-ink-50">
               {post.title}
             </h3>
             <p className="mt-2 line-clamp-2 text-sm text-ink-300">
@@ -127,10 +127,10 @@ export function PostCard({
             <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-300">
               {sub} · {formatDate(post.createdAt, locale)}
             </p>
-            <h3 className="serif-display mt-3 max-w-2xl text-3xl leading-tight text-ink-50 sm:text-4xl">
+            <h3 className="serif-display mt-3 max-w-2xl line-clamp-3 text-3xl leading-tight text-ink-50 sm:text-4xl">
               {post.title}
             </h3>
-            <p className="mt-3 max-w-xl text-sm text-ink-200">{post.excerpt}</p>
+            <p className="mt-3 max-w-xl line-clamp-2 text-sm text-ink-200">{post.excerpt}</p>
           </div>
         </Link>
       </motion.article>
@@ -159,7 +159,7 @@ export function PostCard({
           <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
             {sub}
           </p>
-          <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">
+          <h3 className="serif-display mt-3 line-clamp-2 text-xl leading-snug text-ink-900 dark:text-ink-50">
             {post.title}
           </h3>
           <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
