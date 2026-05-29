@@ -68,4 +68,4 @@ export function useTheme() {
  * Inline script that runs before React hydrates — sets the dark class
  * based on saved preference / system preference. Prevents the flash.
  */
-export const NoFlashScript = `(function(){try{var k='${STORAGE_KEY}';var s=localStorage.getItem(k);var d=s?s==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
+export const NoFlashScript = `(function(){try{var k='${STORAGE_KEY}';var s=localStorage.getItem(k);var d=s==='dark';document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
