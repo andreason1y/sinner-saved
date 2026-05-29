@@ -1,16 +1,15 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
-import { ChevronLeft } from "lucide-react";
 import {
   getPostBySlug,
   getRelatedPosts,
   getPublishedPosts,
 } from "@/lib/posts";
 import { translatePostAction } from "@/lib/actions/translate";
-import { getCategory, localizeCategory } from "@/lib/categories";
+import { getCategory } from "@/lib/categories";
+import { PostCategoryBreadcrumb } from "@/components/post/PostCategoryBreadcrumb";
 import { formatDate } from "@/lib/utils";
 import { PostContent } from "@/components/post/PostContent";
 import { PostBody } from "@/components/post/PostBody";
@@ -74,11 +73,10 @@ export default async function PostPage({
       : DEFAULT_LOCALE;
   const t = DICTIONARIES[locale];
 
-  const rawCategory = getCategory(post.mainCategory);
-  const category = rawCategory ? localizeCategory(rawCategory, locale) : undefined;
-  const subName =
-    category?.subcategories.find((s) => s.slug === post.subCategory)?.name ??
-    post.subCategory;
+  const category = getCategory(post.mainCategory);
+  const rawSub = category?.subcategories.find((s) => s.slug === post.subCategory);
+  const subName = rawSub?.name ?? post.subCategory;
+  const subNameEn = rawSub?.nameEn ?? subName;
 
   const rawHtml = (post as { contentHtml?: string }).contentHtml ?? "";
   const blocks = (post as { content?: ContentBlock[] }).content ?? [];
@@ -162,16 +160,13 @@ export default async function PostPage({
               : ""
           }`}
         >
-          <Link
-            href={`/kategori/${post.mainCategory}`}
-            className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.28em] text-sacred-600 hover:text-sacred-700 dark:text-sacred-300 dark:hover:text-sacred-200"
-          >
-            <ChevronLeft size={12} />
-            {category?.name}
-          </Link>
-          <p className="mt-3 text-[10px] uppercase tracking-[0.32em] text-ink-500 dark:text-ink-400">
-            {subName}
-          </p>
+          <PostCategoryBreadcrumb
+            mainCategorySlug={post.mainCategory}
+            categoryName={category?.name ?? post.mainCategory}
+            categoryNameEn={category?.nameEn ?? category?.name ?? post.mainCategory}
+            subName={subName}
+            subNameEn={subNameEn}
+          />
           <h1 className="serif-display mt-4 text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-6xl">
             {displayTitle}
           </h1>
