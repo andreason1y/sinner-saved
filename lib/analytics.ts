@@ -18,6 +18,11 @@ export type DayStat = {
   views: number;
 };
 
+export type BreakdownStat = {
+  label: string;
+  views: number;
+};
+
 export async function getStatsOverview(): Promise<StatsOverview> {
   const admin = createSupabaseAdminClient();
 
@@ -67,6 +72,44 @@ export async function getPopularPaths(limit = 10): Promise<PathStat[]> {
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit)
     .map(([path, views]) => ({ path, views }));
+}
+
+// Generic "group a single text column and rank by count" helper, mirroring
+// the in-memory aggregation used by getPopularPaths. `fallback` labels rows
+// where the column is null/empty (e.g. "Direct" for missing referrers).
+async function getColumnBreakdown(
+  column: "referrer_host" | "device" | "country",
+  { limit, fallback }: { limit?: number; fallback?: string } = {}
+): Promise<BreakdownStat[]> {
+  const admin = createSupabaseAdminClient();
+  const { data } = await admin.from("page_views").select(column);
+  if (!data) return [];
+
+  const counts: Record<string, number> = {};
+  for (const row of data) {
+    const raw = (row as Record<string, string | null>)[column];
+    const label = raw && raw.trim() !== "" ? raw : fallback;
+    if (!label) continue;
+    counts[label] = (counts[label] ?? 0) + 1;
+  }
+
+  const ranked = Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([label, views]) => ({ label, views }));
+
+  return typeof limit === "number" ? ranked.slice(0, limit) : ranked;
+}
+
+export function getTopReferrers(limit = 8): Promise<BreakdownStat[]> {
+  return getColumnBreakdown("referrer_host", { limit, fallback: "Direct" });
+}
+
+export function getDeviceBreakdown(): Promise<BreakdownStat[]> {
+  return getColumnBreakdown("device", { fallback: "Tidak diketahui" });
+}
+
+export function getCountryBreakdown(limit = 8): Promise<BreakdownStat[]> {
+  return getColumnBreakdown("country", { limit, fallback: "Tidak diketahui" });
 }
 
 export async function getDailyViews(days = 14): Promise<DayStat[]> {

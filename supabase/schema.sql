@@ -155,16 +155,35 @@ create policy "post_covers_admin_delete" on storage.objects
   for delete using (bucket_id = 'post-covers' and public.is_admin());
 
 -- 6) Page views table (analytics) --------------------------------------
+-- referrer_host/device/browser/os/country are optional enrichment columns
+-- populated by /api/track from the request's referrer, user-agent and geo
+-- headers. Older rows (or visits we couldn't classify) leave them null.
 create table if not exists public.page_views (
-  id         uuid default gen_random_uuid() primary key,
-  path       text not null,
-  visitor_id text not null,
-  viewed_at  timestamptz default now() not null
+  id            uuid default gen_random_uuid() primary key,
+  path          text not null,
+  visitor_id    text not null,
+  referrer_host text,
+  device        text,
+  browser       text,
+  os            text,
+  country       text,
+  viewed_at     timestamptz default now() not null
 );
+
+-- For existing databases created before the enrichment columns existed.
+alter table public.page_views
+  add column if not exists referrer_host text,
+  add column if not exists device        text,
+  add column if not exists browser       text,
+  add column if not exists os            text,
+  add column if not exists country       text;
 
 create index if not exists page_views_viewed_at_idx on public.page_views (viewed_at desc);
 create index if not exists page_views_path_idx     on public.page_views (path, viewed_at desc);
 create index if not exists page_views_visitor_idx  on public.page_views (visitor_id, viewed_at desc);
+create index if not exists page_views_referrer_idx on public.page_views (referrer_host);
+create index if not exists page_views_device_idx   on public.page_views (device);
+create index if not exists page_views_country_idx  on public.page_views (country);
 
 alter table public.page_views enable row level security;
 
