@@ -83,6 +83,8 @@ type Dict = {
     seeAll: string;
     aboutAuthor: string;
     languageNote: string;
+    share: string;
+    linkCopied: string;
   };
   contact: {
     eyebrow: string;
@@ -189,6 +191,8 @@ const id: Dict = {
     aboutAuthor: "Tentang penulis",
     languageNote:
       "Tulisan ini dalam Bahasa Indonesia. Switch ke ID untuk navigasi yang sesuai.",
+    share: "Bagikan",
+    linkCopied: "Tautan disalin",
   },
   contact: {
     eyebrow: "Kontak",
@@ -311,6 +315,8 @@ const en: Dict = {
     aboutAuthor: "About the author",
     languageNote:
       "This piece is in Indonesian. Use the ID toggle for matching navigation.",
+    share: "Share",
+    linkCopied: "Link copied",
   },
   contact: {
     eyebrow: "Contact",

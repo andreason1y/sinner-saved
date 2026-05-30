@@ -15,6 +15,7 @@ import { formatDate } from "@/lib/utils";
 import { PostContent } from "@/components/post/PostContent";
 import { PostBody } from "@/components/post/PostBody";
 import { ReadingProgress } from "@/components/post/ReadingProgress";
+import { ShareButton } from "@/components/post/ShareButton";
 import {
   TableOfContents,
   type TocItem,
@@ -189,6 +190,14 @@ export default async function PostPage({
                 <span>{t.feature.readingTime(post.readingMinutes)}</span>
               </>
             )}
+            <span aria-hidden className="text-ink-300 dark:text-ink-600">
+              ·
+            </span>
+            <ShareButton
+              title={displayTitle}
+              label={t.post.share}
+              copiedLabel={t.post.linkCopied}
+            />
           </div>
         </div>
       </header>
