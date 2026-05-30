@@ -5,11 +5,12 @@ import Link from "next/link";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { SectionHeader } from "./SectionHeader";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, localizePost } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RuangAlkitab({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
+  const localizedPosts = posts.map((p) => localizePost(p, locale));
 
   return (
     <section
@@ -41,7 +42,7 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
               </Link>
             </div>
             <StaggerContainer className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post) => (
+              {localizedPosts.map((post) => (
                 <FadeInUp key={post.id}>
                   <Link
                     href={`/${post.mainCategory}/${post.slug}`}

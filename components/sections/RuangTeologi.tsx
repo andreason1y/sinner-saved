@@ -6,11 +6,12 @@ import { motion } from "framer-motion";
 import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, localizePost } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RuangTeologi({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
+  const localizedPosts = posts.map((p) => localizePost(p, locale));
 
   return (
     <section id="ruang-teologi" className="relative py-24 sm:py-32">
@@ -23,13 +24,13 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
           hrefLabel={t.feature.archive.replace(" →", "")}
         />
 
-        {posts.length === 0 ? (
+        {localizedPosts.length === 0 ? (
           <p className="mt-14 text-sm text-ink-500 dark:text-ink-400">
             {t.archive.emptyBody}
           </p>
         ) : (
         <StaggerContainer className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {posts.map((post, i) => (
+          {localizedPosts.map((post, i) => (
             <FadeInUp key={post.id}>
               <motion.div
                 whileHover={{ y: -6, scale: 1.012 }}

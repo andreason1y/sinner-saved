@@ -6,7 +6,7 @@ import { Quote } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, localizePost } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 type NoteCard = {
@@ -21,7 +21,9 @@ type NoteCard = {
 
 export function SinnersNote({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
-  const items: NoteCard[] = posts.slice(0, 4).map((p) => ({
+  const items: NoteCard[] = posts.slice(0, 4).map((raw) => {
+    const p = localizePost(raw, locale);
+    return {
     id: p.id,
     slug: p.slug,
     title: p.title,
@@ -29,7 +31,7 @@ export function SinnersNote({ posts }: { posts: Post[] }) {
     createdAt: p.createdAt,
     subCategory: p.subCategory,
     mainCategory: "sinners-note" as const,
-  }));
+  }; });
 
   return (
     <section id="sinners-note" className="relative py-24 sm:py-32">

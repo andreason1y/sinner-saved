@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { CATEGORIES } from "@/lib/categories";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, localizePost } from "@/lib/utils";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
@@ -16,7 +16,7 @@ function categoryName(slug: string) {
 export function FeaturedBento({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
   if (posts.length === 0) return null;
-  const [hero, ...rest] = posts;
+  const [hero, ...rest] = posts.map((p) => localizePost(p, locale));
 
   return (
     <section id="latest" className="relative py-24 sm:py-32">
