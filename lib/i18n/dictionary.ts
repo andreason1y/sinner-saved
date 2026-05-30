@@ -71,6 +71,9 @@ type Dict = {
     all: string;
     emptyTitle: string;
     emptyBody: string;
+    arsipTitle: string;
+    arsipIntro: string;
+    arsipLabel: (count: number) => string;
   };
   post: {
     toc: string;
@@ -172,6 +175,10 @@ const id: Dict = {
     emptyTitle: "Belum ada tulisan di sub-kategori ini.",
     emptyBody:
       "Saya menulis pelan-pelan — coba lagi dalam beberapa hari, atau jelajah sub-kategori lain di atas.",
+    arsipTitle: "Arsip Tulisan",
+    arsipIntro:
+      "Semua tulisan yang pernah saya terbitkan — dari tafsir teks Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
+    arsipLabel: (count) => `${count} tulisan`,
   },
   post: {
     toc: "Daftar isi",
@@ -290,6 +297,10 @@ const en: Dict = {
     emptyTitle: "No pieces in this sub-category yet.",
     emptyBody:
       "I write slowly — try again in a few days, or explore another sub-category above.",
+    arsipTitle: "Full Archive",
+    arsipIntro:
+      "Every piece I've published — Scripture studies, doctrine, cultural reflections, and personal notes.",
+    arsipLabel: (count) => `${count} ${count === 1 ? "piece" : "pieces"}`,
   },
   post: {
     toc: "Table of contents",
