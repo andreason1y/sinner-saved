@@ -1,4 +1,11 @@
-import { getStatsOverview, getPopularPaths, getDailyViews } from "@/lib/analytics";
+import {
+  getStatsOverview,
+  getPopularPaths,
+  getDailyViews,
+  getTopReferrers,
+  getDeviceBreakdown,
+  getCountryBreakdown,
+} from "@/lib/analytics";
 import { isSupabaseConfigured } from "@/lib/posts";
 
 export const dynamic = "force-dynamic";
@@ -14,11 +21,15 @@ export default async function StatsPage() {
     );
   }
 
-  const [overview, popular, daily] = await Promise.all([
-    getStatsOverview(),
-    getPopularPaths(10),
-    getDailyViews(14),
-  ]);
+  const [overview, popular, daily, referrers, devices, countries] =
+    await Promise.all([
+      getStatsOverview(),
+      getPopularPaths(10),
+      getDailyViews(14),
+      getTopReferrers(8),
+      getDeviceBreakdown(),
+      getCountryBreakdown(8),
+    ]);
 
   const maxDaily = Math.max(...daily.map((d) => d.views), 1);
 
@@ -119,6 +130,71 @@ export default async function StatsPage() {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Audience breakdowns */}
+      <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-3">
+        <BreakdownTable
+          title="Sumber Traffic"
+          heading="Sumber"
+          rows={referrers}
+        />
+        <BreakdownTable
+          title="Perangkat"
+          heading="Tipe"
+          rows={devices}
+        />
+        <BreakdownTable
+          title="Negara"
+          heading="Negara"
+          rows={countries}
+        />
+      </div>
+    </div>
+  );
+}
+
+function BreakdownTable({
+  title,
+  heading,
+  rows,
+}: {
+  title: string;
+  heading: string;
+  rows: { label: string; views: number }[];
+}) {
+  return (
+    <div>
+      <p className="text-xs uppercase tracking-[0.32em] text-ink-500">{title}</p>
+      <div className="mt-4 overflow-hidden rounded-2xl border border-ink-900/10 bg-white">
+        {rows.length === 0 ? (
+          <p className="px-6 py-8 text-center text-sm text-ink-400">
+            Belum ada data kunjungan.
+          </p>
+        ) : (
+          <table className="w-full text-sm">
+            <thead className="bg-parchment-deep/50 text-[10px] uppercase tracking-[0.2em] text-ink-500">
+              <tr>
+                <th className="px-5 py-3 text-left">{heading}</th>
+                <th className="px-5 py-3 text-right">Views</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-ink-900/5">
+              {rows.map(({ label, views }) => (
+                <tr key={label} className="hover:bg-parchment-deep/30">
+                  <td className="max-w-[200px] truncate px-5 py-3 text-ink-700">
+                    {label}
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <span className="serif-display text-base text-ink-900">
+                      {views}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
