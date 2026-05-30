@@ -68,7 +68,7 @@ export default async function AdminDashboardPage() {
         <p className="text-xs uppercase tracking-[0.32em] text-ink-500">
           Semua tulisan
         </p>
-        <div className="mt-4 overflow-hidden rounded-2xl border border-ink-900/10 bg-white">
+        <div className="mt-4 overflow-hidden rounded-2xl border border-ink-900/10">
           {posts.length === 0 ? (
             <div className="px-6 py-12 text-center text-sm text-ink-500">
               Belum ada tulisan.{" "}
@@ -80,6 +80,7 @@ export default async function AdminDashboardPage() {
               </Link>
             </div>
           ) : (
+            <div className="overflow-x-auto bg-white">
             <table className="w-full text-sm">
               <thead className="bg-parchment-deep/50 text-[10px] uppercase tracking-[0.2em] text-ink-500">
                 <tr>
@@ -134,6 +135,7 @@ export default async function AdminDashboardPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
       </div>
