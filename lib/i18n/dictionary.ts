@@ -148,9 +148,9 @@ const id: Dict = {
   },
   ruangTeologi: {
     eyebrow: "02 / Ruang Teologi",
-    title: "Berpikir dengan tertib di hadapan Allah.",
+    title: "Memahami iman dengan jernih dan rendah hati.",
     blurb:
-      "Bedah doktrin, apologetika, dan kritik yang sehat — supaya iman bukan sekadar perasaan, tapi keyakinan yang teruji.",
+      "Menggali doktrin, apologetika, dan pertanyaan iman — supaya kita makin mengenal Allah dan firman-Nya.",
   },
   ruangLensa: {
     eyebrow: "03 / Ruang Lensa",
@@ -211,7 +211,7 @@ const id: Dict = {
     tagline:
       "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
     builtWith: "Built with Next.js · Tailwind · Framer Motion · Supabase",
-    glory: "Soli Deo Gloria.",
+    glory: "Bagi kemuliaan Allah.",
     sectionContact: "Kontak",
     sectionAbout: "Tentang",
   },
@@ -265,9 +265,9 @@ const en: Dict = {
   },
   ruangTeologi: {
     eyebrow: "02 / Ruang Teologi",
-    title: "Thinking carefully before God.",
+    title: "Understanding faith with clarity and humility.",
     blurb:
-      "Doctrine, apologetics, and healthy criticism — so faith is not just feeling, but conviction that holds up.",
+      "Exploring doctrine, apologetics, and questions of faith — so we come to know God and his word more deeply.",
   },
   ruangLensa: {
     eyebrow: "03 / Ruang Lensa",
@@ -329,7 +329,7 @@ const en: Dict = {
     tagline:
       "Reading Scripture honestly, thinking carefully, living in grace.",
     builtWith: "Built with Next.js · Tailwind · Framer Motion · Supabase",
-    glory: "Soli Deo Gloria.",
+    glory: "For the glory of God.",
     sectionContact: "Contact",
     sectionAbout: "About",
   },

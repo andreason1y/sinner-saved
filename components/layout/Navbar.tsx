@@ -41,9 +41,7 @@ export function Navbar() {
           <span className="serif-display text-2xl tracking-tightest text-ink-900 dark:text-ink-50">
             Sinner<span className="italic text-sacred-500 dark:text-sacred-300">Saved</span>
           </span>
-          <span className="hidden text-[10px] uppercase tracking-[0.32em] text-ink-500 dark:text-ink-400 sm:inline">
-            {t.nav.establishment}
-          </span>
+
         </Link>
 
         {/* Desktop nav */}

@@ -132,13 +132,12 @@ export function Hero() {
             {Array.from({ length: 2 }).map((_, dup) => (
               <div key={dup} className="flex shrink-0 gap-12">
                 {[
-                  "Sola Scriptura",
-                  "Sola Fide",
-                  "Sola Gratia",
-                  "Solus Christus",
-                  "Soli Deo Gloria",
-                  "Coram Deo",
-                  "Ad Fontes",
+                  "Kristus mati untuk kita — Roma 5:8",
+                  "Diselamatkan oleh kasih karunia — Efesus 2:8",
+                  "Menyelamatkan orang berdosa — 1 Timotius 1:15",
+                  "Bagiku, hidup adalah Kristus — Filipi 1:21",
+                  "Kita hidup untuk Tuhan — Roma 14:8",
+                  "Untuk kemuliaan Allah — 1 Korintus 10:31",
                 ].map((s) => (
                   <span key={`${dup}-${s}`} className="flex items-center gap-12">
                     {s}

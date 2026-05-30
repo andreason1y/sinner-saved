@@ -78,7 +78,7 @@ const config: Config = {
         },
       },
       animation: {
-        marquee: "marquee 40s linear infinite",
+        marquee: "marquee 18s linear infinite",
         shimmer: "shimmer 6s linear infinite",
       },
     },

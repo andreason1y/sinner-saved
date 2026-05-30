@@ -22,18 +22,18 @@ export const CATEGORIES: MainCategory[] = [
   {
     slug: "ruang-teologi",
     name: "Ruang Teologi",
-    tagline: "Berpikir dengan tertib di hadapan Allah.",
+    tagline: "Memahami iman dengan jernih dan rendah hati.",
     blurb:
-      "Bedah doktrin, apologetika, dan kritik yang sehat — supaya iman bukan sekadar perasaan, tapi keyakinan yang teruji.",
+      "Menggali doktrin, apologetika, dan pertanyaan iman — supaya kita makin mengenal Allah dan firman-Nya.",
     nameEn: "Theology Room",
-    taglineEn: "Thinking carefully before God.",
+    taglineEn: "Understanding faith with clarity and humility.",
     blurbEn:
-      "Careful doctrine, apologetics, and healthy critique — so faith is not just feeling, but tested conviction.",
+      "Exploring doctrine, apologetics, and questions of faith — so we come to know God and his word more deeply.",
     subcategories: [
       { slug: "teologi", name: "Teologi", nameEn: "Theology" },
       { slug: "bedah-doktrin", name: "Bedah Doktrin", nameEn: "Doctrine Study" },
       { slug: "apologetics", name: "Apologetics", nameEn: "Apologetics" },
-      { slug: "kritik", name: "Kritik", nameEn: "Critique" },
+      { slug: "kritik", name: "Telaah", nameEn: "Review" },
     ],
   },
   {

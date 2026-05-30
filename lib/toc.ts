@@ -25,7 +25,18 @@ export function extractTocFromHtml(html: string): TocItem[] {
 }
 
 function stripTags(s: string): string {
-  return s.replace(/<[^>]*>/g, "");
+  return decodeEntities(s.replace(/<[^>]*>/g, ""));
+}
+
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&");
 }
 
 export function slugify(s: string): string {
