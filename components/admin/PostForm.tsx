@@ -221,15 +221,13 @@ export function PostForm({
             />
           </div>
 
-        </div>
-
-        {/* English translation — full-width below both columns */}
-        <input
-          type="hidden"
-          name="content_json_en"
-          value={JSON.stringify(contentJsonEn ?? {})}
-        />
-        <div className="lg:col-span-12 rounded-2xl border-2 border-dashed border-ink-900/15 p-6 space-y-5">
+          {/* English translation */}
+          <input
+            type="hidden"
+            name="content_json_en"
+            value={JSON.stringify(contentJsonEn ?? {})}
+          />
+          <div className="rounded-2xl border-2 border-dashed border-ink-900/15 p-6 space-y-5">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-ink-500">
               Versi Inggris <span className="normal-case text-ink-400">(opsional)</span>
@@ -271,7 +269,9 @@ export function PostForm({
               onUploadImage={editorImageUpload}
             />
           </div>
-        </div>
+          </div>{/* end EN section */}
+
+        </div>{/* end main column */}
 
         {/* Sidebar */}
         <aside className="space-y-6 lg:col-span-4">
