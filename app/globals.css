@@ -179,6 +179,12 @@ html.dark .pill {
  * Tiptap editor at admin save time. Mirrors the look of the
  * block-based <PostContent> renderer.
  * ============================================================ */
+.post-prose {
+  /* Never let a long word/URL (or pasted token) push the column wider than
+     its container — the root cause of horizontal page scroll on mobile. */
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
 .post-prose > * + * {
   margin-top: 1.5rem;
 }

@@ -130,7 +130,7 @@ export default async function PostPage({
   const related = await getRelatedPosts(post, 3);
 
   return (
-    <article className="relative">
+    <article className="relative overflow-x-clip">
       <ReadingProgress />
 
       {post.cover && (
@@ -171,10 +171,10 @@ export default async function PostPage({
           <p className="mt-3 text-[10px] uppercase tracking-[0.32em] text-ink-500 dark:text-ink-400">
             {subName}
           </p>
-          <h1 className="serif-display mt-4 text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-6xl">
+          <h1 className="serif-display mt-4 break-words text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-6xl">
             {displayTitle}
           </h1>
-          <p className="mt-6 text-lg leading-relaxed text-ink-600 dark:text-ink-300 sm:text-xl">
+          <p className="mt-6 break-words text-lg leading-relaxed text-ink-600 dark:text-ink-300 sm:text-xl">
             {displayExcerpt}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-500 dark:text-ink-400">
@@ -195,7 +195,7 @@ export default async function PostPage({
 
       <div className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-8 lg:col-start-2">
+          <div className="min-w-0 lg:col-span-8 lg:col-start-2">
             {locale === "en" && html && (
               <p className="mb-6 text-xs text-ink-400 dark:text-ink-500">
                 Translated by machine — original in Indonesian.
