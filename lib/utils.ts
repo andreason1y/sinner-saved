@@ -25,8 +25,8 @@ export function localizePost(post: Post, locale: Locale): Post {
   if (locale === "id") return post;
   return {
     ...post,
-    title: post.titleEn ?? post.title,
-    excerpt: post.excerptEn ?? post.excerpt,
+    title: post.titleEn || post.title,
+    excerpt: post.excerptEn || post.excerpt,
   };
 }
 

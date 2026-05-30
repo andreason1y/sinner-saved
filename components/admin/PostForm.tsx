@@ -34,6 +34,9 @@ type InitialPost = {
   tags?: string[];
   status?: "draft" | "published";
   contentJson?: unknown;
+  titleEn?: string;
+  excerptEn?: string;
+  contentHtmlEn?: string;
 };
 
 export function PostForm({
@@ -52,6 +55,12 @@ export function PostForm({
   // Editor outputs HTML too — we don't need to send it, server re-renders
   // from the JSON, but we keep it here for potential live previews.
   const [, setContentHtml] = useState("");
+  // Optional English translation. The body editor is seeded from the cached
+  // HTML; on change we send its JSON so the server can re-render clean HTML.
+  const [contentJsonEn, setContentJsonEn] = useState<unknown>(null);
+  const [showEn, setShowEn] = useState(
+    Boolean(initial?.titleEn || initial?.excerptEn || initial?.contentHtmlEn)
+  );
   const [cover, setCover] = useState(initial?.cover ?? "");
   const [uploading, setUploading] = useState(false);
   const [main, setMain] = useState(
@@ -217,6 +226,66 @@ export function PostForm({
               }}
               onUploadImage={editorImageUpload}
             />
+          </div>
+
+          {/* English translation (optional) */}
+          <input
+            type="hidden"
+            name="content_json_en"
+            value={JSON.stringify(contentJsonEn ?? {})}
+          />
+          <div className="rounded-2xl border border-ink-900/10 bg-parchment-deep/20 p-5">
+            <button
+              type="button"
+              onClick={() => setShowEn((v) => !v)}
+              className="flex w-full items-center justify-between text-left"
+            >
+              <span className="text-xs uppercase tracking-[0.28em] text-ink-600">
+                Versi Inggris (opsional)
+              </span>
+              <span className="text-xs text-ink-400">
+                {showEn ? "Sembunyikan" : "Tampilkan"}
+              </span>
+            </button>
+            <p className="mt-1.5 text-[11px] text-ink-400">
+              Isi untuk menampilkan terjemahan saat pembaca memilih EN. Dikosongkan =
+              fallback ke bahasa Indonesia / terjemahan otomatis.
+            </p>
+
+            {showEn && (
+              <div className="mt-5 space-y-5">
+                <Field label="Judul (EN)" name="title_en">
+                  <input
+                    name="title_en"
+                    defaultValue={initial?.titleEn}
+                    placeholder="English title…"
+                    className="serif-display w-full bg-transparent px-1 py-1 text-2xl tracking-tightest text-ink-900 outline-none placeholder:text-ink-300"
+                  />
+                </Field>
+
+                <Field label="Excerpt (EN)" name="excerpt_en">
+                  <textarea
+                    name="excerpt_en"
+                    defaultValue={initial?.excerptEn}
+                    placeholder="English summary shown on cards and archive."
+                    rows={2}
+                    className="w-full rounded-xl border border-ink-900/10 bg-white px-4 py-3 text-sm text-ink-800 outline-none focus:border-ink-900"
+                  />
+                </Field>
+
+                <div>
+                  <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ink-500">
+                    Konten (EN)
+                  </p>
+                  <PostEditor
+                    initialJson={initial?.contentHtmlEn || undefined}
+                    placeholder="Write the English version…"
+                    onChange={(json) => setContentJsonEn(json)}
+                    onUploadImage={editorImageUpload}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

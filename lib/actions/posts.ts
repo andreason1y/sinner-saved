@@ -50,6 +50,20 @@ function parseFormData(formData: FormData) {
       contentJson = {};
     }
   }
+
+  // Optional English translation.
+  const titleEn = String(formData.get("title_en") ?? "").trim();
+  const excerptEn = String(formData.get("excerpt_en") ?? "").trim();
+  let contentJsonEn: unknown = {};
+  const contentEnRaw = String(formData.get("content_json_en") ?? "");
+  if (contentEnRaw) {
+    try {
+      contentJsonEn = JSON.parse(contentEnRaw);
+    } catch {
+      contentJsonEn = {};
+    }
+  }
+
   return {
     title,
     slug,
@@ -60,6 +74,28 @@ function parseFormData(formData: FormData) {
     tags,
     status,
     contentJson,
+    titleEn,
+    excerptEn,
+    contentJsonEn,
+  };
+}
+
+/**
+ * Builds the English translation columns. When no English title is provided
+ * we store nulls so the reader falls back to Indonesian / auto-translation.
+ */
+function buildEnglishColumns(parsed: {
+  titleEn: string;
+  excerptEn: string;
+  contentJsonEn: unknown;
+}) {
+  if (!parsed.titleEn) {
+    return { title_en: null, excerpt_en: null, content_html_en: null };
+  }
+  return {
+    title_en: parsed.titleEn,
+    excerpt_en: parsed.excerptEn || null,
+    content_html_en: renderTiptapToHtml(parsed.contentJsonEn) || null,
   };
 }
 
@@ -95,6 +131,7 @@ export async function createPostAction(
         status: parsed.status,
         reading_minutes,
         author_id: user.id,
+        ...buildEnglishColumns(parsed),
       })
       .select("id")
       .single();
@@ -139,6 +176,7 @@ export async function updatePostAction(
         tags: parsed.tags,
         status: parsed.status,
         reading_minutes,
+        ...buildEnglishColumns(parsed),
       })
       .eq("id", id);
 

@@ -31,6 +31,9 @@ export default async function EditPostPage({
           tags: post.tags,
           status: post.status,
           contentJson: post.contentJson,
+          titleEn: post.titleEn ?? "",
+          excerptEn: post.excerptEn ?? "",
+          contentHtmlEn: post.contentHtmlEn ?? "",
         }}
       />
     </div>

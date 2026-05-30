@@ -22,19 +22,21 @@ import { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  /** Initial Tiptap JSON document. Optional. */
+  /** Initial Tiptap JSON document — or an HTML string. Optional. */
   initialJson?: unknown;
   /** Called whenever the document changes (debounced upstream if needed). */
   onChange: (json: unknown, html: string) => void;
   /** Image upload — receives a File, returns a public URL. */
   onUploadImage?: (file: File) => Promise<string>;
+  /** Editor placeholder text. */
+  placeholder?: string;
 };
 
-export function PostEditor({ initialJson, onChange, onUploadImage }: Props) {
+export function PostEditor({ initialJson, onChange, onUploadImage, placeholder }: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const editor = useEditor({
-    extensions: buildExtensions("Mulai menulis tulisan Anda…"),
+    extensions: buildExtensions(placeholder ?? "Mulai menulis tulisan Anda…"),
     content: (initialJson as never) ?? undefined,
     immediatelyRender: false,
     editorProps: {

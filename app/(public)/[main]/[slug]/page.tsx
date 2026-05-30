@@ -88,10 +88,13 @@ export default async function PostPage({
   let html = rawHtml;
 
   if (locale === "en") {
-    if (post.titleEn && post.excerptEn && post.contentHtmlEn) {
+    if (post.titleEn) {
+      // Manual translation present — use it and skip auto-translation so the
+      // admin's wording is never overwritten. Body/excerpt fall back to the
+      // Indonesian original when their English counterpart is left empty.
       displayTitle = post.titleEn;
-      displayExcerpt = post.excerptEn;
-      html = post.contentHtmlEn;
+      displayExcerpt = post.excerptEn || post.excerpt;
+      html = post.contentHtmlEn || rawHtml;
     } else if (rawHtml) {
       const translated = await translatePostAction(post.id, {
         title: post.title,
