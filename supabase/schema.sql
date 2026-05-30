@@ -61,12 +61,21 @@ create table if not exists public.posts (
   sub_category text not null,
   tags text[] not null default '{}',
   status text not null default 'draft' check (status in ('draft', 'published')),
+  title_en        text,
+  excerpt_en      text,
+  content_html_en text,
   reading_minutes int,
   author_id uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   published_at timestamptz
 );
+
+-- For databases created before EN columns were added.
+alter table public.posts
+  add column if not exists title_en        text,
+  add column if not exists excerpt_en      text,
+  add column if not exists content_html_en text;
 
 create index if not exists posts_status_published_at_idx
   on public.posts (status, published_at desc nulls last);

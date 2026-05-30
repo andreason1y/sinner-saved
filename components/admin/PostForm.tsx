@@ -10,7 +10,8 @@ import {
   deletePostAction,
   uploadCoverImageAction,
 } from "@/lib/actions/posts";
-import { generateTagsAction, suggestSubcategoryAction } from "@/lib/actions/ai";
+import { generateTagsAction, suggestSubcategoryAction, suggestMainCategoryAction } from "@/lib/actions/ai";
+import { getTranslationsAction } from "@/lib/actions/translate";
 import { CATEGORIES } from "@/lib/categories";
 import { PostEditor } from "./Editor";
 import {
@@ -22,6 +23,7 @@ import {
   CheckCircle2,
   ImageUp,
   Sparkles,
+  Languages,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -36,6 +38,10 @@ type InitialPost = {
   tags?: string[];
   status?: "draft" | "published";
   contentJson?: unknown;
+  contentHtml?: string;
+  titleEn?: string;
+  excerptEn?: string;
+  contentHtmlEn?: string;
 };
 
 export function PostForm({
@@ -51,9 +57,14 @@ export function PostForm({
   const [contentJson, setContentJson] = useState<unknown>(
     initial?.contentJson ?? null
   );
-  // Editor outputs HTML too — we don't need to send it, server re-renders
-  // from the JSON, but we keep it here for potential live previews.
-  const [, setContentHtml] = useState("");
+  const [contentHtml, setContentHtml] = useState(initial?.contentHtml ?? "");
+
+  // Language toggle: "id" = edit Indonesian content, "en" = view/edit EN translation
+  const [lang, setLang] = useState<"id" | "en">("id");
+  const [titleEn, setTitleEn] = useState(initial?.titleEn ?? "");
+  const [excerptEn, setExcerptEn] = useState(initial?.excerptEn ?? "");
+  const [contentHtmlEn, setContentHtmlEn] = useState(initial?.contentHtmlEn ?? "");
+  const [translating, setTranslating] = useState(false);
   const [cover, setCover] = useState(initial?.cover ?? "");
   const [uploading, setUploading] = useState(false);
   const [main, setMain] = useState(
@@ -74,6 +85,7 @@ export function PostForm({
   const [tags, setTags] = useState(initial?.tags?.join(", ") ?? "");
   const [generatingTags, setGeneratingTags] = useState(false);
   const [suggestingSub, setSuggestingSub] = useState(false);
+  const [suggestingMain, setSuggestingMain] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const excerptRef = useRef<HTMLTextAreaElement>(null);
@@ -89,6 +101,46 @@ export function PostForm({
       else if (res.error) window.alert(res.error);
     } finally {
       setGeneratingTags(false);
+    }
+  };
+
+  const handleSuggestMain = async () => {
+    const title = titleRef.current?.value ?? "";
+    const excerpt = excerptRef.current?.value ?? "";
+    if (!title) return;
+    setSuggestingMain(true);
+    try {
+      const res = await suggestMainCategoryAction(title, excerpt);
+      if (res.slug) {
+        setMain(res.slug);
+        const firstSub =
+          CATEGORIES.find((c) => c.slug === res.slug)?.subcategories[0]?.slug ?? "";
+        setSub(firstSub);
+      } else if (res.error) window.alert(res.error);
+    } finally {
+      setSuggestingMain(false);
+    }
+  };
+
+  const handleTranslate = async () => {
+    const title = titleRef.current?.value ?? "";
+    const excerpt = excerptRef.current?.value ?? "";
+    if (!title) {
+      window.alert("Isi judul terlebih dahulu sebelum menerjemahkan.");
+      return;
+    }
+    setTranslating(true);
+    try {
+      const res = await getTranslationsAction(title, excerpt, contentHtml);
+      if (res) {
+        setTitleEn(res.titleEn);
+        setExcerptEn(res.excerptEn);
+        setContentHtmlEn(res.contentHtmlEn);
+      } else {
+        window.alert("Terjemahan gagal. Coba lagi.");
+      }
+    } finally {
+      setTranslating(false);
     }
   };
 
@@ -221,45 +273,143 @@ export function PostForm({
         </p>
       )}
 
+      {/* EN hidden inputs — always submitted so server always receives latest EN values */}
+      <input type="hidden" name="title_en" value={titleEn} />
+      <input type="hidden" name="excerpt_en" value={excerptEn} />
+      <input type="hidden" name="content_html_en" value={contentHtmlEn} />
+
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
         {/* Main column */}
         <div className="lg:col-span-8 space-y-6">
           <input type="hidden" name="content_json" value={JSON.stringify(contentJson ?? {})} />
 
-          <Field label="Judul" name="title" required>
-            <input
-              ref={titleRef}
-              name="title"
-              defaultValue={initial?.title}
-              placeholder="Mis. Apa arti charis dalam Efesus 2:8?"
-              required
-              className="serif-display w-full bg-transparent px-1 py-2 text-3xl tracking-tightest text-ink-900 outline-none placeholder:text-ink-300 sm:text-4xl"
-            />
-          </Field>
+          {/* Language tab toggle */}
+          <div className="flex items-center gap-1 rounded-xl border border-ink-900/10 bg-white p-1 w-fit">
+            <button
+              type="button"
+              onClick={() => setLang("id")}
+              className={cn(
+                "rounded-lg px-4 py-1.5 text-xs font-medium transition-colors",
+                lang === "id"
+                  ? "bg-ink-900 text-parchment"
+                  : "text-ink-500 hover:text-ink-900"
+              )}
+            >
+              🇮🇩 Indonesia
+            </button>
+            <button
+              type="button"
+              onClick={() => setLang("en")}
+              className={cn(
+                "rounded-lg px-4 py-1.5 text-xs font-medium transition-colors",
+                lang === "en"
+                  ? "bg-ink-900 text-parchment"
+                  : "text-ink-500 hover:text-ink-900"
+              )}
+            >
+              🇬🇧 English
+            </button>
+          </div>
 
-          <Field label="Excerpt" name="excerpt">
-            <textarea
-              ref={excerptRef}
-              name="excerpt"
-              defaultValue={initial?.excerpt}
-              placeholder="Ringkasan 1–2 kalimat yang muncul di kartu dan halaman arsip."
-              rows={2}
-              className="w-full rounded-xl border border-ink-900/10 bg-white px-4 py-3 text-sm text-ink-800 outline-none focus:border-ink-900"
-            />
-          </Field>
+          {/* ── Indonesian content ── */}
+          <div className={lang === "en" ? "hidden" : "space-y-6"}>
+            <Field label="Judul" name="title" required>
+              <input
+                ref={titleRef}
+                name="title"
+                defaultValue={initial?.title}
+                placeholder="Mis. Apa arti charis dalam Efesus 2:8?"
+                required
+                className="serif-display w-full bg-transparent px-1 py-2 text-3xl tracking-tightest text-ink-900 outline-none placeholder:text-ink-300 sm:text-4xl"
+              />
+            </Field>
 
-          <div>
-            <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ink-500">
-              Konten
-            </p>
-            <PostEditor
-              initialJson={initial?.contentJson}
-              onChange={(json, html) => {
-                setContentJson(json);
-                setContentHtml(html);
-              }}
-              onUploadImage={editorImageUpload}
-            />
+            <Field label="Excerpt" name="excerpt">
+              <textarea
+                ref={excerptRef}
+                name="excerpt"
+                defaultValue={initial?.excerpt}
+                placeholder="Ringkasan 1–2 kalimat yang muncul di kartu dan halaman arsip."
+                rows={2}
+                className="w-full rounded-xl border border-ink-900/10 bg-white px-4 py-3 text-sm text-ink-800 outline-none focus:border-ink-900"
+              />
+            </Field>
+
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ink-500">Konten</p>
+              <PostEditor
+                initialJson={initial?.contentJson}
+                onChange={(json, html) => {
+                  setContentJson(json);
+                  setContentHtml(html);
+                }}
+                onUploadImage={editorImageUpload}
+              />
+            </div>
+          </div>
+
+          {/* ── English content ── */}
+          <div className={lang === "id" ? "hidden" : "space-y-6"}>
+            {/* Translate button */}
+            <div className="flex items-center justify-between rounded-xl border border-ink-900/10 bg-white px-4 py-3">
+              <div className="flex items-center gap-2 text-sm text-ink-600">
+                <Languages size={15} className="text-ink-400" />
+                <span>Terjemahan otomatis dari konten Indonesia</span>
+              </div>
+              <button
+                type="button"
+                onClick={handleTranslate}
+                disabled={translating}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment transition-colors hover:bg-ink-800 disabled:opacity-60"
+              >
+                {translating ? (
+                  <Loader2 size={12} className="animate-spin" />
+                ) : (
+                  <Sparkles size={12} />
+                )}
+                {translating ? "Menerjemahkan…" : "Terjemahkan Otomatis"}
+              </button>
+            </div>
+
+            <Field label="Title (English)" name="title_en_visible">
+              <input
+                value={titleEn}
+                onChange={(e) => setTitleEn(e.target.value)}
+                placeholder="English title…"
+                className="serif-display w-full bg-transparent px-1 py-2 text-3xl tracking-tightest text-ink-900 outline-none placeholder:text-ink-300 sm:text-4xl"
+              />
+            </Field>
+
+            <Field label="Excerpt (English)" name="excerpt_en_visible">
+              <textarea
+                value={excerptEn}
+                onChange={(e) => setExcerptEn(e.target.value)}
+                placeholder="1–2 sentence summary in English…"
+                rows={2}
+                className="w-full rounded-xl border border-ink-900/10 bg-white px-4 py-3 text-sm text-ink-800 outline-none focus:border-ink-900"
+              />
+            </Field>
+
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ink-500">
+                Content (English)
+              </p>
+              {contentHtmlEn ? (
+                <div className="overflow-hidden rounded-2xl border border-ink-900/10 bg-white">
+                  <div className="border-b border-ink-900/5 bg-parchment-deep/30 px-4 py-2 text-[11px] text-ink-400">
+                    Preview — terjemahan otomatis · edit judul &amp; excerpt di atas bila perlu
+                  </div>
+                  <div
+                    className="post-prose max-w-none px-6 py-6 sm:px-10"
+                    dangerouslySetInnerHTML={{ __html: contentHtmlEn }}
+                  />
+                </div>
+              ) : (
+                <div className="flex min-h-[180px] items-center justify-center rounded-2xl border border-dashed border-ink-900/10 bg-white text-sm text-ink-400">
+                  Klik &ldquo;Terjemahkan Otomatis&rdquo; untuk mengisi konten English.
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -350,25 +500,40 @@ export function PostForm({
           </SidebarBlock>
 
           <SidebarBlock label="Kategori utama">
-            <select
-              name="main_category"
-              value={main}
-              onChange={(e) => {
-                const newMain = e.target.value;
-                setMain(newMain);
-                const firstSub =
-                  CATEGORIES.find((c) => c.slug === newMain)
-                    ?.subcategories[0]?.slug ?? "";
-                setSub(firstSub);
-              }}
-              className="w-full rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-xs text-ink-800 outline-none focus:border-ink-900"
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c.slug} value={c.slug}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-2">
+              <select
+                name="main_category"
+                value={main}
+                onChange={(e) => {
+                  const newMain = e.target.value;
+                  setMain(newMain);
+                  const firstSub =
+                    CATEGORIES.find((c) => c.slug === newMain)
+                      ?.subcategories[0]?.slug ?? "";
+                  setSub(firstSub);
+                }}
+                className="flex-1 rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-xs text-ink-800 outline-none focus:border-ink-900"
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c.slug} value={c.slug}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleSuggestMain}
+                disabled={suggestingMain}
+                title="Suggest kategori dengan AI"
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-ink-900/10 bg-white text-ink-500 transition-colors hover:border-sacred-400 hover:text-sacred-600 disabled:opacity-50"
+              >
+                {suggestingMain ? (
+                  <Loader2 size={13} className="animate-spin" />
+                ) : (
+                  <Sparkles size={13} />
+                )}
+              </button>
+            </div>
           </SidebarBlock>
 
           <SidebarBlock label="Sub-kategori">

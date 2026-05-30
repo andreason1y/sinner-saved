@@ -15,6 +15,29 @@ async function translateText(text: string): Promise<string> {
   return result.text;
 }
 
+/**
+ * Translates title, excerpt and HTML body without touching the database.
+ * Safe to call for unsaved (new) posts or when you only need the values
+ * in memory (e.g. to show a preview before saving).
+ */
+export async function getTranslationsAction(
+  title: string,
+  excerpt: string,
+  contentHtml: string
+): Promise<TranslateResult | null> {
+  try {
+    const [titleEn, excerptEn, contentHtmlEn] = await Promise.all([
+      title ? translateText(title) : Promise.resolve(""),
+      excerpt ? translateText(excerpt) : Promise.resolve(""),
+      contentHtml ? translateText(contentHtml) : Promise.resolve(""),
+    ]);
+    return { titleEn, excerptEn, contentHtmlEn };
+  } catch (e) {
+    console.warn("[translate] failed:", (e as Error).message);
+    return null;
+  }
+}
+
 export async function translatePostAction(
   postId: string,
   fields: { title: string; excerpt: string; contentHtml: string }
