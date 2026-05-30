@@ -3,14 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { CATEGORIES } from "@/lib/categories";
+import { CATEGORIES, localizeCategory } from "@/lib/categories";
 import type { Post } from "@/lib/types";
 import { formatDate, localizePost } from "@/lib/utils";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
-function categoryName(slug: string) {
-  return CATEGORIES.find((c) => c.slug === slug)?.name ?? "—";
+function categoryName(slug: string, locale: string) {
+  const cat = CATEGORIES.find((c) => c.slug === slug);
+  return cat ? localizeCategory(cat, locale).name : "—";
 }
 
 export function FeaturedBento({ posts }: { posts: Post[] }) {
@@ -61,7 +62,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
 
                 <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
                   <div className="flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-sacred-300">
-                    <span>{categoryName(hero.mainCategory)}</span>
+                    <span>{categoryName(hero.mainCategory, locale)}</span>
                     <span className="opacity-50">·</span>
                     <span className="text-ink-200">
                       {formatDate(hero.createdAt, locale)}
@@ -113,7 +114,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                   >
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
-                        {categoryName(post.mainCategory)}
+                        {categoryName(post.mainCategory, locale)}
                       </p>
                       <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 line-clamp-2 dark:text-ink-50">
                         {post.title}
