@@ -192,25 +192,6 @@ export function PostForm({
         setContentHtml(res.contentHtml ?? "");
         setImportVersion((v) => v + 1);
       }
-
-      // Sekalian generate terjemahan English dari hasil impor.
-      if (res.title) {
-        setTranslating(true);
-        try {
-          const tr = await getTranslationsAction(
-            res.title,
-            res.excerpt ?? "",
-            res.contentHtml ?? ""
-          );
-          if (tr) {
-            setTitleEn(tr.titleEn);
-            setExcerptEn(tr.excerptEn);
-            setContentHtmlEn(tr.contentHtmlEn);
-          }
-        } finally {
-          setTranslating(false);
-        }
-      }
     } finally {
       setImporting(false);
     }

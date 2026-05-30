@@ -14,7 +14,11 @@ import { requireAdmin } from "@/lib/actions/posts";
 // User-selected model: GPT OSS 120B served via Groq.
 const MODEL = "openai/gpt-oss-120b";
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-const MAX_TEXT = 60_000; // cap characters sent to the model
+// Groq free tier caps this model at 8000 tokens/minute (input + output
+// combined). ~12k chars of input ≈ 3k tokens; with the prompt scaffold and
+// MAX_OUTPUT below we stay safely under the limit.
+const MAX_TEXT = 12_000; // cap characters sent to the model
+const MAX_OUTPUT = 3500; // reserved output tokens
 
 const DOCX_TYPE =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -117,7 +121,7 @@ ${rawText.slice(0, MAX_TEXT)}
       model: MODEL,
       messages: [{ role: "user", content: prompt }],
       temperature: 0.3,
-      max_tokens: 8000,
+      max_tokens: MAX_OUTPUT,
       response_format: { type: "json_object" },
     });
 
@@ -175,6 +179,13 @@ ${rawText.slice(0, MAX_TEXT)}
     };
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Gagal memproses dokumen dengan AI.";
+    // Groq free-tier token-per-minute limit.
+    if (/rate_limit|too large|tokens per minute|TPM|413/i.test(msg)) {
+      return {
+        error:
+          "Dokumen terlalu panjang untuk kuota AI saat ini. Coba dokumen yang lebih pendek, atau tunggu ±1 menit lalu coba lagi.",
+      };
+    }
     return { error: msg };
   }
 }
