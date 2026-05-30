@@ -59,6 +59,45 @@ Contoh: ["charis", "kasih karunia", "efesus", "soteriologi", "paulus"]`;
   }
 }
 
+/* ── Suggest Main Category ──────────────────────────────────────────── */
+
+export async function suggestMainCategoryAction(
+  title: string,
+  excerpt: string
+): Promise<{ slug?: string; error?: string }> {
+  try {
+    const client = getClient();
+    const catList = CATEGORIES.map((c) => `- ${c.slug}: ${c.name}`).join("\n");
+
+    const prompt = `Kamu adalah asisten editor untuk blog Kristen bernama SinnerSaved.
+Berdasarkan judul dan ringkasan artikel berikut, pilih kategori utama yang paling sesuai.
+
+Kategori yang tersedia:
+${catList}
+
+Judul: ${title}
+Ringkasan: ${excerpt}
+
+Balas HANYA dengan slug kategori yang dipilih, tanpa penjelasan lain.
+Contoh: ruang-alkitab`;
+
+    const res = await client.chat.completions.create({
+      model: MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.2,
+      max_tokens: 20,
+    });
+
+    const raw = res.choices[0]?.message?.content?.trim().toLowerCase() ?? "";
+    const match = CATEGORIES.find((c) => raw.includes(c.slug));
+    if (!match) return { error: "AI tidak dapat menentukan kategori." };
+    return { slug: match.slug };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Gagal suggest kategori.";
+    return { error: msg };
+  }
+}
+
 /* ── Suggest Sub-category ───────────────────────────────────────────── */
 
 export async function suggestSubcategoryAction(

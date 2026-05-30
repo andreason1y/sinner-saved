@@ -50,6 +50,11 @@ function parseFormData(formData: FormData) {
       contentJson = {};
     }
   }
+
+  const title_en = String(formData.get("title_en") ?? "").trim() || null;
+  const excerpt_en = String(formData.get("excerpt_en") ?? "").trim() || null;
+  const content_html_en = String(formData.get("content_html_en") ?? "").trim() || null;
+
   return {
     title,
     slug,
@@ -60,6 +65,9 @@ function parseFormData(formData: FormData) {
     tags,
     status,
     contentJson,
+    title_en,
+    excerpt_en,
+    content_html_en,
   };
 }
 
@@ -95,6 +103,9 @@ export async function createPostAction(
         status: parsed.status,
         reading_minutes,
         author_id: user.id,
+        title_en: parsed.title_en,
+        excerpt_en: parsed.excerpt_en,
+        content_html_en: parsed.content_html_en,
       })
       .select("id")
       .single();
@@ -139,6 +150,9 @@ export async function updatePostAction(
         tags: parsed.tags,
         status: parsed.status,
         reading_minutes,
+        title_en: parsed.title_en,
+        excerpt_en: parsed.excerpt_en,
+        content_html_en: parsed.content_html_en,
       })
       .eq("id", id);
 
