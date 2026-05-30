@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   DICTIONARIES,
   DEFAULT_LOCALE,
@@ -39,7 +38,6 @@ export function LocaleProvider({
   initialLocale?: Locale;
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
   // Hydrate from storage / cookie if it disagrees with initial.
@@ -72,9 +70,7 @@ export function LocaleProvider({
     writeCookieLocale(next);
     document.documentElement.lang = next;
     setLocaleState(next);
-    // Re-render server components (article body, date labels) with new locale.
-    router.refresh();
-  }, [router]);
+  }, []);
 
   return (
     <LocaleContext.Provider
