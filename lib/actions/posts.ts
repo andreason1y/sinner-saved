@@ -9,7 +9,7 @@ import { slugify } from "@/lib/toc";
 
 type PostFormState = { error?: string; ok?: boolean; id?: string };
 
-async function requireAdmin() {
+export async function requireAdmin() {
   const supabase = createSupabaseServerClient();
   const {
     data: { user },

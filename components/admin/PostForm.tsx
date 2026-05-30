@@ -11,6 +11,7 @@ import {
   uploadCoverImageAction,
 } from "@/lib/actions/posts";
 import { generateTagsAction, suggestSubcategoryAction, suggestMainCategoryAction } from "@/lib/actions/ai";
+import { importDocumentAction } from "@/lib/actions/import-doc";
 import { getTranslationsAction } from "@/lib/actions/translate";
 import { CATEGORIES } from "@/lib/categories";
 import { PostEditor } from "./Editor";
@@ -24,6 +25,7 @@ import {
   ImageUp,
   Sparkles,
   Languages,
+  FileUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -58,6 +60,9 @@ export function PostForm({
     initial?.contentJson ?? null
   );
   const [contentHtml, setContentHtml] = useState(initial?.contentHtml ?? "");
+  // Bumped after an AI import to force the editor to remount with new content.
+  const [importVersion, setImportVersion] = useState(0);
+  const [importing, setImporting] = useState(false);
 
   // Language toggle: "id" = edit Indonesian content, "en" = view/edit EN translation
   const [lang, setLang] = useState<"id" | "en">("id");
@@ -154,6 +159,60 @@ export function PostForm({
       else if (res.error) window.alert(res.error);
     } finally {
       setSuggestingSub(false);
+    }
+  };
+
+  const handleImportDoc = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setImporting(true);
+    try {
+      const fd = new FormData();
+      fd.set("file", file);
+      const res = await importDocumentAction(fd);
+      if (res.error) {
+        window.alert(res.error);
+        return;
+      }
+
+      // Title & excerpt are uncontrolled (defaultValue + ref) — set via DOM.
+      if (titleRef.current && res.title != null) titleRef.current.value = res.title;
+      if (excerptRef.current && res.excerpt != null)
+        excerptRef.current.value = res.excerpt;
+
+      // Controlled fields.
+      if (res.mainCategory) setMain(res.mainCategory);
+      if (res.subCategory) setSub(res.subCategory);
+      if (res.tags) setTags(res.tags.join(", "));
+
+      // Content: swap editor content by remounting with the new JSON.
+      if (res.contentJson) {
+        setContentJson(res.contentJson);
+        setContentHtml(res.contentHtml ?? "");
+        setImportVersion((v) => v + 1);
+      }
+
+      // Sekalian generate terjemahan English dari hasil impor.
+      if (res.title) {
+        setTranslating(true);
+        try {
+          const tr = await getTranslationsAction(
+            res.title,
+            res.excerpt ?? "",
+            res.contentHtml ?? ""
+          );
+          if (tr) {
+            setTitleEn(tr.titleEn);
+            setExcerptEn(tr.excerptEn);
+            setContentHtmlEn(tr.contentHtmlEn);
+          }
+        } finally {
+          setTranslating(false);
+        }
+      }
+    } finally {
+      setImporting(false);
     }
   };
 
@@ -313,6 +372,44 @@ export function PostForm({
 
           {/* ── Indonesian content ── */}
           <div className={lang === "en" ? "hidden" : "space-y-6"}>
+            {mode === "create" && (
+              <div className="rounded-2xl border border-dashed border-sacred-400/50 bg-sacred-50/50 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-sm text-ink-700">
+                    <FileUp size={16} className="text-sacred-600" />
+                    <span>
+                      Impor dari dokumen — AI mengisi judul, excerpt, konten,
+                      kategori &amp; tags otomatis.
+                    </span>
+                  </div>
+                  <label
+                    className={cn(
+                      "inline-flex cursor-pointer items-center gap-2 rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment transition-colors hover:bg-ink-800",
+                      importing && "cursor-wait opacity-60"
+                    )}
+                  >
+                    {importing ? (
+                      <Loader2 size={12} className="animate-spin" />
+                    ) : (
+                      <FileUp size={12} />
+                    )}
+                    {importing ? "Memproses…" : "Impor Dokumen"}
+                    <input
+                      type="file"
+                      accept=".docx,.pdf,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown"
+                      className="hidden"
+                      onChange={handleImportDoc}
+                      disabled={importing}
+                    />
+                  </label>
+                </div>
+                <p className="mt-2 text-[11px] text-ink-400">
+                  Format .docx, .pdf, .txt, .md · hasil AI — periksa &amp; edit
+                  sebelum menyimpan.
+                </p>
+              </div>
+            )}
+
             <Field label="Judul" name="title" required>
               <input
                 ref={titleRef}
@@ -338,7 +435,8 @@ export function PostForm({
             <div>
               <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ink-500">Konten</p>
               <PostEditor
-                initialJson={initial?.contentJson}
+                key={importVersion}
+                initialJson={importVersion === 0 ? initial?.contentJson : contentJson}
                 onChange={(json, html) => {
                   setContentJson(json);
                   setContentHtml(html);
