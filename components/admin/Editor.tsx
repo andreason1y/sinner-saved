@@ -5,6 +5,7 @@ import { buildExtensions } from "@/lib/editor/extensions";
 import {
   Bold,
   Italic,
+  Underline,
   Code,
   Link as LinkIcon,
   Heading2,
@@ -17,16 +18,20 @@ import {
   Undo2,
   Redo2,
   Code2,
+  Highlighter,
+  Superscript,
+  Subscript,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
 } from "lucide-react";
 import { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  /** Initial Tiptap JSON document. Optional. */
   initialJson?: unknown;
-  /** Called whenever the document changes (debounced upstream if needed). */
   onChange: (json: unknown, html: string) => void;
-  /** Image upload — receives a File, returns a public URL. */
   onUploadImage?: (file: File) => Promise<string>;
 };
 
@@ -48,7 +53,6 @@ export function PostEditor({ initialJson, onChange, onUploadImage }: Props) {
     },
   });
 
-  // Re-emit on first mount so the parent has both representations.
   useEffect(() => {
     if (editor) onChange(editor.getJSON(), editor.getHTML());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,12 +67,7 @@ export function PostEditor({ initialJson, onChange, onUploadImage }: Props) {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
       return;
     }
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange("link")
-      .setLink({ href: url })
-      .run();
+    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   }, [editor]);
 
   const triggerImageUpload = useCallback(() => {
@@ -96,11 +95,7 @@ export function PostEditor({ initialJson, onChange, onUploadImage }: Props) {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-ink-900/10 bg-white shadow-card">
-      <Toolbar
-        editor={editor}
-        onLink={promptLink}
-        onImage={triggerImageUpload}
-      />
+      <Toolbar editor={editor} onLink={promptLink} onImage={triggerImageUpload} />
       <input
         ref={fileInputRef}
         type="file"
@@ -115,6 +110,8 @@ export function PostEditor({ initialJson, onChange, onUploadImage }: Props) {
   );
 }
 
+/* ── Toolbar ──────────────────────────────────────────────────────────── */
+
 function Toolbar({
   editor,
   onLink,
@@ -124,19 +121,200 @@ function Toolbar({
   onLink: () => void;
   onImage: () => void;
 }) {
-  const Btn = ({
-    onClick,
-    active,
-    title,
-    children,
-    disabled,
-  }: {
-    onClick: () => void;
-    active?: boolean;
-    title: string;
-    disabled?: boolean;
-    children: React.ReactNode;
-  }) => (
+  return (
+    <div className="sticky top-0 z-10 flex flex-wrap items-center gap-0.5 border-b border-ink-900/10 bg-white/95 p-2 backdrop-blur">
+      {/* Headings */}
+      <Btn
+        title="Heading 2"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        active={editor.isActive("heading", { level: 2 })}
+      >
+        <Heading2 size={15} />
+      </Btn>
+      <Btn
+        title="Heading 3"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        active={editor.isActive("heading", { level: 3 })}
+      >
+        <Heading3 size={15} />
+      </Btn>
+      <Divider />
+
+      {/* Inline formatting */}
+      <Btn
+        title="Bold (⌘B)"
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        active={editor.isActive("bold")}
+      >
+        <Bold size={15} />
+      </Btn>
+      <Btn
+        title="Italic (⌘I)"
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        active={editor.isActive("italic")}
+      >
+        <Italic size={15} />
+      </Btn>
+      <Btn
+        title="Underline (⌘U)"
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        active={editor.isActive("underline")}
+      >
+        <Underline size={15} />
+      </Btn>
+      <Btn
+        title="Highlight"
+        onClick={() => editor.chain().focus().toggleHighlight().run()}
+        active={editor.isActive("highlight")}
+      >
+        <Highlighter size={15} />
+      </Btn>
+      <Divider />
+
+      {/* Superscript / Subscript */}
+      <Btn
+        title="Superscript (mis. ayat²)"
+        onClick={() => editor.chain().focus().toggleSuperscript().run()}
+        active={editor.isActive("superscript")}
+      >
+        <Superscript size={15} />
+      </Btn>
+      <Btn
+        title="Subscript"
+        onClick={() => editor.chain().focus().toggleSubscript().run()}
+        active={editor.isActive("subscript")}
+      >
+        <Subscript size={15} />
+      </Btn>
+      <Divider />
+
+      {/* Font size */}
+      <FontSizeSelect editor={editor} />
+      <Divider />
+
+      {/* Link / inline code */}
+      <Btn title="Link" onClick={onLink} active={editor.isActive("link")}>
+        <LinkIcon size={15} />
+      </Btn>
+      <Btn
+        title="Inline code"
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        active={editor.isActive("code")}
+      >
+        <Code size={15} />
+      </Btn>
+      <Divider />
+
+      {/* Block elements */}
+      <Btn
+        title="Bullet list"
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        active={editor.isActive("bulletList")}
+      >
+        <List size={15} />
+      </Btn>
+      <Btn
+        title="Numbered list"
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        active={editor.isActive("orderedList")}
+      >
+        <ListOrdered size={15} />
+      </Btn>
+      <Btn
+        title="Blockquote"
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        active={editor.isActive("blockquote")}
+      >
+        <Quote size={15} />
+      </Btn>
+      <Btn
+        title="Code block (untuk Yunani / Ibrani)"
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        active={editor.isActive("codeBlock")}
+      >
+        <Code2 size={15} />
+      </Btn>
+      <Btn
+        title="Garis pemisah"
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      >
+        <Minus size={15} />
+      </Btn>
+      <Divider />
+
+      {/* Text align */}
+      <Btn
+        title="Rata kiri"
+        onClick={() => editor.chain().focus().setTextAlign("left").run()}
+        active={editor.isActive({ textAlign: "left" })}
+      >
+        <AlignLeft size={15} />
+      </Btn>
+      <Btn
+        title="Rata tengah"
+        onClick={() => editor.chain().focus().setTextAlign("center").run()}
+        active={editor.isActive({ textAlign: "center" })}
+      >
+        <AlignCenter size={15} />
+      </Btn>
+      <Btn
+        title="Rata kanan"
+        onClick={() => editor.chain().focus().setTextAlign("right").run()}
+        active={editor.isActive({ textAlign: "right" })}
+      >
+        <AlignRight size={15} />
+      </Btn>
+      <Btn
+        title="Justify"
+        onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+        active={editor.isActive({ textAlign: "justify" })}
+      >
+        <AlignJustify size={15} />
+      </Btn>
+      <Divider />
+
+      {/* Image */}
+      <Btn title="Sisipkan gambar" onClick={onImage}>
+        <ImageIcon size={15} />
+      </Btn>
+
+      {/* Undo / Redo pushed to the right */}
+      <div className="ml-auto flex items-center gap-0.5">
+        <Btn
+          title="Undo (⌘Z)"
+          onClick={() => editor.chain().focus().undo().run()}
+          disabled={!editor.can().undo()}
+        >
+          <Undo2 size={15} />
+        </Btn>
+        <Btn
+          title="Redo (⌘⇧Z)"
+          onClick={() => editor.chain().focus().redo().run()}
+          disabled={!editor.can().redo()}
+        >
+          <Redo2 size={15} />
+        </Btn>
+      </div>
+    </div>
+  );
+}
+
+/* ── Shared button ────────────────────────────────────────────────────── */
+
+function Btn({
+  onClick,
+  active,
+  title,
+  children,
+  disabled,
+}: {
+  onClick: () => void;
+  active?: boolean;
+  title: string;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
     <button
       type="button"
       onMouseDown={(e) => e.preventDefault()}
@@ -144,118 +322,52 @@ function Toolbar({
       disabled={disabled}
       title={title}
       className={cn(
-        "inline-flex h-8 w-8 items-center justify-center rounded-md text-ink-700 transition-colors hover:bg-ink-900/5 hover:text-ink-900",
-        active && "bg-ink-900 text-parchment hover:bg-ink-900 hover:text-parchment",
+        "inline-flex h-7 w-7 items-center justify-center rounded-md text-ink-700 transition-colors hover:bg-ink-900/5 hover:text-ink-900",
+        active &&
+          "bg-ink-900 text-parchment hover:bg-ink-900 hover:text-parchment",
         disabled && "opacity-40 hover:bg-transparent hover:text-ink-700"
       )}
     >
       {children}
     </button>
   );
+}
 
+/* ── Font size dropdown ───────────────────────────────────────────────── */
+
+const FONT_SIZES = [
+  { label: "Normal", value: "" },
+  { label: "Kecil", value: "0.8em" },
+  { label: "Besar", value: "1.15em" },
+  { label: "Ekstra", value: "1.35em" },
+];
+
+function FontSizeSelect({ editor }: { editor: Editor }) {
+  const current = editor.getAttributes("textStyle").fontSize ?? "";
   return (
-    <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1 border-b border-ink-900/10 bg-white/95 p-2 backdrop-blur">
-      <Btn
-        title="Heading 2"
-        onClick={() =>
-          editor.chain().focus().toggleHeading({ level: 2 }).run()
+    <select
+      title="Ukuran teks"
+      value={current}
+      onMouseDown={(e) => e.preventDefault()}
+      onChange={(e) => {
+        const val = e.target.value;
+        if (!val) {
+          editor.chain().focus().unsetFontSize().run();
+        } else {
+          editor.chain().focus().setFontSize(val).run();
         }
-        active={editor.isActive("heading", { level: 2 })}
-      >
-        <Heading2 size={16} />
-      </Btn>
-      <Btn
-        title="Heading 3"
-        onClick={() =>
-          editor.chain().focus().toggleHeading({ level: 3 }).run()
-        }
-        active={editor.isActive("heading", { level: 3 })}
-      >
-        <Heading3 size={16} />
-      </Btn>
-      <Divider />
-      <Btn
-        title="Bold (⌘B)"
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        active={editor.isActive("bold")}
-      >
-        <Bold size={16} />
-      </Btn>
-      <Btn
-        title="Italic (⌘I)"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        active={editor.isActive("italic")}
-      >
-        <Italic size={16} />
-      </Btn>
-      <Btn
-        title="Inline code"
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        active={editor.isActive("code")}
-      >
-        <Code size={16} />
-      </Btn>
-      <Btn title="Link" onClick={onLink} active={editor.isActive("link")}>
-        <LinkIcon size={16} />
-      </Btn>
-      <Divider />
-      <Btn
-        title="Bullet list"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        active={editor.isActive("bulletList")}
-      >
-        <List size={16} />
-      </Btn>
-      <Btn
-        title="Numbered list"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        active={editor.isActive("orderedList")}
-      >
-        <ListOrdered size={16} />
-      </Btn>
-      <Btn
-        title="Blockquote"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        active={editor.isActive("blockquote")}
-      >
-        <Quote size={16} />
-      </Btn>
-      <Btn
-        title="Code block (untuk Yunani / Ibrani)"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        active={editor.isActive("codeBlock")}
-      >
-        <Code2 size={16} />
-      </Btn>
-      <Btn
-        title="Horizontal rule"
-        onClick={() => editor.chain().focus().setHorizontalRule().run()}
-      >
-        <Minus size={16} />
-      </Btn>
-      <Btn title="Sisipkan gambar" onClick={onImage}>
-        <ImageIcon size={16} />
-      </Btn>
-      <div className="ml-auto flex items-center gap-1">
-        <Btn
-          title="Undo (⌘Z)"
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-        >
-          <Undo2 size={16} />
-        </Btn>
-        <Btn
-          title="Redo (⌘⇧Z)"
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-        >
-          <Redo2 size={16} />
-        </Btn>
-      </div>
-    </div>
+      }}
+      className="h-7 cursor-pointer rounded-md bg-transparent px-1 text-xs text-ink-700 outline-none hover:bg-ink-900/5"
+    >
+      {FONT_SIZES.map((s) => (
+        <option key={s.value} value={s.value}>
+          {s.label}
+        </option>
+      ))}
+    </select>
   );
 }
 
 function Divider() {
-  return <span className="mx-1 h-5 w-px bg-ink-900/10" aria-hidden />;
+  return <span className="mx-0.5 h-4 w-px shrink-0 bg-ink-900/10" aria-hidden />;
 }

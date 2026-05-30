@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import {
   deletePostAction,
   uploadCoverImageAction,
 } from "@/lib/actions/posts";
+import { generateTagsAction, suggestSubcategoryAction } from "@/lib/actions/ai";
 import { CATEGORIES } from "@/lib/categories";
 import { PostEditor } from "./Editor";
 import {
@@ -20,6 +21,7 @@ import {
   Eye,
   CheckCircle2,
   ImageUp,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -63,6 +65,45 @@ export function PostForm({
     () => CATEGORIES.find((c) => c.slug === main)?.subcategories ?? [],
     [main]
   );
+
+  const [sub, setSub] = useState(
+    initial?.subCategory ??
+      (CATEGORIES.find((c) => c.slug === (initial?.mainCategory ?? CATEGORIES[0].slug))
+        ?.subcategories[0]?.slug ?? "")
+  );
+  const [tags, setTags] = useState(initial?.tags?.join(", ") ?? "");
+  const [generatingTags, setGeneratingTags] = useState(false);
+  const [suggestingSub, setSuggestingSub] = useState(false);
+
+  const titleRef = useRef<HTMLInputElement>(null);
+  const excerptRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleGenerateTags = async () => {
+    const title = titleRef.current?.value ?? "";
+    const excerpt = excerptRef.current?.value ?? "";
+    if (!title) return;
+    setGeneratingTags(true);
+    try {
+      const res = await generateTagsAction(title, excerpt, main);
+      if (res.tags) setTags(res.tags.join(", "));
+      else if (res.error) window.alert(res.error);
+    } finally {
+      setGeneratingTags(false);
+    }
+  };
+
+  const handleSuggestSub = async () => {
+    const title = titleRef.current?.value ?? "";
+    const excerpt = excerptRef.current?.value ?? "";
+    setSuggestingSub(true);
+    try {
+      const res = await suggestSubcategoryAction(title, excerpt, main);
+      if (res.slug) setSub(res.slug);
+      else if (res.error) window.alert(res.error);
+    } finally {
+      setSuggestingSub(false);
+    }
+  };
 
   // Hydrate "Saved" toast from URL flag (after redirect from create)
   useEffect(() => {
@@ -187,6 +228,7 @@ export function PostForm({
 
           <Field label="Judul" name="title" required>
             <input
+              ref={titleRef}
               name="title"
               defaultValue={initial?.title}
               placeholder="Mis. Apa arti charis dalam Efesus 2:8?"
@@ -197,6 +239,7 @@ export function PostForm({
 
           <Field label="Excerpt" name="excerpt">
             <textarea
+              ref={excerptRef}
               name="excerpt"
               defaultValue={initial?.excerpt}
               placeholder="Ringkasan 1–2 kalimat yang muncul di kartu dan halaman arsip."
@@ -310,7 +353,14 @@ export function PostForm({
             <select
               name="main_category"
               value={main}
-              onChange={(e) => setMain(e.target.value)}
+              onChange={(e) => {
+                const newMain = e.target.value;
+                setMain(newMain);
+                const firstSub =
+                  CATEGORIES.find((c) => c.slug === newMain)
+                    ?.subcategories[0]?.slug ?? "";
+                setSub(firstSub);
+              }}
               className="w-full rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-xs text-ink-800 outline-none focus:border-ink-900"
             >
               {CATEGORIES.map((c) => (
@@ -322,29 +372,59 @@ export function PostForm({
           </SidebarBlock>
 
           <SidebarBlock label="Sub-kategori">
-            <select
-              name="sub_category"
-              defaultValue={initial?.subCategory ?? subOptions[0]?.slug}
-              className="w-full rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-xs text-ink-800 outline-none focus:border-ink-900"
-            >
-              {subOptions.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-2">
+              <select
+                name="sub_category"
+                value={sub}
+                onChange={(e) => setSub(e.target.value)}
+                className="flex-1 rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-xs text-ink-800 outline-none focus:border-ink-900"
+              >
+                {subOptions.map((s) => (
+                  <option key={s.slug} value={s.slug}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleSuggestSub}
+                disabled={suggestingSub}
+                title="Suggest sub-kategori dengan AI"
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-ink-900/10 bg-white text-ink-500 transition-colors hover:border-sacred-400 hover:text-sacred-600 disabled:opacity-50"
+              >
+                {suggestingSub ? (
+                  <Loader2 size={13} className="animate-spin" />
+                ) : (
+                  <Sparkles size={13} />
+                )}
+              </button>
+            </div>
           </SidebarBlock>
 
           <SidebarBlock label="Tags">
             <input
               name="tags"
-              defaultValue={initial?.tags?.join(", ")}
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
               placeholder="charis, paulus, soteriologi"
               className="w-full rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-xs text-ink-800 outline-none focus:border-ink-900"
             />
-            <p className="mt-1 text-[11px] text-ink-400">
-              Pisahkan dengan koma.
-            </p>
+            <div className="mt-1.5 flex items-center justify-between">
+              <p className="text-[11px] text-ink-400">Pisahkan dengan koma.</p>
+              <button
+                type="button"
+                onClick={handleGenerateTags}
+                disabled={generatingTags}
+                className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] text-sacred-600 transition-colors hover:bg-sacred-50 disabled:opacity-50"
+              >
+                {generatingTags ? (
+                  <Loader2 size={11} className="animate-spin" />
+                ) : (
+                  <Sparkles size={11} />
+                )}
+                {generatingTags ? "Generating…" : "Generate AI"}
+              </button>
+            </div>
           </SidebarBlock>
         </aside>
       </div>
