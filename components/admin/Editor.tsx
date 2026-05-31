@@ -33,9 +33,15 @@ type Props = {
   initialJson?: unknown;
   onChange: (json: unknown, html: string) => void;
   onUploadImage?: (file: File) => Promise<string>;
+  onEditorReady?: (editor: Editor) => void;
 };
 
-export function PostEditor({ initialJson, onChange, onUploadImage }: Props) {
+export function PostEditor({
+  initialJson,
+  onChange,
+  onUploadImage,
+  onEditorReady,
+}: Props) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const editor = useEditor({
@@ -54,7 +60,10 @@ export function PostEditor({ initialJson, onChange, onUploadImage }: Props) {
   });
 
   useEffect(() => {
-    if (editor) onChange(editor.getJSON(), editor.getHTML());
+    if (editor) {
+      onChange(editor.getJSON(), editor.getHTML());
+      onEditorReady?.(editor);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
