@@ -1,7 +1,6 @@
 "use server";
 
 import Groq from "groq-sdk";
-import { createClient } from "@supabase/supabase-js";
 import { CATEGORIES } from "@/lib/categories";
 
 // Model: open-source 70B via Groq — update to your preferred model ID
@@ -208,77 +207,6 @@ ${contentHtml.slice(0, 24000)}
     const msg = err instanceof Error ? err.message : "Gagal merapikan tulisan.";
     if (/rate_limit|too large|tokens per minute|TPM|413/i.test(msg)) {
       return { error: "Kuota AI sedang penuh. Tunggu ±1 menit lalu coba lagi." };
-    }
-    return { error: msg };
-  }
-}
-
-/* ── Generate reader-facing summary (ringkasan), cached in DB ────────── */
-
-function getServiceClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-}
-
-/**
- * Returns a short (3–5 sentence) summary of a post in the requested locale,
- * generating it via Groq on first request and caching it on the post row
- * (`summary` / `summary_en`) so subsequent reads are instant. Uses the
- * service-role client so the reader-triggered write bypasses RLS safely.
- */
-export async function generateSummaryAction(
-  postId: string,
-  locale: "id" | "en"
-): Promise<{ summary?: string; error?: string }> {
-  try {
-    const supabase = getServiceClient();
-    if (!supabase) return { error: "Database belum dikonfigurasi." };
-
-    const col = locale === "en" ? "summary_en" : "summary";
-    const { data: post, error } = await supabase
-      .from("posts")
-      .select("content_html, content_html_en, summary, summary_en")
-      .eq("id", postId)
-      .maybeSingle();
-    if (error || !post) return { error: "Artikel tidak ditemukan." };
-
-    // Cache hit.
-    const cached = (post as Record<string, string | null>)[col];
-    if (cached) return { summary: cached };
-
-    const sourceHtml =
-      locale === "en" && post.content_html_en
-        ? post.content_html_en
-        : post.content_html;
-    const text = stripHtml(sourceHtml ?? "");
-    if (!text) return { error: "Artikel tidak memiliki konten." };
-
-    const client = getClient();
-    const prompt =
-      locale === "en"
-        ? `Summarize the following Christian-blog article in 3-5 clear sentences in English. Capture the main point and key takeaways. Reply with the summary only.\n\nARTICLE:\n"""\n${text.slice(0, 16000)}\n"""`
-        : `Ringkas artikel blog Kristen berikut dalam 3-5 kalimat yang jelas (Bahasa Indonesia). Tangkap inti dan poin-poin pentingnya. Balas HANYA dengan ringkasannya.\n\nARTIKEL:\n"""\n${text.slice(0, 16000)}\n"""`;
-
-    const res = await client.chat.completions.create({
-      model: MODEL,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.4,
-      max_tokens: 500,
-    });
-
-    const summary = res.choices[0]?.message?.content?.trim() ?? "";
-    if (!summary) return { error: "AI tidak mengembalikan ringkasan." };
-
-    await supabase.from("posts").update({ [col]: summary }).eq("id", postId);
-    return { summary };
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "Gagal membuat ringkasan.";
-    if (/rate_limit|too large|tokens per minute|TPM|413/i.test(msg)) {
-      return { error: "Kuota AI sedang penuh. Coba lagi sebentar." };
     }
     return { error: msg };
   }

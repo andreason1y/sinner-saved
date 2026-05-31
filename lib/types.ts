@@ -55,8 +55,6 @@ export type Post = {
   titleEn?: string;
   excerptEn?: string;
   contentHtmlEn?: string;
-  summary?: string;
-  summaryEn?: string;
 };
 
 export type BiblicalFact = {
