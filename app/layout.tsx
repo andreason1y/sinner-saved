@@ -54,6 +54,9 @@ export const metadata: Metadata = {
       "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
     type: "website",
   },
+  verification: {
+    google: "Loo644KZKKDJ2DiGP363U48GSOAkasP1CbB0baL_TZ0",
+  },
 };
 
 export default function RootLayout({
