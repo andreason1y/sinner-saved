@@ -6,6 +6,7 @@ import {
   Bold,
   Italic,
   Underline,
+  Strikethrough,
   Code,
   Link as LinkIcon,
   Heading2,
@@ -25,6 +26,7 @@ import {
   AlignCenter,
   AlignRight,
   AlignJustify,
+  Eraser,
 } from "lucide-react";
 import { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
@@ -172,6 +174,13 @@ function Toolbar({
         <Underline size={15} />
       </Btn>
       <Btn
+        title="Strikethrough"
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        active={editor.isActive("strike")}
+      >
+        <Strikethrough size={15} />
+      </Btn>
+      <Btn
         title="Highlight"
         onClick={() => editor.chain().focus().toggleHighlight().run()}
         active={editor.isActive("highlight")}
@@ -282,6 +291,17 @@ function Toolbar({
       </Btn>
       <Divider />
 
+      {/* Clear formatting */}
+      <Btn
+        title="Hapus semua pemformatan"
+        onClick={() =>
+          editor.chain().focus().clearNodes().unsetAllMarks().run()
+        }
+      >
+        <Eraser size={15} />
+      </Btn>
+      <Divider />
+
       {/* Image */}
       <Btn title="Sisipkan gambar" onClick={onImage}>
         <ImageIcon size={15} />
@@ -353,18 +373,29 @@ const FONT_SIZES = [
 
 function FontSizeSelect({ editor }: { editor: Editor }) {
   const current = editor.getAttributes("textStyle").fontSize ?? "";
+  const savedSel = useRef<{ from: number; to: number } | null>(null);
+
   return (
     <select
       title="Ukuran teks"
       value={current}
-      onMouseDown={(e) => e.preventDefault()}
+      onMouseDown={() => {
+        // Save selection before focus shifts to the <select> element
+        const { from, to } = editor.state.selection;
+        savedSel.current = { from, to };
+      }}
       onChange={(e) => {
         const val = e.target.value;
-        if (!val) {
-          editor.chain().focus().unsetFontSize().run();
-        } else {
-          editor.chain().focus().setFontSize(val).run();
+        let c = editor.chain().focus();
+        if (savedSel.current) {
+          c = c.setTextSelection(savedSel.current);
         }
+        if (!val) {
+          c.unsetFontSize().run();
+        } else {
+          c.setFontSize(val).run();
+        }
+        savedSel.current = null;
       }}
       className="h-7 cursor-pointer rounded-md bg-transparent px-1 text-xs text-ink-700 outline-none hover:bg-ink-900/5"
     >
