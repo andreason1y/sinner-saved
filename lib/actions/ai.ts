@@ -153,10 +153,11 @@ Contoh: ruang-alkitab`;
 /* ── Polish content (rapikan tulisan) ───────────────────────────────── */
 
 /**
- * Cleans up article HTML without changing its meaning: fixes spelling &
- * punctuation, applies headings / bold / italic / lists / blockquotes using
- * only the tags the editor supports. Returns raw HTML; the client applies it
- * to Tiptap in an undoable way.
+ * Proofreads article HTML WITHOUT rewriting it: fixes only obvious spelling &
+ * punctuation, and applies formatting (headings / bold / italic / lists /
+ * blockquotes) to the existing words. Word choice and sentence structure are
+ * preserved verbatim. Returns raw HTML; the client applies it to Tiptap in an
+ * undoable way.
  */
 export async function polishContentAction(
   contentHtml: string
@@ -166,14 +167,22 @@ export async function polishContentAction(
     if (!plain) return { error: "Konten kosong — tidak ada yang dirapikan." };
 
     const client = getClient();
-    const prompt = `Kamu adalah editor untuk blog Kristen bernama SinnerSaved.
-Rapikan HTML artikel berikut TANPA mengubah makna atau menambah informasi baru.
-Tugasmu:
-- Perbaiki ejaan dan tanda baca (Bahasa Indonesia yang baik dan benar).
-- Gunakan heading <h2>/<h3> bila ada bagian/sub-bagian.
-- Tebalkan istilah penting dengan <strong>, miringkan istilah asing dengan <em>, garis bawahi seperlunya dengan <u>.
-- Susun daftar dengan <ul>/<ol>/<li>, kutipan dengan <blockquote>.
-- Pertahankan urutan & isi gagasan asli.
+    const prompt = `Kamu adalah korektor (proofreader) untuk blog Kristen bernama SinnerSaved.
+Tugasmu HANYA merapikan, BUKAN menulis ulang. Jangan mengarang.
+
+YANG BOLEH kamu lakukan:
+- Perbaiki tanda baca (titik, koma, huruf kapital, spasi).
+- Perbaiki SALAH KETIK / salah eja yang jelas saja.
+- Terapkan FORMAT pada teks yang sudah ada: heading <h2>/<h3> untuk judul bagian,
+  <strong> untuk istilah penting, <em> untuk istilah asing, <u> seperlunya,
+  <ul>/<ol>/<li> untuk daftar, <blockquote> untuk kutipan.
+
+YANG DILARANG KERAS:
+- JANGAN mengubah pilihan kata atau mengganti kata dengan sinonim.
+- JANGAN menyusun ulang, menggabung, atau memecah kalimat.
+- JANGAN menambah, menghapus, atau meringkas isi/informasi.
+- JANGAN menerjemahkan atau mengubah gaya bahasa.
+Pertahankan setiap kata persis seperti aslinya; hanya ejaan/tanda baca yang jelas keliru yang boleh diperbaiki.
 
 HANYA gunakan tag berikut: ${ALLOWED_TAGS}. Jangan pakai <h1>, atribut style, atau gambar.
 Balas HANYA dengan HTML hasil rapikan, tanpa penjelasan, tanpa pembungkus markdown.
@@ -186,7 +195,7 @@ ${contentHtml.slice(0, 24000)}
     const res = await client.chat.completions.create({
       model: MODEL,
       messages: [{ role: "user", content: prompt }],
-      temperature: 0.3,
+      temperature: 0.1,
       max_tokens: 4000,
     });
 
