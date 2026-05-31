@@ -184,7 +184,7 @@ export function SearchView({ posts }: { posts: Post[] }) {
             <AnimatePresence mode="popLayout">
               {results.map((post) => (
                 <motion.div key={post.id} variants={cardVariants} exit="exit" layout>
-                  <PostCard post={post} />
+                  <PostCard post={post} highlightTerms={terms} />
                 </motion.div>
               ))}
             </AnimatePresence>
