@@ -1,10 +1,6 @@
 "use server";
 
 import Groq from "groq-sdk";
-import mammoth from "mammoth";
-// Import pdf-parse's internal entry to skip the debug harness in its index
-// that otherwise breaks the Next.js build.
-import pdf from "pdf-parse/lib/pdf-parse.js";
 import { generateJSON } from "@tiptap/html";
 import { CATEGORIES } from "@/lib/categories";
 import { buildExtensions } from "@/lib/editor/extensions";
@@ -45,10 +41,15 @@ async function extractText(file: File): Promise<string> {
   const buffer = Buffer.from(await file.arrayBuffer());
 
   if (file.type === DOCX_TYPE || name.endsWith(".docx")) {
+    // Dynamic import so a load failure surfaces as a caught error rather than
+    // breaking the whole server action module at import time.
+    const mammoth = (await import("mammoth")).default;
     const { value } = await mammoth.extractRawText({ buffer });
     return value;
   }
   if (file.type === "application/pdf" || name.endsWith(".pdf")) {
+    // Import pdf-parse's internal entry to skip the debug harness in its index.
+    const pdf = (await import("pdf-parse/lib/pdf-parse.js")).default;
     const { text } = await pdf(buffer);
     return text;
   }

@@ -194,9 +194,8 @@ export function PostForm({
       }
     } catch (err) {
       console.error("[import] failed:", err);
-      window.alert(
-        "Gagal memproses dokumen. Pastikan file .docx/.pdf/.txt/.md dan ukuran wajar, lalu coba lagi."
-      );
+      const detail = err instanceof Error ? err.message : String(err);
+      window.alert("Gagal memproses dokumen.\n\nDetail: " + detail);
     } finally {
       setImporting(false);
     }
