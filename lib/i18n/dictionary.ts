@@ -103,6 +103,7 @@ type Dict = {
     languageNote: string;
     share: string;
     linkCopied: string;
+    scriptureOpen: string;
   };
   contact: {
     eyebrow: string;
@@ -234,6 +235,7 @@ const id: Dict = {
       "Tulisan ini dalam Bahasa Indonesia. Switch ke ID untuk navigasi yang sesuai.",
     share: "Bagikan",
     linkCopied: "Tautan disalin",
+    scriptureOpen: "Buka di Alkitab SABDA →",
   },
   contact: {
     eyebrow: "Kontak",
@@ -381,6 +383,7 @@ const en: Dict = {
       "This piece is in Indonesian. Use the ID toggle for matching navigation.",
     share: "Share",
     linkCopied: "Link copied",
+    scriptureOpen: "Open in SABDA Bible →",
   },
   contact: {
     eyebrow: "Contact",
