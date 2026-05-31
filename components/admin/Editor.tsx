@@ -27,8 +27,11 @@ import {
   AlignRight,
   AlignJustify,
   Eraser,
+  Type,
+  IndentIncrease,
+  IndentDecrease,
 } from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -187,6 +190,7 @@ function Toolbar({
       >
         <Highlighter size={15} />
       </Btn>
+      <ColorPicker editor={editor} />
       <Divider />
 
       {/* Superscript / Subscript */}
@@ -289,6 +293,30 @@ function Toolbar({
       >
         <AlignJustify size={15} />
       </Btn>
+      <Btn
+        title="Tambah indentasi"
+        onClick={() => {
+          if (editor.can().sinkListItem("listItem")) {
+            editor.chain().focus().sinkListItem("listItem").run();
+          } else {
+            editor.chain().focus().indent().run();
+          }
+        }}
+      >
+        <IndentIncrease size={15} />
+      </Btn>
+      <Btn
+        title="Kurangi indentasi"
+        onClick={() => {
+          if (editor.can().liftListItem("listItem")) {
+            editor.chain().focus().liftListItem("listItem").run();
+          } else {
+            editor.chain().focus().outdent().run();
+          }
+        }}
+      >
+        <IndentDecrease size={15} />
+      </Btn>
       <Divider />
 
       {/* Clear formatting */}
@@ -359,6 +387,97 @@ function Btn({
     >
       {children}
     </button>
+  );
+}
+
+/* ── Color picker ────────────────────────────────────────────────────── */
+
+const PRESET_COLORS = [
+  "#000000", "#374151", "#6b7280", "#b91c1c",
+  "#c2410c", "#ca8a04", "#15803d", "#1d4ed8",
+  "#7c3aed", "#be185d",
+];
+
+function ColorPicker({ editor }: { editor: Editor }) {
+  const [open, setOpen] = useState(false);
+  const current = editor.getAttributes("textStyle").color as string | undefined;
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function close(e: MouseEvent) {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node))
+        setOpen(false);
+    }
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, [open]);
+
+  return (
+    <div ref={panelRef} className="relative">
+      <button
+        type="button"
+        title="Warna teks"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          setOpen((v) => !v);
+        }}
+        className="inline-flex h-7 w-7 flex-col items-center justify-center gap-0.5 rounded-md text-ink-700 hover:bg-ink-900/5"
+      >
+        <Type size={12} />
+        <span
+          className="h-1 w-4 rounded-full"
+          style={{ backgroundColor: current ?? "#000000" }}
+        />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-8 z-20 rounded-xl border border-ink-900/10 bg-white p-2 shadow-lg">
+          <div className="grid grid-cols-5 gap-1">
+            {PRESET_COLORS.map((c) => (
+              <button
+                key={c}
+                type="button"
+                title={c}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  editor.chain().focus().setColor(c).run();
+                  setOpen(false);
+                }}
+                className={cn(
+                  "h-5 w-5 rounded-md border border-black/10 transition-transform hover:scale-110",
+                  current === c && "ring-2 ring-blue-500 ring-offset-1"
+                )}
+                style={{ backgroundColor: c }}
+              />
+            ))}
+          </div>
+          <div className="mt-2 flex items-center gap-2">
+            <label title="Warna kustom" className="cursor-pointer">
+              <input
+                type="color"
+                value={current ?? "#000000"}
+                onChange={(e) =>
+                  editor.chain().focus().setColor(e.target.value).run()
+                }
+                className="h-5 w-5 cursor-pointer rounded border-0 p-0"
+              />
+            </label>
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                editor.chain().focus().unsetColor().run();
+                setOpen(false);
+              }}
+              className="text-[11px] text-ink-500 hover:text-ink-800"
+            >
+              Hapus warna
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
