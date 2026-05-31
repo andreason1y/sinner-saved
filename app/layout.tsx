@@ -31,6 +31,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://sinnersaved.com"
+  ),
   title: {
     default: "SinnerSaved — Catatan Iman",
     template: "%s · SinnerSaved",
@@ -50,6 +53,9 @@ export const metadata: Metadata = {
     description:
       "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
     type: "website",
+  },
+  verification: {
+    google: "Loo644KZKKDJ2DiGP363U48GSOAkasP1CbB0baL_TZ0",
   },
 };
 
