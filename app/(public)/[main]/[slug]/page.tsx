@@ -14,6 +14,7 @@ import { getCategory } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
 import { PostContent } from "@/components/post/PostContent";
 import { PostBody } from "@/components/post/PostBody";
+import { ScriptureLinker } from "@/components/post/ScriptureLinker";
 import { ReadingProgress } from "@/components/post/ReadingProgress";
 import { ShareButton } from "@/components/post/ShareButton";
 import {
@@ -225,7 +226,9 @@ export default async function PostPage({
                 Translated by machine — original in Indonesian.
               </p>
             )}
-            {html ? <PostBody html={html} /> : <PostContent blocks={blocks} />}
+            <ScriptureLinker>
+              {html ? <PostBody html={html} /> : <PostContent blocks={blocks} />}
+            </ScriptureLinker>
 
             {post.tags && post.tags.length > 0 && (
               <div className="mt-16 flex flex-wrap gap-2 border-t border-ink-900/10 pt-8 dark:border-white/10">

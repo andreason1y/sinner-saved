@@ -235,6 +235,23 @@ html.dark .post-prose a {
 html.dark .post-prose a:hover {
   text-decoration-color: rgba(238, 188, 99, 1);
 }
+/* Auto-linked Bible references — dotted underline, kept on one line */
+.post-prose a.scripture-ref {
+  text-decoration-style: dotted;
+  text-decoration-color: rgba(209, 132, 32, 0.55);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.post-prose a.scripture-ref:hover {
+  text-decoration-color: rgba(209, 132, 32, 1);
+  background: rgba(245, 215, 156, 0.35);
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px rgba(245, 215, 156, 0.35);
+}
+html.dark .post-prose a.scripture-ref:hover {
+  background: rgba(230, 162, 58, 0.16);
+  box-shadow: 0 0 0 2px rgba(230, 162, 58, 0.16);
+}
 .post-prose strong {
   font-weight: 600;
   color: rgb(19 17 13);
