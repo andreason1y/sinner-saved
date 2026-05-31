@@ -1,7 +1,6 @@
 "use server";
 
 import Groq from "groq-sdk";
-import { createClient } from "@supabase/supabase-js";
 import { CATEGORIES } from "@/lib/categories";
 
 // Model: open-source 70B via Groq — update to your preferred model ID
@@ -153,10 +152,11 @@ Contoh: ruang-alkitab`;
 /* ── Polish content (rapikan tulisan) ───────────────────────────────── */
 
 /**
- * Cleans up article HTML without changing its meaning: fixes spelling &
- * punctuation, applies headings / bold / italic / lists / blockquotes using
- * only the tags the editor supports. Returns raw HTML; the client applies it
- * to Tiptap in an undoable way.
+ * Proofreads article HTML WITHOUT rewriting it: fixes only obvious spelling &
+ * punctuation, and applies formatting (headings / bold / italic / lists /
+ * blockquotes) to the existing words. Word choice and sentence structure are
+ * preserved verbatim. Returns raw HTML; the client applies it to Tiptap in an
+ * undoable way.
  */
 export async function polishContentAction(
   contentHtml: string
@@ -166,14 +166,22 @@ export async function polishContentAction(
     if (!plain) return { error: "Konten kosong — tidak ada yang dirapikan." };
 
     const client = getClient();
-    const prompt = `Kamu adalah editor untuk blog Kristen bernama SinnerSaved.
-Rapikan HTML artikel berikut TANPA mengubah makna atau menambah informasi baru.
-Tugasmu:
-- Perbaiki ejaan dan tanda baca (Bahasa Indonesia yang baik dan benar).
-- Gunakan heading <h2>/<h3> bila ada bagian/sub-bagian.
-- Tebalkan istilah penting dengan <strong>, miringkan istilah asing dengan <em>, garis bawahi seperlunya dengan <u>.
-- Susun daftar dengan <ul>/<ol>/<li>, kutipan dengan <blockquote>.
-- Pertahankan urutan & isi gagasan asli.
+    const prompt = `Kamu adalah korektor (proofreader) untuk blog Kristen bernama SinnerSaved.
+Tugasmu HANYA merapikan, BUKAN menulis ulang. Jangan mengarang.
+
+YANG BOLEH kamu lakukan:
+- Perbaiki tanda baca (titik, koma, huruf kapital, spasi).
+- Perbaiki SALAH KETIK / salah eja yang jelas saja.
+- Terapkan FORMAT pada teks yang sudah ada: heading <h2>/<h3> untuk judul bagian,
+  <strong> untuk istilah penting, <em> untuk istilah asing, <u> seperlunya,
+  <ul>/<ol>/<li> untuk daftar, <blockquote> untuk kutipan.
+
+YANG DILARANG KERAS:
+- JANGAN mengubah pilihan kata atau mengganti kata dengan sinonim.
+- JANGAN menyusun ulang, menggabung, atau memecah kalimat.
+- JANGAN menambah, menghapus, atau meringkas isi/informasi.
+- JANGAN menerjemahkan atau mengubah gaya bahasa.
+Pertahankan setiap kata persis seperti aslinya; hanya ejaan/tanda baca yang jelas keliru yang boleh diperbaiki.
 
 HANYA gunakan tag berikut: ${ALLOWED_TAGS}. Jangan pakai <h1>, atribut style, atau gambar.
 Balas HANYA dengan HTML hasil rapikan, tanpa penjelasan, tanpa pembungkus markdown.
@@ -186,7 +194,7 @@ ${contentHtml.slice(0, 24000)}
     const res = await client.chat.completions.create({
       model: MODEL,
       messages: [{ role: "user", content: prompt }],
-      temperature: 0.3,
+      temperature: 0.1,
       max_tokens: 4000,
     });
 
@@ -199,77 +207,6 @@ ${contentHtml.slice(0, 24000)}
     const msg = err instanceof Error ? err.message : "Gagal merapikan tulisan.";
     if (/rate_limit|too large|tokens per minute|TPM|413/i.test(msg)) {
       return { error: "Kuota AI sedang penuh. Tunggu ±1 menit lalu coba lagi." };
-    }
-    return { error: msg };
-  }
-}
-
-/* ── Generate reader-facing summary (ringkasan), cached in DB ────────── */
-
-function getServiceClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return null;
-  return createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-}
-
-/**
- * Returns a short (3–5 sentence) summary of a post in the requested locale,
- * generating it via Groq on first request and caching it on the post row
- * (`summary` / `summary_en`) so subsequent reads are instant. Uses the
- * service-role client so the reader-triggered write bypasses RLS safely.
- */
-export async function generateSummaryAction(
-  postId: string,
-  locale: "id" | "en"
-): Promise<{ summary?: string; error?: string }> {
-  try {
-    const supabase = getServiceClient();
-    if (!supabase) return { error: "Database belum dikonfigurasi." };
-
-    const col = locale === "en" ? "summary_en" : "summary";
-    const { data: post, error } = await supabase
-      .from("posts")
-      .select("content_html, content_html_en, summary, summary_en")
-      .eq("id", postId)
-      .maybeSingle();
-    if (error || !post) return { error: "Artikel tidak ditemukan." };
-
-    // Cache hit.
-    const cached = (post as Record<string, string | null>)[col];
-    if (cached) return { summary: cached };
-
-    const sourceHtml =
-      locale === "en" && post.content_html_en
-        ? post.content_html_en
-        : post.content_html;
-    const text = stripHtml(sourceHtml ?? "");
-    if (!text) return { error: "Artikel tidak memiliki konten." };
-
-    const client = getClient();
-    const prompt =
-      locale === "en"
-        ? `Summarize the following Christian-blog article in 3-5 clear sentences in English. Capture the main point and key takeaways. Reply with the summary only.\n\nARTICLE:\n"""\n${text.slice(0, 16000)}\n"""`
-        : `Ringkas artikel blog Kristen berikut dalam 3-5 kalimat yang jelas (Bahasa Indonesia). Tangkap inti dan poin-poin pentingnya. Balas HANYA dengan ringkasannya.\n\nARTIKEL:\n"""\n${text.slice(0, 16000)}\n"""`;
-
-    const res = await client.chat.completions.create({
-      model: MODEL,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.4,
-      max_tokens: 500,
-    });
-
-    const summary = res.choices[0]?.message?.content?.trim() ?? "";
-    if (!summary) return { error: "AI tidak mengembalikan ringkasan." };
-
-    await supabase.from("posts").update({ [col]: summary }).eq("id", postId);
-    return { summary };
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "Gagal membuat ringkasan.";
-    if (/rate_limit|too large|tokens per minute|TPM|413/i.test(msg)) {
-      return { error: "Kuota AI sedang penuh. Coba lagi sebentar." };
     }
     return { error: msg };
   }

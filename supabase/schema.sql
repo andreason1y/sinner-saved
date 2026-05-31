@@ -64,9 +64,6 @@ create table if not exists public.posts (
   title_en        text,
   excerpt_en      text,
   content_html_en text,
-  -- AI reader-facing summaries, generated on first read & cached here.
-  summary         text,
-  summary_en      text,
   reading_minutes int,
   author_id uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
@@ -79,11 +76,6 @@ alter table public.posts
   add column if not exists title_en        text,
   add column if not exists excerpt_en      text,
   add column if not exists content_html_en text;
-
--- For databases created before the AI summary columns were added.
-alter table public.posts
-  add column if not exists summary    text,
-  add column if not exists summary_en text;
 
 create index if not exists posts_status_published_at_idx
   on public.posts (status, published_at desc nulls last);
