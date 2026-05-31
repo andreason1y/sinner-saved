@@ -21,6 +21,7 @@ import {
   type TocItem,
 } from "@/components/post/TableOfContents";
 import { RelatedPosts } from "@/components/post/RelatedPosts";
+import { AISummaryToggle } from "@/components/post/AISummaryToggle";
 import { extractTocFromHtml } from "@/lib/toc";
 import type { ContentBlock } from "@/lib/types";
 import {
@@ -209,6 +210,13 @@ export default async function PostPage({
               <p className="mb-6 text-xs text-ink-400 dark:text-ink-500">
                 Translated by machine — original in Indonesian.
               </p>
+            )}
+            {html && (
+              <AISummaryToggle
+                postId={post.id}
+                locale={locale}
+                initialSummary={locale === "en" ? post.summaryEn : post.summary}
+              />
             )}
             {html ? <PostBody html={html} /> : <PostContent blocks={blocks} />}
 

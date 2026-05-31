@@ -26,6 +26,8 @@ type PostRow = {
   title_en: string | null;
   excerpt_en: string | null;
   content_html_en: string | null;
+  summary: string | null;
+  summary_en: string | null;
 };
 
 function rowToPost(row: PostRow): Post & { contentHtml: string } {
@@ -46,11 +48,13 @@ function rowToPost(row: PostRow): Post & { contentHtml: string } {
     titleEn: row.title_en ?? undefined,
     excerptEn: row.excerpt_en ?? undefined,
     contentHtmlEn: row.content_html_en ?? undefined,
+    summary: row.summary ?? undefined,
+    summaryEn: row.summary_en ?? undefined,
   };
 }
 
 const COMMON_SELECT =
-  "id,title,slug,excerpt,content_json,content_html,cover,main_category,sub_category,tags,status,reading_minutes,created_at,updated_at,published_at,author_id,title_en,excerpt_en,content_html_en";
+  "id,title,slug,excerpt,content_json,content_html,cover,main_category,sub_category,tags,status,reading_minutes,created_at,updated_at,published_at,author_id,title_en,excerpt_en,content_html_en,summary,summary_en";
 
 /**
  * Returns true if Supabase is configured. We still use mock fallback when

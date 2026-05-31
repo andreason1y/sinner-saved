@@ -10,11 +10,16 @@ import {
   deletePostAction,
   uploadCoverImageAction,
 } from "@/lib/actions/posts";
-import { generateTagsAction, suggestSubcategoryAction, suggestMainCategoryAction } from "@/lib/actions/ai";
-import { importDocumentAction } from "@/lib/actions/import-doc";
+import {
+  generateTagsAction,
+  suggestSubcategoryAction,
+  suggestMainCategoryAction,
+  polishContentAction,
+} from "@/lib/actions/ai";
 import { getTranslationsAction } from "@/lib/actions/translate";
 import { CATEGORIES } from "@/lib/categories";
 import { PostEditor } from "./Editor";
+import type { Editor } from "@tiptap/react";
 import {
   Loader2,
   Save,
@@ -25,7 +30,7 @@ import {
   ImageUp,
   Sparkles,
   Languages,
-  FileUp,
+  Wand2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -60,9 +65,10 @@ export function PostForm({
     initial?.contentJson ?? null
   );
   const [contentHtml, setContentHtml] = useState(initial?.contentHtml ?? "");
-  // Bumped after an AI import to force the editor to remount with new content.
-  const [importVersion, setImportVersion] = useState(0);
-  const [importing, setImporting] = useState(false);
+  // Tiptap instance, captured once the editor mounts — used to apply the
+  // AI "polish" result in an undoable way.
+  const editorRef = useRef<Editor | null>(null);
+  const [polishing, setPolishing] = useState(false);
 
   // Language toggle: "id" = edit Indonesian content, "en" = view/edit EN translation
   const [lang, setLang] = useState<"id" | "en">("id");
@@ -162,42 +168,32 @@ export function PostForm({
     }
   };
 
-  const handleImportDoc = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
-    setImporting(true);
+  const handlePolish = async () => {
+    const editor = editorRef.current;
+    const html = editor?.getHTML() ?? contentHtml;
+    if (!html || !editor) {
+      window.alert("Tulis konten terlebih dahulu sebelum merapikan.");
+      return;
+    }
+    setPolishing(true);
     try {
-      const fd = new FormData();
-      fd.set("file", file);
-      const res = await importDocumentAction(fd);
+      const res = await polishContentAction(html);
       if (res.error) {
         window.alert(res.error);
         return;
       }
-
-      // Title & excerpt are uncontrolled (defaultValue + ref) — set via DOM.
-      if (titleRef.current && res.title != null) titleRef.current.value = res.title;
-      if (excerptRef.current && res.excerpt != null)
-        excerptRef.current.value = res.excerpt;
-
-      // Controlled fields.
-      if (res.mainCategory) setMain(res.mainCategory);
-      if (res.subCategory) setSub(res.subCategory);
-      if (res.tags) setTags(res.tags.join(", "));
-
-      // Content: swap editor content by remounting with the new JSON.
-      if (res.contentJson) {
-        setContentJson(res.contentJson);
-        setContentHtml(res.contentHtml ?? "");
-        setImportVersion((v) => v + 1);
+      if (res.html) {
+        // Replace the whole document in an undoable way (Ctrl+Z restores the
+        // previous version). onUpdate keeps contentJson/contentHtml in sync.
+        editor.chain().focus().selectAll().insertContent(res.html).run();
       }
     } catch (err) {
-      console.error("[import] failed:", err);
-      const detail = err instanceof Error ? err.message : String(err);
-      window.alert("Gagal memproses dokumen.\n\nDetail: " + detail);
+      console.error("[polish] failed:", err);
+      window.alert(
+        "Gagal merapikan tulisan. Coba lagi sebentar (kuota AI mungkin penuh)."
+      );
     } finally {
-      setImporting(false);
+      setPolishing(false);
     }
   };
 
@@ -357,44 +353,6 @@ export function PostForm({
 
           {/* ── Indonesian content ── */}
           <div className={lang === "en" ? "hidden" : "space-y-6"}>
-            {mode === "create" && (
-              <div className="rounded-2xl border border-dashed border-sacred-400/50 bg-sacred-50/50 p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-sm text-ink-700">
-                    <FileUp size={16} className="text-sacred-600" />
-                    <span>
-                      Impor dari dokumen — AI mengisi judul, excerpt, konten,
-                      kategori &amp; tags otomatis.
-                    </span>
-                  </div>
-                  <label
-                    className={cn(
-                      "inline-flex cursor-pointer items-center gap-2 rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-parchment transition-colors hover:bg-ink-800",
-                      importing && "cursor-wait opacity-60"
-                    )}
-                  >
-                    {importing ? (
-                      <Loader2 size={12} className="animate-spin" />
-                    ) : (
-                      <FileUp size={12} />
-                    )}
-                    {importing ? "Memproses…" : "Impor Dokumen"}
-                    <input
-                      type="file"
-                      accept=".docx,.pdf,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown"
-                      className="hidden"
-                      onChange={handleImportDoc}
-                      disabled={importing}
-                    />
-                  </label>
-                </div>
-                <p className="mt-2 text-[11px] text-ink-400">
-                  Format .docx, .pdf, .txt, .md · hasil AI — periksa &amp; edit
-                  sebelum menyimpan.
-                </p>
-              </div>
-            )}
-
             <Field label="Judul" name="title" required>
               <input
                 ref={titleRef}
@@ -418,15 +376,33 @@ export function PostForm({
             </Field>
 
             <div>
-              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ink-500">Konten</p>
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-xs uppercase tracking-[0.28em] text-ink-500">Konten</p>
+                <button
+                  type="button"
+                  onClick={handlePolish}
+                  disabled={polishing}
+                  title="Rapikan ejaan, tanda baca, heading, & format dengan AI"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-sacred-400/60 bg-sacred-50 px-3 py-1.5 text-[11px] font-medium text-sacred-700 transition-colors hover:bg-sacred-100 disabled:opacity-50"
+                >
+                  {polishing ? (
+                    <Loader2 size={12} className="animate-spin" />
+                  ) : (
+                    <Wand2 size={12} />
+                  )}
+                  {polishing ? "Merapikan…" : "Rapikan dengan AI"}
+                </button>
+              </div>
               <PostEditor
-                key={importVersion}
-                initialJson={importVersion === 0 ? initial?.contentJson : contentJson}
+                initialJson={initial?.contentJson}
                 onChange={(json, html) => {
                   setContentJson(json);
                   setContentHtml(html);
                 }}
                 onUploadImage={editorImageUpload}
+                onEditorReady={(editor) => {
+                  editorRef.current = editor;
+                }}
               />
             </div>
           </div>
