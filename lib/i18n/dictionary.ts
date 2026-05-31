@@ -54,6 +54,12 @@ type Dict = {
     title: string;
     blurb: string;
   };
+  popular: {
+    eyebrow: string;
+    title: string;
+    blurb: string;
+    rankLabel: string;
+  };
   ruangLensa: {
     eyebrow: string;
     title: string;
@@ -168,6 +174,13 @@ const id: Dict = {
     title: "Memahami iman dengan jernih dan rendah hati.",
     blurb:
       "Menggali doktrin, apologetika, dan pertanyaan iman — supaya kita makin mengenal Allah dan firman-Nya.",
+  },
+  popular: {
+    eyebrow: "Paling Banyak Dibaca",
+    title: "Yang sedang ramai dibaca.",
+    blurb:
+      "Tulisan-tulisan yang paling sering dibuka pembaca belakangan ini — tempat yang baik untuk mulai.",
+    rankLabel: "Peringkat",
   },
   ruangLensa: {
     eyebrow: "03 / Ruang Lensa",
@@ -307,6 +320,13 @@ const en: Dict = {
     title: "Understanding faith with clarity and humility.",
     blurb:
       "Exploring doctrine, apologetics, and questions of faith — so we come to know God and his word more deeply.",
+  },
+  popular: {
+    eyebrow: "Most Read",
+    title: "What readers are reading.",
+    blurb:
+      "The pieces readers have been opening most lately — a good place to begin.",
+    rankLabel: "Rank",
   },
   ruangLensa: {
     eyebrow: "03 / Ruang Lensa",

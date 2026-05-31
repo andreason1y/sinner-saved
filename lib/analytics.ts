@@ -74,6 +74,41 @@ export async function getPopularPaths(limit = 10): Promise<PathStat[]> {
     .map(([path, views]) => ({ path, views }));
 }
 
+/**
+ * Ranks only single-post URLs (`/{mainCategory}/{slug}`) by view count,
+ * optionally restricted to the last `sinceDays`. Used to power the public
+ * "most read" rail. Returns [] when Supabase has no data — callers should
+ * fall back to recency.
+ */
+export async function getPopularPostPaths(
+  limit = 5,
+  sinceDays?: number
+): Promise<PathStat[]> {
+  const admin = createSupabaseAdminClient();
+  let query = admin.from("page_views").select("path");
+  if (typeof sinceDays === "number") {
+    const since = new Date();
+    since.setDate(since.getDate() - sinceDays);
+    since.setHours(0, 0, 0, 0);
+    query = query.gte("viewed_at", since.toISOString());
+  }
+  const { data } = await query;
+  if (!data) return [];
+
+  const counts: Record<string, number> = {};
+  for (const row of data) {
+    // Post URLs have exactly two non-empty segments.
+    const segments = row.path.split("/").filter(Boolean);
+    if (segments.length !== 2) continue;
+    counts[row.path] = (counts[row.path] ?? 0) + 1;
+  }
+
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([path, views]) => ({ path, views }));
+}
+
 // Generic "group a single text column and rank by count" helper, mirroring
 // the in-memory aggregation used by getPopularPaths. `fallback` labels rows
 // where the column is null/empty (e.g. "Direct" for missing referrers).
