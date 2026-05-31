@@ -9,6 +9,7 @@ import {
   LOCALES,
   type Locale,
 } from "@/lib/i18n/dictionary";
+import { SITE } from "@/lib/site";
 
 // Self-host Google fonts at build time. Eliminates the render-blocking
 // <link> to fonts.googleapis.com, ships only the subsets/weights we use,
@@ -31,15 +32,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://sinner-saved.xyz"
-  ),
+  metadataBase: new URL(SITE.url),
   title: {
-    default: "SinnerSaved — Catatan Iman",
-    template: "%s · SinnerSaved",
+    default: SITE.title,
+    template: `%s · ${SITE.name}`,
   },
-  description:
-    "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
+  description: SITE.description,
   keywords: [
     "alkitab",
     "iman",
@@ -49,10 +47,22 @@ export const metadata: Metadata = {
     "SinnerSaved",
   ],
   openGraph: {
-    title: "SinnerSaved",
-    description:
-      "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
+    title: SITE.name,
+    description: SITE.description,
+    url: SITE.url,
+    siteName: SITE.name,
+    locale: SITE.locale,
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE.name,
+    description: SITE.description,
+  },
+  alternates: {
+    types: {
+      "application/rss+xml": [{ url: "/feed.xml", title: SITE.name }],
+    },
   },
   verification: {
     google: "Loo644KZKKDJ2DiGP363U48GSOAkasP1CbB0baL_TZ0",

@@ -21,6 +21,9 @@ import {
   type TocItem,
 } from "@/components/post/TableOfContents";
 import { RelatedPosts } from "@/components/post/RelatedPosts";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { articleSchema, breadcrumbSchema } from "@/lib/seo";
+import { absoluteUrl } from "@/lib/site";
 import { extractTocFromHtml } from "@/lib/toc";
 import type { ContentBlock } from "@/lib/types";
 import {
@@ -47,14 +50,24 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);
   if (!post) return {};
+  const canonical = absoluteUrl(`/${post.mainCategory}/${post.slug}`);
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical },
     openGraph: {
       title: post.title,
       description: post.excerpt,
+      url: canonical,
       type: "article",
+      publishedTime: post.createdAt,
+      modifiedTime: post.updatedAt ?? post.createdAt,
       images: post.cover ? [post.cover] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
     },
   };
 }
@@ -132,6 +145,8 @@ export default async function PostPage({
 
   return (
     <article className="relative overflow-x-clip">
+      <JsonLd data={articleSchema(post)} />
+      <JsonLd data={breadcrumbSchema(post)} />
       <ReadingProgress />
 
       {post.cover && (
