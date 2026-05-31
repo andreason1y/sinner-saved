@@ -2,10 +2,15 @@ import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/posts";
 import { CATEGORIES } from "@/lib/categories";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sinnersaved.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sinner-saved.xyz";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = await getPublishedPosts();
+  let posts: Awaited<ReturnType<typeof getPublishedPosts>> = [];
+  try {
+    posts = await getPublishedPosts();
+  } catch {
+    // fallback to empty if Supabase unavailable
+  }
 
   const staticPages: MetadataRoute.Sitemap = [
     {
