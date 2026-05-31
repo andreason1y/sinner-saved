@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Mail, MessageCircle, Lightbulb, AlertOctagon, ArrowUpRight } from "lucide-react";
 import { Reveal, StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { useLocale } from "@/components/i18n/LocaleProvider";
@@ -51,16 +50,13 @@ export function Contact() {
   ];
 
   return (
-    <section id="kontak" className="relative py-24 sm:py-32">
-      {/* Decorative glow */}
-      <div className="pointer-events-none absolute inset-x-0 top-1/3 -z-10 h-[480px] bg-radial-glow opacity-50 dark:opacity-30" />
-
+    <section id="kontak" className="relative border-t border-ink-900/10 py-24 dark:border-white/10 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-ink-400 dark:text-ink-500">
             {t.contact.eyebrow}
           </p>
-          <h2 className="serif-display mt-3 max-w-3xl text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-5xl">
+          <h2 className="serif-display mt-3 max-w-3xl text-3xl leading-[1.08] text-ink-900 dark:text-ink-50 sm:text-4xl">
             {t.contact.title}
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
@@ -87,12 +83,12 @@ export function Contact() {
             <FadeInUp key={card.title}>
               <a
                 href={mailto(card.subject)}
-                className={`group block h-full overflow-hidden rounded-2xl p-7 transition-all hover:-translate-y-1 ${
+                className={`group block h-full overflow-hidden rounded-2xl p-7 transition-colors ${
                   card.tone === "dark"
-                    ? "bg-ink-900 text-ink-50 shadow-card hover:shadow-card-hover dark:bg-ink-800"
+                    ? "bg-ink-900 text-ink-50 ring-1 ring-white/10 hover:ring-white/25 dark:bg-ink-800"
                     : card.tone === "sacred"
-                    ? "bg-gradient-to-br from-sacred-50 to-parchment-deep ring-1 ring-sacred-200/60 hover:ring-sacred-300 dark:from-sacred-500/10 dark:to-white/[0.03] dark:ring-sacred-500/20 dark:hover:ring-sacred-500/40"
-                    : "bg-white shadow-card ring-1 ring-ink-900/5 hover:shadow-card-hover dark:bg-ink-900 dark:ring-white/5"
+                    ? "bg-parchment-deep ring-1 ring-ink-900/10 hover:ring-ink-900/25 dark:bg-white/[0.04] dark:ring-white/10 dark:hover:ring-white/25"
+                    : "bg-white ring-1 ring-ink-900/10 hover:ring-ink-900/25 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-white/25"
                 }`}
               >
                 <div
@@ -125,8 +121,8 @@ export function Contact() {
                 <span
                   className={`mt-6 inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.24em] ${
                     card.tone === "dark"
-                      ? "text-sacred-300"
-                      : "text-sacred-700 dark:text-sacred-300"
+                      ? "text-ink-300"
+                      : "text-ink-600 dark:text-ink-300"
                   }`}
                 >
                   {t.contact.cta}

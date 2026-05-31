@@ -13,8 +13,8 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 lg:grid-cols-12 lg:px-8">
         {/* Brand block */}
         <div className="lg:col-span-5">
-          <p className="serif-display text-4xl tracking-tightest text-ink-50">
-            Sinner<span className="italic text-sacred-300">Saved</span>
+          <p className="serif-display text-4xl text-ink-50">
+            Sinner<span className="italic text-ink-400">Saved</span>
           </p>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-300">
             {t.footer.tagline}
@@ -22,12 +22,12 @@ export function Footer() {
 
           {/* Email contact block */}
           <div className="mt-8 inline-flex flex-col gap-2 rounded-2xl border border-white/5 bg-white/[0.03] p-5">
-            <p className="text-[10px] uppercase tracking-[0.32em] text-sacred-300">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-400">
               {t.footer.sectionContact}
             </p>
             <a
               href="mailto:andreassina6a@gmail.com"
-              className="serif-display group inline-flex items-center gap-2 text-lg text-ink-50 hover:text-sacred-300"
+              className="serif-display group inline-flex items-center gap-2 text-lg text-ink-50 hover:text-ink-300"
             >
               <Mail size={16} className="opacity-70 transition-transform group-hover:-translate-y-0.5" />
               andreassina6a@gmail.com
@@ -48,7 +48,7 @@ export function Footer() {
             const cat = localizeCategory(rawCat, locale);
             return (
             <div key={cat.slug}>
-              <p className="text-xs uppercase tracking-[0.22em] text-sacred-300">
+              <p className="text-xs uppercase tracking-[0.22em] text-ink-400">
                 {cat.name}
               </p>
               <ul className="mt-4 space-y-2 text-sm text-ink-200">

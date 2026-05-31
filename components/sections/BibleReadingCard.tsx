@@ -14,10 +14,10 @@ export function BibleReadingCard() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 180, damping: 24, delay: 0.15 }}
-        className="overflow-hidden rounded-2xl bg-ink-900 text-ink-50 shadow-card"
+        transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
+        className="overflow-hidden rounded-2xl bg-ink-900 text-ink-50 ring-1 ring-white/10"
       >
         <div className="px-6 py-6 sm:px-8 sm:py-7">
           {/* Header row */}

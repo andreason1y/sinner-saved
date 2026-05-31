@@ -34,28 +34,17 @@ body {
 
 body {
   font-family: var(--font-inter), system-ui, sans-serif;
-  background-image: radial-gradient(
-      80% 60% at 50% 0%,
-      rgba(209, 132, 32, 0.08) 0%,
-      rgba(209, 132, 32, 0) 60%
-    ),
-    linear-gradient(180deg, #f5f1e8 0%, #f7f4ec 100%);
   /*
-   * `background-attachment: fixed` triggers a full-screen repaint on every
-   * scroll frame on most mobile browsers (and many desktop ones). The same
-   * "fixed glow" look is achieved with the section-level `bg-radial-glow`
-   * decorations, so we let the body background scroll normally.
+   * Flat, quiet paper — no radial "hero glow". A redesign brief explicitly
+   * asked to drop the gold halo that read as a generated-template tell, so
+   * the page is just warm parchment (a hair of vertical tone for depth).
    */
+  background-color: #f5f1e8;
   transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 html.dark body {
-  background-image: radial-gradient(
-      80% 60% at 50% 0%,
-      rgba(238, 188, 99, 0.06) 0%,
-      rgba(238, 188, 99, 0) 60%
-    ),
-    linear-gradient(180deg, #0b0a08 0%, #100e0a 100%);
+  background-color: #0b0a08;
 }
 
 ::selection {
@@ -141,8 +130,8 @@ html.dark .pill {
 /* Reading rhythm helper */
 .serif-display {
   font-family: var(--font-playfair), Georgia, serif;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-weight: 400;
+  letter-spacing: -0.005em;
 }
 
 /* Hide scrollbars on horizontal rails */

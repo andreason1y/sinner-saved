@@ -3,27 +3,28 @@
 import { motion, type Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+// Motion here is intentionally restrained: a quiet, short fade with a small
+// rise. No blur, no springy overshoot, no long staggers — the old word/card
+// choreography read as "generated landing page". Content should settle, not
+// perform.
 const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
+      staggerChildren: 0.05,
+      delayChildren: 0,
     },
   },
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 28, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      type: "spring",
-      stiffness: 180,
-      damping: 24,
-      mass: 0.9,
+      duration: 0.5,
+      ease: [0.22, 0.61, 0.36, 1],
     },
   },
 };
@@ -87,7 +88,7 @@ export function Reveal({
   children,
   className,
   delay = 0,
-  y = 24,
+  y = 10,
   once = true,
 }: {
   children: React.ReactNode;
@@ -103,10 +104,8 @@ export function Reveal({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, amount: 0.3 }}
       transition={{
-        type: "spring",
-        stiffness: 180,
-        damping: 24,
-        mass: 0.9,
+        duration: 0.5,
+        ease: [0.22, 0.61, 0.36, 1],
         delay,
       }}
     >

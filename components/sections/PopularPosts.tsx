@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
@@ -34,50 +33,46 @@ export function PopularPosts({ posts }: { posts: Post[] }) {
         <StaggerContainer className="mt-14 flex flex-col">
           {posts.map((post, i) => (
             <FadeInUp key={post.id}>
-              <motion.div whileHover={{ x: 6 }} transition={{ type: "spring", stiffness: 300, damping: 26 }}>
-                <Link
-                  href={`/${post.mainCategory}/${post.slug}`}
-                  className="group flex items-center gap-5 border-t border-ink-900/10 py-6 last:border-b dark:border-white/10 sm:gap-8"
+              <Link
+                href={`/${post.mainCategory}/${post.slug}`}
+                className="group flex items-center gap-5 border-t border-ink-900/10 py-6 last:border-b dark:border-white/10 sm:gap-8"
+              >
+                {/* Rank */}
+                <span
+                  aria-label={`${t.popular.rankLabel} ${i + 1}`}
+                  className="serif-display w-10 shrink-0 text-3xl tabular-nums text-ink-300 dark:text-ink-600 sm:w-14 sm:text-5xl"
                 >
-                  {/* Rank */}
-                  <span
-                    aria-label={`${t.popular.rankLabel} ${i + 1}`}
-                    className="serif-display w-10 shrink-0 text-3xl tabular-nums text-ink-300 transition-colors group-hover:text-sacred-500 dark:text-ink-600 dark:group-hover:text-sacred-300 sm:w-14 sm:text-5xl"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
 
-                  {/* Body */}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
-                      <span>{subName(post.mainCategory, post.subCategory)}</span>
-                      <span className="text-ink-300 dark:text-ink-600">·</span>
-                      <span className="text-ink-400 dark:text-ink-500">
-                        {formatDate(post.createdAt, locale)}
-                      </span>
-                    </div>
-                    <h3 className="serif-display mt-1.5 line-clamp-2 text-xl leading-snug text-ink-900 transition-colors group-hover:text-sacred-700 dark:text-ink-50 dark:group-hover:text-sacred-200 sm:text-2xl">
-                      {post.title}
-                    </h3>
-                    <p className="mt-1.5 line-clamp-1 text-sm text-ink-500 dark:text-ink-400">
-                      {post.excerpt}
-                    </p>
+                {/* Body */}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-ink-400 dark:text-ink-500">
+                    <span>{subName(post.mainCategory, post.subCategory)}</span>
+                    <span className="text-ink-300 dark:text-ink-600">·</span>
+                    <span>{formatDate(post.createdAt, locale)}</span>
                   </div>
+                  <h3 className="serif-display mt-1.5 line-clamp-2 text-xl leading-snug text-ink-900 dark:text-ink-50 sm:text-2xl">
+                    {post.title}
+                  </h3>
+                  <p className="mt-1.5 line-clamp-1 text-sm text-ink-500 dark:text-ink-400">
+                    {post.excerpt}
+                  </p>
+                </div>
 
-                  {/* Thumbnail */}
-                  {post.cover && (
-                    <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-xl sm:block">
-                      <Image
-                        src={post.cover}
-                        alt={post.title}
-                        fill
-                        sizes="112px"
-                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                      />
-                    </div>
-                  )}
-                </Link>
-              </motion.div>
+                {/* Thumbnail */}
+                {post.cover && (
+                  <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-xl sm:block">
+                    <Image
+                      src={post.cover}
+                      alt={post.title}
+                      fill
+                      sizes="112px"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    />
+                  </div>
+                )}
+              </Link>
             </FadeInUp>
           ))}
         </StaggerContainer>

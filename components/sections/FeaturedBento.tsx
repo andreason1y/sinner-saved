@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { CATEGORIES } from "@/lib/categories";
 import type { Post } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
@@ -21,12 +20,12 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
   return (
     <section id="latest" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="mb-12 flex items-end justify-between gap-6">
+        <div className="mb-12 flex items-end justify-between gap-6 border-b border-ink-900/10 pb-6 dark:border-white/10">
           <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-ink-400 dark:text-ink-500">
               {t.feature.eyebrow}
             </p>
-            <h2 className="serif-display mt-3 text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-5xl">
+            <h2 className="serif-display mt-3 text-3xl leading-[1.08] text-ink-900 dark:text-ink-50 sm:text-4xl">
               {t.feature.title}
             </h2>
           </div>
@@ -43,7 +42,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
             <FadeInUp className="sm:col-span-6 lg:col-span-7 lg:row-span-2">
               <Link
                 href={`/${hero.mainCategory}/${hero.slug}`}
-                className="group relative block h-full overflow-hidden rounded-3xl bg-ink-900 shadow-card transition-shadow hover:shadow-card-hover"
+                className="group relative block h-full overflow-hidden rounded-2xl bg-ink-900 ring-1 ring-ink-900/10 dark:ring-white/10"
               >
                 <div className="relative aspect-[16/11] w-full overflow-hidden lg:aspect-auto lg:h-full">
                   {hero.cover && (
@@ -53,19 +52,17 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                       fill
                       sizes="(min-width: 1024px) 60vw, 100vw"
                       priority
-                      className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/30 to-transparent" />
                 </div>
 
                 <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
-                  <div className="flex items-center gap-3 text-xs uppercase tracking-[0.28em] text-sacred-300">
+                  <div className="flex items-center gap-3 text-xs uppercase tracking-[0.24em] text-ink-200/80">
                     <span>{categoryName(hero.mainCategory)}</span>
                     <span className="opacity-50">·</span>
-                    <span className="text-ink-200">
-                      {formatDate(hero.createdAt, locale)}
-                    </span>
+                    <span>{formatDate(hero.createdAt, locale)}</span>
                   </div>
                   <h3 className="serif-display mt-4 max-w-3xl text-3xl leading-tight text-ink-50 line-clamp-3 sm:text-4xl">
                     {hero.title}
@@ -75,13 +72,9 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                   </p>
                   <div className="mt-6 inline-flex items-center gap-2 text-sm text-ink-100">
                     <span className="link-underline">{t.feature.readMore}</span>
-                    <motion.span
-                      initial={{ x: 0 }}
-                      whileHover={{ x: 4 }}
-                      className="transition-transform group-hover:translate-x-1"
-                    >
+                    <span className="transition-transform group-hover:translate-x-1">
                       →
-                    </motion.span>
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -92,7 +85,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
             <FadeInUp key={post.id} className="sm:col-span-3 lg:col-span-5">
               <Link
                 href={`/${post.mainCategory}/${post.slug}`}
-                className="group relative block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover dark:bg-ink-900 dark:ring-white/10"
+                className="group relative block h-full overflow-hidden rounded-2xl bg-white ring-1 ring-ink-900/10 transition-colors hover:ring-ink-900/25 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-white/25"
               >
                 <div className="grid h-full grid-cols-5">
                   {post.cover && (
@@ -102,7 +95,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                         alt={post.title}
                         fill
                         sizes="(min-width: 1024px) 20vw, 40vw"
-                        className="object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.08]"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                       />
                     </div>
                   )}
@@ -112,7 +105,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                     }`}
                   >
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
+                      <p className="text-[10px] uppercase tracking-[0.24em] text-ink-400 dark:text-ink-500">
                         {categoryName(post.mainCategory)}
                       </p>
                       <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 line-clamp-2 dark:text-ink-50">

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Hanken_Grotesk, Fraunces } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, NoFlashScript } from "@/components/theme/ThemeProvider";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
@@ -12,19 +12,25 @@ import {
 import { SITE } from "@/lib/site";
 
 // Self-host Google fonts at build time. Eliminates the render-blocking
-// <link> to fonts.googleapis.com, ships only the subsets/weights we use,
-// and lets Next.js inline a `font-display: swap` declaration + preload.
-const inter = Inter({
+// <link> to fonts.googleapis.com, ships only the subsets we use, and lets
+// Next.js inline a `font-display: swap` declaration + preload.
+//
+// Type pairing is deliberately *not* the ubiquitous Inter + Playfair Display
+// combo every template ships with. Hanken Grotesk is a calm, slightly warm
+// grotesque for UI/reading; Fraunces is an old-style serif with real
+// character (soft terminals, gentle italics) for display — quiet but
+// unmistakably "set by a person". The CSS variable names are kept as
+// `--font-inter` / `--font-playfair` so the rest of the stylesheet and
+// components keep working without a sweeping rename.
+const sans = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   variable: "--font-inter",
   preload: true,
 });
 
-const playfair = Playfair_Display({
+const serif = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
   variable: "--font-playfair",
@@ -85,7 +91,7 @@ export default function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${playfair.variable}`}
+      className={`${sans.variable} ${serif.variable}`}
       suppressHydrationWarning
     >
       <head>
