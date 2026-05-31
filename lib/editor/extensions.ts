@@ -9,7 +9,9 @@ import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import TextAlign from "@tiptap/extension-text-align";
 import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
 import { FontSize } from "./font-size";
+import { TextIndent } from "./text-indent";
 
 /**
  * Single source of truth for the editor's extension set.
@@ -52,5 +54,7 @@ export const buildExtensions = (placeholder?: string) => [
   Superscript,
   TextAlign.configure({ types: ["heading", "paragraph"] }),
   TextStyle,
+  Color,
   FontSize,
+  TextIndent,
 ];
