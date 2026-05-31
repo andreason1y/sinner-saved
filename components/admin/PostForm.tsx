@@ -192,6 +192,11 @@ export function PostForm({
         setContentHtml(res.contentHtml ?? "");
         setImportVersion((v) => v + 1);
       }
+    } catch (err) {
+      console.error("[import] failed:", err);
+      window.alert(
+        "Gagal memproses dokumen. Pastikan file .docx/.pdf/.txt/.md dan ukuran wajar, lalu coba lagi."
+      );
     } finally {
       setImporting(false);
     }
