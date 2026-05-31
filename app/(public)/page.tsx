@@ -10,6 +10,13 @@ import {
   getFeaturedPosts,
   getPostsByMainCategory,
 } from "@/lib/posts";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { websiteSchema, organizationSchema } from "@/lib/seo";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export const dynamic = "force-static";
 // Refresh every 5 min in production. Public posts barely change between
@@ -28,6 +35,8 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={websiteSchema()} />
+      <JsonLd data={organizationSchema()} />
       <Hero />
       <BibleReadingCard />
       <FeaturedBento posts={featured} />

@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/posts";
 import { CATEGORIES } from "@/lib/categories";
+import { SITE } from "@/lib/site";
 
 export const revalidate = 3600; // re-generate every hour
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://sinner-saved.xyz";
+const BASE_URL = SITE.url;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let posts: Awaited<ReturnType<typeof getPublishedPosts>> = [];
