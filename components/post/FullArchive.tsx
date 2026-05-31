@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { Search, X } from "lucide-react";
 import type { Post } from "@/lib/types";
 import { CATEGORIES, localizeCategory } from "@/lib/categories";
 import { PostCard } from "./PostCard";
@@ -31,6 +32,7 @@ const cardVariants: Variants = {
 
 export function FullArchive({ posts }: { posts: Post[] }) {
   const [activeMain, setActiveMain] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
   const { t, locale } = useLocale();
 
   const counts = useMemo(() => {
@@ -39,10 +41,28 @@ export function FullArchive({ posts }: { posts: Post[] }) {
     return c;
   }, [posts]);
 
-  const filtered = useMemo(
-    () => (activeMain === null ? posts : posts.filter((p) => p.mainCategory === activeMain)),
-    [activeMain, posts]
-  );
+  const trimmedQuery = query.trim();
+
+  const filtered = useMemo(() => {
+    const q = trimmedQuery.toLowerCase();
+    return posts.filter((p) => {
+      if (activeMain !== null && p.mainCategory !== activeMain) return false;
+      if (!q) return true;
+      // Search across title/excerpt/tags, including translated fields so the
+      // box works regardless of the language the reader is browsing in.
+      const haystack = [
+        p.title,
+        p.excerpt,
+        p.titleEn,
+        p.excerptEn,
+        ...(p.tags ?? []),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [activeMain, trimmedQuery, posts]);
 
   const categories = CATEGORIES.map((c) => localizeCategory(c, locale));
 
@@ -73,6 +93,29 @@ export function FullArchive({ posts }: { posts: Post[] }) {
           transition={{ type: "spring", stiffness: 180, damping: 24, delay: 0.1 }}
           className="mt-12 border-y border-ink-900/10 py-5 dark:border-white/10"
         >
+          <div className="relative mb-5">
+            <Search
+              size={16}
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink-400 dark:text-ink-500"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t.archive.searchPlaceholder}
+              aria-label={t.archive.searchPlaceholder}
+              className="w-full rounded-full border border-ink-900/15 bg-white/60 py-2.5 pl-11 pr-11 text-sm text-ink-900 placeholder:text-ink-400 focus:border-ink-900/30 focus:outline-none focus:ring-2 focus:ring-sacred-500/30 dark:border-white/15 dark:bg-white/[0.04] dark:text-ink-50 dark:placeholder:text-ink-500"
+            />
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-ink-400 transition-colors hover:text-ink-700 dark:text-ink-500 dark:hover:text-ink-200"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
           <div className="flex flex-wrap items-center gap-2">
             <FilterPill
               label={t.archive.all}
@@ -93,7 +136,7 @@ export function FullArchive({ posts }: { posts: Post[] }) {
         </motion.div>
 
         <motion.div
-          key={activeMain ?? "all"}
+          key={`${activeMain ?? "all"}-${trimmedQuery}`}
           variants={gridVariants}
           initial="hidden"
           animate="visible"
@@ -115,10 +158,12 @@ export function FullArchive({ posts }: { posts: Post[] }) {
             className="mt-20 rounded-3xl border border-dashed border-ink-900/15 bg-white/40 p-16 text-center dark:border-white/15 dark:bg-white/[0.02]"
           >
             <p className="serif-display text-3xl text-ink-900 dark:text-ink-50">
-              {t.archive.emptyTitle}
+              {trimmedQuery ? t.archive.searchEmptyTitle : t.archive.emptyTitle}
             </p>
             <p className="mt-3 text-sm text-ink-500 dark:text-ink-400">
-              {t.archive.emptyBody}
+              {trimmedQuery
+                ? t.archive.searchEmptyBody(trimmedQuery)
+                : t.archive.emptyBody}
             </p>
           </motion.div>
         )}

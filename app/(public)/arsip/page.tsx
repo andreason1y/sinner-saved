@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Arsip Tulisan",
   description:
     "Semua tulisan yang pernah diterbitkan di SinnerSaved — dari tafsir Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
+  alternates: { canonical: "/arsip" },
   openGraph: {
     title: "Arsip Tulisan — SinnerSaved",
     description:

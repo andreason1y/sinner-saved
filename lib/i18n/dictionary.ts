@@ -74,6 +74,9 @@ type Dict = {
     arsipTitle: string;
     arsipIntro: string;
     arsipLabel: (count: number) => string;
+    searchPlaceholder: string;
+    searchEmptyTitle: string;
+    searchEmptyBody: (query: string) => string;
   };
   post: {
     toc: string;
@@ -181,6 +184,10 @@ const id: Dict = {
     arsipIntro:
       "Semua tulisan yang pernah saya terbitkan — dari tafsir teks Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
     arsipLabel: (count) => `${count} tulisan`,
+    searchPlaceholder: "Cari judul, topik, atau tag…",
+    searchEmptyTitle: "Tidak ada tulisan yang cocok.",
+    searchEmptyBody: (query) =>
+      `Tidak ada hasil untuk "${query}". Coba kata kunci lain atau hapus filter.`,
   },
   post: {
     toc: "Daftar isi",
@@ -305,6 +312,10 @@ const en: Dict = {
     arsipIntro:
       "Every piece I've published — Scripture studies, doctrine, cultural reflections, and personal notes.",
     arsipLabel: (count) => `${count} ${count === 1 ? "piece" : "pieces"}`,
+    searchPlaceholder: "Search by title, topic, or tag…",
+    searchEmptyTitle: "No pieces match your search.",
+    searchEmptyBody: (query) =>
+      `Nothing found for "${query}". Try a different keyword or clear the filter.`,
   },
   post: {
     toc: "Table of contents",
