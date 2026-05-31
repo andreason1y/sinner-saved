@@ -75,6 +75,18 @@ type Dict = {
     arsipIntro: string;
     arsipLabel: (count: number) => string;
   };
+  search: {
+    title: string;
+    intro: string;
+    placeholder: string;
+    label: string;
+    resultsLabel: (count: number) => string;
+    promptTitle: string;
+    promptBody: string;
+    emptyTitle: string;
+    emptyBody: (q: string) => string;
+    clear: string;
+  };
   post: {
     toc: string;
     backToCategory: string;
@@ -181,6 +193,22 @@ const id: Dict = {
     arsipIntro:
       "Semua tulisan yang pernah saya terbitkan — dari tafsir teks Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
     arsipLabel: (count) => `${count} tulisan`,
+  },
+  search: {
+    title: "Cari Tulisan",
+    intro:
+      "Telusuri seluruh arsip — berdasarkan judul, kutipan, tag, atau kategori.",
+    placeholder: "Cari judul, topik, atau tag…",
+    label: "Cari",
+    resultsLabel: (count) =>
+      `${count} tulisan ditemukan`,
+    promptTitle: "Mulai mengetik untuk mencari.",
+    promptBody:
+      "Coba kata kunci seperti “anugerah”, “eksegesis”, atau nama kitab.",
+    emptyTitle: "Tidak ada hasil.",
+    emptyBody: (q) =>
+      `Tidak ada tulisan yang cocok dengan “${q}”. Coba kata kunci lain atau jelajahi arsip.`,
+    clear: "Bersihkan",
   },
   post: {
     toc: "Daftar isi",
@@ -305,6 +333,22 @@ const en: Dict = {
     arsipIntro:
       "Every piece I've published — Scripture studies, doctrine, cultural reflections, and personal notes.",
     arsipLabel: (count) => `${count} ${count === 1 ? "piece" : "pieces"}`,
+  },
+  search: {
+    title: "Search",
+    intro:
+      "Search the entire archive — by title, excerpt, tag, or category.",
+    placeholder: "Search titles, topics, or tags…",
+    label: "Search",
+    resultsLabel: (count) =>
+      `${count} ${count === 1 ? "piece" : "pieces"} found`,
+    promptTitle: "Start typing to search.",
+    promptBody:
+      "Try keywords like “grace”, “exegesis”, or a book name.",
+    emptyTitle: "No results.",
+    emptyBody: (q) =>
+      `Nothing matched “${q}”. Try another keyword or browse the archive.`,
+    clear: "Clear",
   },
   post: {
     toc: "Table of contents",

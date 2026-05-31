@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, Mail } from "lucide-react";
+import { Menu, X, Mail, Search } from "lucide-react";
 import { CATEGORIES, localizeCategory } from "@/lib/categories";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -15,6 +16,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { t, locale } = useLocale();
+  const router = useRouter();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -22,6 +24,28 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Global search shortcuts: "/" or ⌘/Ctrl+K open the search page — unless the
+  // user is already typing into a field.
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement | null;
+      const typing =
+        el &&
+        (el.tagName === "INPUT" ||
+          el.tagName === "TEXTAREA" ||
+          el.tagName === "SELECT" ||
+          el.isContentEditable);
+      const cmdK = (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k";
+      const slash = e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey;
+      if (cmdK || (slash && !typing)) {
+        e.preventDefault();
+        router.push("/cari");
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [router]);
 
   return (
     <motion.header
@@ -130,6 +154,14 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            href="/cari"
+            aria-label={t.nav.search}
+            title={`${t.nav.search}  (/  ·  ⌘K)`}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-ink-900/10 bg-white/60 text-ink-700 transition-colors hover:text-ink-900 dark:border-white/10 dark:bg-white/[0.04] dark:text-ink-100 dark:hover:text-ink-50"
+          >
+            <Search size={16} />
+          </Link>
           <LocaleToggle />
           <ThemeToggle />
           <button
@@ -171,6 +203,19 @@ export function Navbar() {
                   </li>
                   );
                 })}
+                <li>
+                  <Link
+                    href="/cari"
+                    onClick={() => setOpen(false)}
+                    className="serif-display flex items-center gap-2 text-2xl text-ink-900 dark:text-ink-50"
+                  >
+                    <Search size={20} className="opacity-70" />
+                    {t.nav.search}
+                  </Link>
+                  <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
+                    {t.search.intro}
+                  </p>
+                </li>
                 <li>
                   <Link
                     href="/kontak"

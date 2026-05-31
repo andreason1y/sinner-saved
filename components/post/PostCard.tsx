@@ -13,16 +13,45 @@ function subName(mainSlug: string, subSlug: string) {
   return cat?.subcategories.find((s) => s.slug === subSlug)?.name ?? subSlug;
 }
 
+function escapeRegExp(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Wraps every occurrence of any search term in <mark>. Used by the search
+ * page so matched words pop within the title/excerpt. Returns the plain
+ * string untouched when there are no terms.
+ */
+function highlight(text: string, terms?: string[]): React.ReactNode {
+  if (!terms || terms.length === 0) return text;
+  const re = new RegExp(`(${terms.map(escapeRegExp).join("|")})`, "gi");
+  const parts = text.split(re);
+  return parts.map((part, i) =>
+    re.test(part) ? (
+      <mark
+        key={i}
+        className="rounded bg-sacred-200/70 px-0.5 text-inherit dark:bg-sacred-400/25"
+      >
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  );
+}
+
 type Variant = "default" | "compact" | "feature" | "dark";
 
 export function PostCard({
   post,
   variant = "default",
   layoutId,
+  highlightTerms,
 }: {
   post: Post;
   variant?: Variant;
   layoutId?: string;
+  highlightTerms?: string[];
 }) {
   const sub = subName(post.mainCategory, post.subCategory);
   const href = `/${post.mainCategory}/${post.slug}`;
@@ -160,10 +189,10 @@ export function PostCard({
             {sub}
           </p>
           <h3 className="serif-display mt-3 line-clamp-2 text-xl leading-snug text-ink-900 dark:text-ink-50">
-            {post.title}
+            {highlight(post.title, highlightTerms)}
           </h3>
           <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
-            {post.excerpt}
+            {highlight(post.excerpt, highlightTerms)}
           </p>
           <div className="mt-4 flex items-center justify-between text-xs text-ink-500 dark:text-ink-400">
             <span>{formatDate(post.createdAt, locale)}</span>
