@@ -192,6 +192,10 @@ export function PostForm({
         setContentHtml(res.contentHtml ?? "");
         setImportVersion((v) => v + 1);
       }
+    } catch (err) {
+      console.error("[import] failed:", err);
+      const detail = err instanceof Error ? err.message : String(err);
+      window.alert("Gagal memproses dokumen.\n\nDetail: " + detail);
     } finally {
       setImporting(false);
     }

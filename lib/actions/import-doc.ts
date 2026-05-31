@@ -1,24 +1,19 @@
 "use server";
 
 import Groq from "groq-sdk";
-import mammoth from "mammoth";
-// Import pdf-parse's internal entry to skip the debug harness in its index
-// that otherwise breaks the Next.js build.
-import pdf from "pdf-parse/lib/pdf-parse.js";
 import { generateJSON } from "@tiptap/html";
 import { CATEGORIES } from "@/lib/categories";
 import { buildExtensions } from "@/lib/editor/extensions";
 import { renderTiptapToHtml } from "@/lib/editor/render-html";
 import { requireAdmin } from "@/lib/actions/posts";
 
-// User-selected model: GPT OSS 120B served via Groq.
-const MODEL = "openai/gpt-oss-120b";
+// User-selected model: Llama 4 Scout via Groq — larger token-per-minute
+// limit (30k TPM on free tier) than gpt-oss-120b, so we can handle longer
+// documents.
+const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-// Groq free tier caps this model at 8000 tokens/minute (input + output
-// combined). ~12k chars of input ≈ 3k tokens; with the prompt scaffold and
-// MAX_OUTPUT below we stay safely under the limit.
-const MAX_TEXT = 12_000; // cap characters sent to the model
-const MAX_OUTPUT = 3500; // reserved output tokens
+const MAX_TEXT = 48_000; // cap characters sent to the model (~12k tokens)
+const MAX_OUTPUT = 8000; // reserved output tokens
 
 const DOCX_TYPE =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -46,10 +41,15 @@ async function extractText(file: File): Promise<string> {
   const buffer = Buffer.from(await file.arrayBuffer());
 
   if (file.type === DOCX_TYPE || name.endsWith(".docx")) {
+    // Dynamic import so a load failure surfaces as a caught error rather than
+    // breaking the whole server action module at import time.
+    const mammoth = (await import("mammoth")).default;
     const { value } = await mammoth.extractRawText({ buffer });
     return value;
   }
   if (file.type === "application/pdf" || name.endsWith(".pdf")) {
+    // Import pdf-parse's internal entry to skip the debug harness in its index.
+    const pdf = (await import("pdf-parse/lib/pdf-parse.js")).default;
     const { text } = await pdf(buffer);
     return text;
   }

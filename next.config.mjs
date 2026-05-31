@@ -28,6 +28,11 @@ const nextConfig = {
     // Tree-shakes per-icon / per-export so we don't ship the whole library.
     // Big win for `framer-motion` (full bundle ~50 kB gz) and `lucide-react`.
     optimizePackageImports: ["lucide-react", "framer-motion"],
+    serverActions: {
+      // Allow document uploads (.docx/.pdf) up to 10MB through server actions;
+      // the default cap is 1MB which silently rejects most real documents.
+      bodySizeLimit: "10mb",
+    },
   },
 };
 
