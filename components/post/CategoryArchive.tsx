@@ -55,19 +55,20 @@ export function CategoryArchive({
   );
 
   return (
-    <section className="relative pb-32 pt-32 sm:pt-40">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-radial-glow opacity-70 dark:opacity-30" />
-
+    <section className="relative pb-32 pt-28 sm:pt-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 180, damping: 24 }}
+          transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
         >
-          <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
-            {t.archive.categoryLabel(posts.length)}
-          </p>
-          <h1 className="serif-display mt-4 text-5xl leading-[1.02] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-7xl">
+          <div className="flex items-center gap-4">
+            <span className="kicker shrink-0 text-gold-600 dark:text-gold-300">
+              {t.archive.categoryLabel(posts.length)}
+            </span>
+            <span className="h-px flex-1 bg-gold-leaf" />
+          </div>
+          <h1 className="serif-display mt-6 text-5xl font-medium leading-[1.04] text-ink-900 dark:text-ink-50 sm:text-7xl">
             {category.name}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-600 dark:text-ink-300">

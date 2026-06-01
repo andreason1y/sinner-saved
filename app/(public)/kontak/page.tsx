@@ -52,15 +52,16 @@ export default function KontakPage() {
   ];
 
   return (
-    <section className="relative pb-32 pt-32 sm:pt-40">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-radial-glow opacity-70 dark:opacity-30" />
-
+    <section className="relative pb-32 pt-28 sm:pt-32">
       <div className="mx-auto max-w-4xl px-5 lg:px-8">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
-            {t.contact.eyebrow}
-          </p>
-          <h1 className="serif-display mt-4 text-5xl leading-[1.02] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-7xl">
+          <div className="flex items-center gap-4">
+            <span className="kicker shrink-0 text-gold-600 dark:text-gold-300">
+              {t.contact.eyebrow}
+            </span>
+            <span className="h-px flex-1 bg-gold-leaf" />
+          </div>
+          <h1 className="serif-display mt-6 text-5xl font-medium leading-[1.04] text-ink-900 dark:text-ink-50 sm:text-7xl">
             {t.contact.fullPageTitle}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-600 dark:text-ink-300">
@@ -71,12 +72,12 @@ export default function KontakPage() {
         {/* Email card */}
         <Reveal delay={0.1}>
           <div className="mt-14 overflow-hidden rounded-3xl border border-ink-900/10 bg-white p-7 shadow-card dark:border-white/10 dark:bg-ink-900 sm:p-10">
-            <p className="text-[10px] uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
+            <p className="text-[10px] uppercase tracking-[0.28em] text-ink-400 dark:text-ink-500">
               {t.contact.eyebrow}
             </p>
             <a
               href={mailto("[SinnerSaved] Halo")}
-              className="serif-display mt-3 inline-flex items-center gap-3 text-3xl tracking-tightest text-ink-900 hover:text-sacred-700 dark:text-ink-50 dark:hover:text-sacred-300 sm:text-4xl"
+              className="serif-display mt-3 inline-flex items-center gap-3 text-3xl text-ink-900 hover:text-ink-600 dark:text-ink-50 dark:hover:text-ink-300 sm:text-4xl"
             >
               <Mail size={22} className="opacity-70" />
               {ADMIN_EMAIL}
@@ -125,9 +126,9 @@ export default function KontakPage() {
             <FadeInUp key={card.title}>
               <a
                 href={mailto(card.subject)}
-                className="group block h-full rounded-2xl border border-ink-900/10 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-card-hover dark:border-white/10 dark:bg-ink-900"
+                className="group block h-full rounded-2xl border border-ink-900/10 bg-white p-6 transition-colors hover:border-ink-900/25 dark:border-white/10 dark:bg-ink-900 dark:hover:border-white/25"
               >
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sacred-50 text-sacred-700 dark:bg-sacred-500/10 dark:text-sacred-300">
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-ink-900/5 text-ink-700 dark:bg-white/5 dark:text-ink-200">
                   {card.icon}
                 </div>
                 <h3 className="serif-display mt-5 text-xl text-ink-900 dark:text-ink-50">

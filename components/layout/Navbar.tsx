@@ -62,10 +62,9 @@ export function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-4 lg:px-8">
         {/* Brand */}
         <Link href="/" className="group flex items-baseline gap-2">
-          <span className="serif-display text-2xl tracking-tightest text-ink-900 dark:text-ink-50">
-            Sinner<span className="italic text-sacred-500 dark:text-sacred-300">Saved</span>
+          <span className="serif-display text-[1.7rem] font-medium leading-none text-ink-900 dark:text-ink-50">
+            Sinner<span className="italic text-gold-600 dark:text-gold-300">Saved</span>
           </span>
-
         </Link>
 
         {/* Desktop nav */}

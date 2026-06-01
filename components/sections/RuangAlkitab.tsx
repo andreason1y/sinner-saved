@@ -12,14 +12,7 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
 
   return (
-    <section
-      id="ruang-alkitab"
-      className="relative py-24 sm:py-32"
-      style={{
-        background:
-          "linear-gradient(180deg, transparent 0%, rgba(245,215,156,0.18) 50%, transparent 100%)",
-      }}
-    >
+    <section id="ruang-alkitab" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeader
           eyebrow={t.ruangAlkitab.eyebrow}
@@ -27,25 +20,26 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
           blurb={t.ruangAlkitab.blurb}
           href="/kategori/ruang-alkitab"
           hrefLabel={t.feature.archive.replace(" →", "")}
+          index="I"
         />
 
         {posts.length > 0 && (
-          <div className="mt-20">
-            <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.28em] text-ink-500 dark:text-ink-400">
+          <div className="mt-16">
+            <div className="mb-7 flex items-center justify-between text-[11px] uppercase tracking-[0.24em] text-ink-500 dark:text-ink-400">
               <span>{t.ruangAlkitab.latest}</span>
               <Link
                 href="/kategori/ruang-alkitab"
-                className="text-ink-700 link-underline dark:text-ink-200"
+                className="text-ink-600 link-underline dark:text-ink-300"
               >
                 {t.ruangAlkitab.seeMore}
               </Link>
             </div>
-            <StaggerContainer className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <StaggerContainer className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <FadeInUp key={post.id}>
                   <Link
                     href={`/${post.mainCategory}/${post.slug}`}
-                    className="group block h-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-card-hover dark:bg-ink-900 dark:ring-white/10"
+                    className="group block h-full overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
                   >
                     {post.cover && (
                       <div className="relative aspect-[4/3] overflow-hidden">
@@ -54,12 +48,13 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                           alt={post.title}
                           fill
                           sizes="(min-width: 1024px) 33vw, 100vw"
-                          className="object-cover transition-transform duration-[1000ms] ease-out group-hover:scale-[1.06]"
+                          className="object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.05]"
                         />
+                        <div className="absolute inset-0 ring-1 ring-inset ring-ink-950/5" />
                       </div>
                     )}
-                    <div className="p-5">
-                      <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-600 dark:text-sacred-300">
+                    <div className="p-6">
+                      <p className="kicker text-gold-600 dark:text-gold-300">
                         {post.subCategory.replace(/-/g, " ")}
                       </p>
                       <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">

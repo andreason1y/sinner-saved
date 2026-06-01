@@ -14,40 +14,43 @@ export function BibleReadingCard() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 180, damping: 24, delay: 0.15 }}
-        className="overflow-hidden rounded-2xl bg-ink-900 text-ink-50 shadow-card"
+        transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
+        className="relative overflow-hidden rounded-2xl bg-ink-950 text-ink-50 shadow-card ring-1 ring-white/10"
       >
-        <div className="px-6 py-6 sm:px-8 sm:py-7">
+        <div className="pointer-events-none absolute inset-4 rounded-lg ring-1 ring-inset ring-gold-300/20" />
+        <div className="relative px-7 py-7 sm:px-10 sm:py-9">
           {/* Header row */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <BookOpen size={14} className="text-sacred-400" />
-              <span className="text-[10px] uppercase tracking-[0.32em] text-sacred-300">
+              <BookOpen size={15} className="text-gold-300" />
+              <span className="kicker text-gold-300">
                 {t.bibleReading.eyebrow}
               </span>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.28em] text-ink-400">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-ink-400">
               {t.bibleReading.dayOf(reading.day, 365)}
             </span>
           </div>
 
+          <div className="mt-6 h-px w-full bg-gold-leaf opacity-60" />
+
           {/* Passages */}
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-400">
+              <p className="kicker text-gold-300/80">
                 {t.bibleReading.ot}
               </p>
-              <p className="serif-display mt-1.5 text-xl leading-snug text-ink-50 sm:text-2xl">
+              <p className="serif-display mt-2 text-2xl font-medium leading-snug text-ink-50 sm:text-3xl">
                 {reading.ot}
               </p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-400">
+              <p className="kicker text-gold-300/80">
                 {t.bibleReading.nt}
               </p>
-              <p className="serif-display mt-1.5 text-xl leading-snug text-ink-50 sm:text-2xl">
+              <p className="serif-display mt-2 text-2xl font-medium leading-snug text-ink-50 sm:text-3xl">
                 {reading.nt}
               </p>
             </div>

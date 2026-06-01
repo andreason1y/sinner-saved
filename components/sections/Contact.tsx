@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Mail, MessageCircle, Lightbulb, AlertOctagon, ArrowUpRight } from "lucide-react";
 import { Reveal, StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { useLocale } from "@/components/i18n/LocaleProvider";
@@ -51,16 +50,14 @@ export function Contact() {
   ];
 
   return (
-    <section id="kontak" className="relative py-24 sm:py-32">
-      {/* Decorative glow */}
-      <div className="pointer-events-none absolute inset-x-0 top-1/3 -z-10 h-[480px] bg-radial-glow opacity-50 dark:opacity-30" />
-
+    <section id="kontak" className="relative border-t border-ink-900/10 py-24 dark:border-white/10 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.32em] text-sacred-600 dark:text-sacred-300">
-            {t.contact.eyebrow}
-          </p>
-          <h2 className="serif-display mt-3 max-w-3xl text-4xl leading-[1.05] tracking-tightest text-ink-900 dark:text-ink-50 sm:text-5xl">
+          <div className="flex items-center gap-4">
+            <span className="kicker shrink-0">{t.contact.eyebrow}</span>
+            <span className="h-px flex-1 bg-gold-leaf" />
+          </div>
+          <h2 className="serif-display mt-6 max-w-3xl text-4xl font-medium leading-[1.06] text-ink-900 dark:text-ink-50 sm:text-5xl">
             {t.contact.title}
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-600 dark:text-ink-300 sm:text-lg">
@@ -71,9 +68,9 @@ export function Contact() {
         <Reveal delay={0.1}>
           <a
             href={mailto("[SinnerSaved] Halo")}
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-ink-900 px-6 py-3 text-sm font-medium text-parchment transition-transform hover:scale-[1.02] dark:bg-ink-50 dark:text-ink-950"
+            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-ink-900 px-6 py-3 text-sm font-medium text-parchment shadow-card transition-all hover:shadow-card-hover hover:ring-1 hover:ring-gold-400/60 dark:bg-ink-50 dark:text-ink-950"
           >
-            <Mail size={16} />
+            <Mail size={16} className="text-gold-300 dark:text-gold-600" />
             <span>{ADMIN_EMAIL}</span>
             <ArrowUpRight
               size={14}
@@ -87,25 +84,25 @@ export function Contact() {
             <FadeInUp key={card.title}>
               <a
                 href={mailto(card.subject)}
-                className={`group block h-full overflow-hidden rounded-2xl p-7 transition-all hover:-translate-y-1 ${
+                className={`group block h-full overflow-hidden rounded-2xl p-7 shadow-card transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover ${
                   card.tone === "dark"
-                    ? "bg-ink-900 text-ink-50 shadow-card hover:shadow-card-hover dark:bg-ink-800"
+                    ? "bg-ink-950 text-ink-50 ring-1 ring-white/10 hover:ring-gold-300/45 dark:bg-ink-900"
                     : card.tone === "sacred"
-                    ? "bg-gradient-to-br from-sacred-50 to-parchment-deep ring-1 ring-sacred-200/60 hover:ring-sacred-300 dark:from-sacred-500/10 dark:to-white/[0.03] dark:ring-sacred-500/20 dark:hover:ring-sacred-500/40"
-                    : "bg-white shadow-card ring-1 ring-ink-900/5 hover:shadow-card-hover dark:bg-ink-900 dark:ring-white/5"
+                    ? "bg-parchment-deep ring-1 ring-ink-900/10 hover:ring-gold-400/60 dark:bg-white/[0.04] dark:ring-white/10 dark:hover:ring-gold-300/40"
+                    : "bg-parchment-light ring-1 ring-ink-900/10 hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
                 }`}
               >
                 <div
-                  className={`inline-flex h-9 w-9 items-center justify-center rounded-full ${
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full ${
                     card.tone === "dark"
-                      ? "bg-white/10 text-ink-100"
-                      : "bg-ink-900/5 text-ink-700 dark:bg-white/5 dark:text-ink-200"
+                      ? "bg-gold-300/15 text-gold-300"
+                      : "bg-gold-500/10 text-gold-600 dark:bg-gold-300/10 dark:text-gold-300"
                   }`}
                 >
                   {card.icon}
                 </div>
                 <h3
-                  className={`serif-display mt-5 text-2xl leading-snug ${
+                  className={`serif-display mt-5 text-2xl font-medium leading-snug ${
                     card.tone === "dark"
                       ? "text-ink-50"
                       : "text-ink-900 dark:text-ink-50"
@@ -123,10 +120,10 @@ export function Contact() {
                   {card.body}
                 </p>
                 <span
-                  className={`mt-6 inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.24em] ${
+                  className={`mt-6 inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.2em] ${
                     card.tone === "dark"
-                      ? "text-sacred-300"
-                      : "text-sacred-700 dark:text-sacred-300"
+                      ? "text-gold-300"
+                      : "text-gold-700 dark:text-gold-300"
                   }`}
                 >
                   {t.contact.cta}
