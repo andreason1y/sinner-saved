@@ -20,11 +20,12 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
           blurb={t.ruangAlkitab.blurb}
           href="/kategori/ruang-alkitab"
           hrefLabel={t.feature.archive.replace(" →", "")}
+          index="I"
         />
 
         {posts.length > 0 && (
           <div className="mt-16">
-            <div className="mb-6 flex items-center justify-between text-[11px] uppercase tracking-[0.24em] text-ink-400 dark:text-ink-500">
+            <div className="mb-7 flex items-center justify-between text-[11px] uppercase tracking-[0.24em] text-ink-500 dark:text-ink-400">
               <span>{t.ruangAlkitab.latest}</span>
               <Link
                 href="/kategori/ruang-alkitab"
@@ -33,12 +34,12 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                 {t.ruangAlkitab.seeMore}
               </Link>
             </div>
-            <StaggerContainer className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <StaggerContainer className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {posts.map((post) => (
                 <FadeInUp key={post.id}>
                   <Link
                     href={`/${post.mainCategory}/${post.slug}`}
-                    className="group block h-full overflow-hidden rounded-2xl bg-white ring-1 ring-ink-900/10 transition-colors hover:ring-ink-900/25 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-white/25"
+                    className="group block h-full overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
                   >
                     {post.cover && (
                       <div className="relative aspect-[4/3] overflow-hidden">
@@ -47,12 +48,13 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                           alt={post.title}
                           fill
                           sizes="(min-width: 1024px) 33vw, 100vw"
-                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                          className="object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.05]"
                         />
+                        <div className="absolute inset-0 ring-1 ring-inset ring-ink-950/5" />
                       </div>
                     )}
-                    <div className="p-5">
-                      <p className="text-[10px] uppercase tracking-[0.24em] text-ink-400 dark:text-ink-500">
+                    <div className="p-6">
+                      <p className="kicker text-gold-600 dark:text-gold-300">
                         {post.subCategory.replace(/-/g, " ")}
                       </p>
                       <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">

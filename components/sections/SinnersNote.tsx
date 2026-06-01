@@ -39,6 +39,7 @@ export function SinnersNote({ posts }: { posts: Post[] }) {
           blurb={t.sinnersNote.blurb}
           href="/kategori/sinners-note"
           hrefLabel={t.feature.archive.replace(" →", "")}
+          index="IV"
         />
 
         <div className="mt-14 masonry">
@@ -47,23 +48,23 @@ export function SinnersNote({ posts }: { posts: Post[] }) {
             // hand-bound notebook. No gold gradients, no per-card flourishes.
             const isDark = i % 3 === 1;
             const card = isDark
-              ? "bg-ink-900 text-ink-50 ring-1 ring-white/10 hover:ring-white/25 dark:bg-ink-800"
-              : "bg-white ring-1 ring-ink-900/10 hover:ring-ink-900/25 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-white/25";
+              ? "bg-ink-950 text-ink-50 ring-1 ring-white/10 hover:ring-gold-300/45 dark:bg-ink-900"
+              : "bg-parchment-light ring-1 ring-ink-900/10 hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40";
 
             return (
               <Reveal key={post.id} delay={i * 0.05}>
                 <Link
                   href={`/${post.mainCategory}/${post.slug}`}
-                  className={`block rounded-2xl p-6 transition-colors ${card}`}
+                  className={`block rounded-2xl p-7 shadow-card transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover ${card}`}
                 >
-                  <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.24em]">
-                    <span className={isDark ? "text-ink-400" : "text-ink-400 dark:text-ink-500"}>
+                  <div className="flex items-center justify-between">
+                    <span className={`kicker ${isDark ? "text-gold-300" : "text-gold-600 dark:text-gold-300"}`}>
                       {post.subCategory.replace(/-/g, " ")}
                     </span>
-                    <Quote size={14} className="text-ink-400 dark:text-ink-500" />
+                    <Quote size={15} className={isDark ? "text-gold-300/70" : "text-gold-500/70 dark:text-gold-300/70"} />
                   </div>
                   <h3
-                    className={`serif-display mt-4 text-xl leading-snug ${
+                    className={`serif-display mt-4 text-xl font-medium leading-snug ${
                       isDark ? "text-ink-50" : "text-ink-900 dark:text-ink-50"
                     }`}
                   >
@@ -77,7 +78,7 @@ export function SinnersNote({ posts }: { posts: Post[] }) {
                     {post.excerpt}
                   </p>
                   <div
-                    className={`mt-5 flex items-center justify-between text-xs ${
+                    className={`mt-6 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] ${
                       isDark ? "text-ink-400" : "text-ink-500 dark:text-ink-400"
                     }`}
                   >

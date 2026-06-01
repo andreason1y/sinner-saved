@@ -20,6 +20,7 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
           blurb={t.ruangTeologi.blurb}
           href="/kategori/ruang-teologi"
           hrefLabel={t.feature.archive.replace(" →", "")}
+          index="II"
         />
 
         {posts.length === 0 ? (
@@ -32,7 +33,7 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
             <FadeInUp key={post.id}>
               <Link
                 href={`/${post.mainCategory}/${post.slug}`}
-                className="group relative block h-full overflow-hidden rounded-2xl bg-ink-950 text-ink-50 ring-1 ring-white/10 transition-colors hover:ring-white/25"
+                className="group relative block h-full overflow-hidden rounded-2xl bg-ink-950 text-ink-50 shadow-card ring-1 ring-white/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-300/45"
               >
                 {post.cover && (
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
@@ -41,24 +42,27 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
                       alt={post.title}
                       fill
                       sizes="(min-width: 768px) 50vw, 100vw"
-                      className="object-cover opacity-80 transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      className="object-cover opacity-75 transition-all duration-[1100ms] ease-out group-hover:scale-[1.05] group-hover:opacity-90"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/50 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/55 to-ink-950/10" />
                   </div>
                 )}
                 <div className="relative p-7 sm:p-8">
-                  <p className="text-[10px] uppercase tracking-[0.24em] text-ink-400">
+                  <p className="kicker text-gold-300">
                     {post.subCategory.replace(/-/g, " ")}
                   </p>
-                  <h3 className="serif-display mt-4 text-2xl leading-snug text-ink-50 sm:text-3xl">
+                  <h3 className="serif-display mt-4 text-2xl font-medium leading-snug text-ink-50 sm:text-3xl">
                     {post.title}
                   </h3>
-                  <p className="mt-3 line-clamp-2 text-sm text-ink-300">
+                  <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-300">
                     {post.excerpt}
                   </p>
-                  <div className="mt-6 flex items-center justify-between text-xs text-ink-300">
+                  <div className="mt-7 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-ink-400">
                     <span>{formatDate(post.createdAt, locale)}</span>
-                    <span className="link-underline">{t.feature.readMore} →</span>
+                    <span className="inline-flex items-center gap-2">
+                      <span className="link-underline">{t.feature.readMore}</span>
+                      <span className="text-gold-300">&rarr;</span>
+                    </span>
                   </div>
                 </div>
               </Link>

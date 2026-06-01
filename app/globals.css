@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --background: #f5f1e8;
-  --foreground: #13110d;
-  --muted: #6b6655;
-  --accent: #d18420;
-  --line: rgba(19, 17, 13, 0.08);
+  --background: #f4ecdb;
+  --foreground: #15100a;
+  --muted: #6b5b3e;
+  --accent: #9a7b3f;
+  --gold: #b8924a;
+  --line: rgba(21, 16, 10, 0.12);
   /*
    * --font-inter / --font-playfair are now provided by `next/font/google`
    * (set on <html> via inter.variable / playfair.variable). System-font
@@ -17,11 +18,12 @@
 }
 
 html.dark {
-  --background: #0b0a08;
-  --foreground: #f0ece2;
-  --muted: #9c9684;
-  --accent: #eebc63;
-  --line: rgba(245, 241, 232, 0.08);
+  --background: #120c06;
+  --foreground: #efe6d3;
+  --muted: #a99a7e;
+  --accent: #cdab68;
+  --gold: #cdab68;
+  --line: rgba(239, 230, 211, 0.12);
 }
 
 html,
@@ -35,25 +37,75 @@ body {
 body {
   font-family: var(--font-inter), system-ui, sans-serif;
   /*
-   * Flat, quiet paper — no radial "hero glow". A redesign brief explicitly
-   * asked to drop the gold halo that read as a generated-template tell, so
-   * the page is just warm parchment (a hair of vertical tone for depth).
+   * Aged-ivory "paper": a flat warm base, a soft edge vignette for depth
+   * (the page feels lit from the centre, like a spread under gallery light)
+   * and a barely-there fibre texture. No neon halo — richness comes from
+   * material, not glow.
    */
-  background-color: #f5f1e8;
+  background-color: #f4ecdb;
+  background-image:
+    radial-gradient(120% 90% at 50% -10%, rgba(255, 252, 244, 0.7) 0%, rgba(255, 252, 244, 0) 45%),
+    radial-gradient(120% 120% at 50% 110%, rgba(73, 57, 31, 0.10) 0%, rgba(73, 57, 31, 0) 55%);
+  background-attachment: fixed;
   transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 html.dark body {
-  background-color: #0b0a08;
+  background-color: #120c06;
+  background-image:
+    radial-gradient(120% 90% at 50% -10%, rgba(205, 171, 104, 0.05) 0%, rgba(205, 171, 104, 0) 45%),
+    radial-gradient(120% 120% at 50% 110%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 55%);
+}
+
+/* Antique gold-leaf hairline — the signature divider of the redesign */
+.rule-gold {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(154, 123, 63, 0) 0%,
+    rgba(184, 146, 74, 0.95) 22%,
+    rgba(226, 205, 151, 1) 50%,
+    rgba(184, 146, 74, 0.95) 78%,
+    rgba(154, 123, 63, 0) 100%
+  );
+}
+.rule-gold-left {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(184, 146, 74, 1) 0%,
+    rgba(184, 146, 74, 0.6) 60%,
+    rgba(184, 146, 74, 0) 100%
+  );
+}
+
+/* Illuminated initial (drop cap). Apply to a paragraph's first letter. */
+.drop-cap::first-letter {
+  font-family: var(--font-playfair), Georgia, serif;
+  float: left;
+  font-size: 3.4em;
+  line-height: 0.78;
+  font-weight: 600;
+  padding: 0.06em 0.12em 0 0;
+  margin-right: 0.02em;
+  color: var(--accent);
+}
+
+/* A small gold fleuron / ornament used in place of bullets and dividers */
+.fleuron {
+  color: var(--gold);
+  font-style: normal;
 }
 
 ::selection {
-  background: #13110d;
-  color: #f5f1e8;
+  background: #15100a;
+  color: #f4ecdb;
 }
 html.dark ::selection {
-  background: #eebc63;
-  color: #0b0a08;
+  background: #cdab68;
+  color: #120c06;
 }
 
 /* Layered grain texture (subtle, editorial) */
@@ -112,26 +164,37 @@ html.dark .grain-overlay::before {
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  padding: 0.35rem 0.65rem;
-  border: 1px solid var(--line);
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(184, 146, 74, 0.45);
   border-radius: 999px;
   color: var(--foreground);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 252, 244, 0.55);
   backdrop-filter: blur(6px);
 }
 html.dark .pill {
-  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(205, 171, 104, 0.35);
+  background: rgba(205, 171, 104, 0.06);
 }
 
 /* Reading rhythm helper */
 .serif-display {
   font-family: var(--font-playfair), Georgia, serif;
-  font-weight: 400;
-  letter-spacing: -0.005em;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* Kicker — small-caps label with wide tracking, used above section titles */
+.kicker {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 /* Hide scrollbars on horizontal rails */
@@ -208,38 +271,38 @@ html.dark .post-prose h3 {
   padding-top: 0.5rem;
 }
 .post-prose a {
-  color: rgb(141 75 24);
+  color: rgb(95 74 39);
   text-decoration: underline;
-  text-decoration-color: rgba(209, 132, 32, 0.4);
+  text-decoration-color: rgba(154, 123, 63, 0.4);
   text-underline-offset: 3px;
   transition: text-decoration-color 200ms ease;
 }
 html.dark .post-prose a {
-  color: rgb(238 188 99);
-  text-decoration-color: rgba(238, 188, 99, 0.45);
+  color: rgb(205 171 104);
+  text-decoration-color: rgba(205, 171, 104, 0.45);
 }
 .post-prose a:hover {
-  text-decoration-color: rgba(209, 132, 32, 1);
+  text-decoration-color: rgba(154, 123, 63, 1);
 }
 html.dark .post-prose a:hover {
-  text-decoration-color: rgba(238, 188, 99, 1);
+  text-decoration-color: rgba(205, 171, 104, 1);
 }
 /* Auto-linked Bible references — dotted underline, kept on one line */
 .post-prose a.scripture-ref {
   text-decoration-style: dotted;
-  text-decoration-color: rgba(209, 132, 32, 0.55);
+  text-decoration-color: rgba(154, 123, 63, 0.55);
   white-space: nowrap;
   cursor: pointer;
 }
 .post-prose a.scripture-ref:hover {
-  text-decoration-color: rgba(209, 132, 32, 1);
-  background: rgba(245, 215, 156, 0.35);
+  text-decoration-color: rgba(154, 123, 63, 1);
+  background: rgba(226, 205, 151, 0.35);
   border-radius: 4px;
-  box-shadow: 0 0 0 2px rgba(245, 215, 156, 0.35);
+  box-shadow: 0 0 0 2px rgba(226, 205, 151, 0.35);
 }
 html.dark .post-prose a.scripture-ref:hover {
-  background: rgba(230, 162, 58, 0.16);
-  box-shadow: 0 0 0 2px rgba(230, 162, 58, 0.16);
+  background: rgba(184, 146, 74, 0.16);
+  box-shadow: 0 0 0 2px rgba(184, 146, 74, 0.16);
 }
 .post-prose strong {
   font-weight: 600;
@@ -269,13 +332,13 @@ html.dark .post-prose ol {
   list-style: decimal;
 }
 .post-prose ul li::marker {
-  color: rgb(209 132 32);
+  color: rgb(154 123 63);
 }
 .post-prose ol li::marker {
-  color: rgb(141 75 24);
+  color: rgb(95 74 39);
 }
 html.dark .post-prose ol li::marker {
-  color: rgb(238 188 99);
+  color: rgb(205 171 104);
 }
 .post-prose li + li {
   margin-top: 0.5rem;
@@ -283,7 +346,7 @@ html.dark .post-prose ol li::marker {
 .post-prose blockquote {
   margin-block: 2.5rem;
   padding-left: 1.5rem;
-  border-left: 2px solid rgb(209 132 32);
+  border-left: 2px solid rgb(154 123 63);
   font-family: var(--font-playfair);
   font-size: clamp(1.25rem, 2vw, 1.5rem);
   line-height: 1.4;
@@ -292,7 +355,7 @@ html.dark .post-prose ol li::marker {
 }
 html.dark .post-prose blockquote {
   color: rgb(232 226 207);
-  border-left-color: rgb(238 188 99);
+  border-left-color: rgb(205 171 104);
 }
 .post-prose pre {
   overflow-x: auto;
@@ -317,15 +380,15 @@ html.dark .post-prose pre {
 }
 .post-prose code:not(pre code) {
   background: rgb(245 215 156 / 0.3);
-  color: rgb(89 50 26);
+  color: rgb(73 57 31);
   padding: 0.125rem 0.375rem;
   border-radius: 0.375rem;
   font-size: 0.9em;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 }
 html.dark .post-prose code:not(pre code) {
-  background: rgba(238, 188, 99, 0.15);
-  color: rgb(245 215 156);
+  background: rgba(205, 171, 104, 0.15);
+  color: rgb(226 205 151);
 }
 .post-prose img {
   border-radius: 1rem;
@@ -357,13 +420,13 @@ html.dark .post-prose hr {
   padding: 1.75rem 2rem;
   border-left: 0;
   background: rgb(253 247 237);
-  border: 1px solid rgb(245 215 156);
+  border: 1px solid rgb(226 205 151);
   border-radius: 1rem;
   font-style: normal;
 }
 html.dark .post-prose blockquote.scripture {
-  background: rgba(238, 188, 99, 0.06);
-  border-color: rgba(238, 188, 99, 0.25);
+  background: rgba(205, 171, 104, 0.06);
+  border-color: rgba(205, 171, 104, 0.25);
 }
 .post-prose blockquote.scripture::before {
   content: "Kitab Suci";
@@ -373,9 +436,9 @@ html.dark .post-prose blockquote.scripture {
   font-style: normal;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: rgb(141 75 24);
+  color: rgb(95 74 39);
   margin-bottom: 0.75rem;
 }
 html.dark .post-prose blockquote.scripture::before {
-  color: rgb(238 188 99);
+  color: rgb(205 171 104);
 }

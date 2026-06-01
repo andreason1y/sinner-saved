@@ -179,15 +179,15 @@ export default async function PostPage({
         >
           <Link
             href={`/kategori/${post.mainCategory}`}
-            className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.28em] text-ink-500 hover:text-ink-700 dark:text-ink-400 dark:hover:text-ink-200"
+            className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.28em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
           >
             <ChevronLeft size={12} />
             {category?.name}
           </Link>
-          <p className="mt-3 text-[10px] uppercase tracking-[0.32em] text-ink-500 dark:text-ink-400">
+          <p className="kicker mt-3 text-gold-600/80 dark:text-gold-300/80">
             {subName}
           </p>
-          <h1 className="serif-display mt-4 break-words text-4xl leading-[1.08] text-ink-900 dark:text-ink-50 sm:text-6xl">
+          <h1 className="serif-display mt-4 break-words text-4xl font-medium leading-[1.06] text-ink-900 dark:text-ink-50 sm:text-6xl">
             {displayTitle}
           </h1>
           <p className="mt-6 break-words text-lg leading-relaxed text-ink-600 dark:text-ink-300 sm:text-xl">

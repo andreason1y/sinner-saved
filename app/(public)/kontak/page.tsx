@@ -55,10 +55,13 @@ export default function KontakPage() {
     <section className="relative pb-32 pt-28 sm:pt-32">
       <div className="mx-auto max-w-4xl px-5 lg:px-8">
         <Reveal>
-          <p className="text-[11px] uppercase tracking-[0.28em] text-ink-400 dark:text-ink-500">
-            {t.contact.eyebrow}
-          </p>
-          <h1 className="serif-display mt-4 text-4xl leading-[1.08] text-ink-900 dark:text-ink-50 sm:text-6xl">
+          <div className="flex items-center gap-4">
+            <span className="kicker shrink-0 text-gold-600 dark:text-gold-300">
+              {t.contact.eyebrow}
+            </span>
+            <span className="h-px flex-1 bg-gold-leaf" />
+          </div>
+          <h1 className="serif-display mt-6 text-5xl font-medium leading-[1.04] text-ink-900 dark:text-ink-50 sm:text-7xl">
             {t.contact.fullPageTitle}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-600 dark:text-ink-300">

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Hanken_Grotesk, Fraunces } from "next/font/google";
+import { Hanken_Grotesk, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, NoFlashScript } from "@/components/theme/ThemeProvider";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
@@ -15,13 +15,12 @@ import { SITE } from "@/lib/site";
 // <link> to fonts.googleapis.com, ships only the subsets we use, and lets
 // Next.js inline a `font-display: swap` declaration + preload.
 //
-// Type pairing is deliberately *not* the ubiquitous Inter + Playfair Display
-// combo every template ships with. Hanken Grotesk is a calm, slightly warm
-// grotesque for UI/reading; Fraunces is an old-style serif with real
-// character (soft terminals, gentle italics) for display — quiet but
-// unmistakably "set by a person". The CSS variable names are kept as
-// `--font-inter` / `--font-playfair` so the rest of the stylesheet and
-// components keep working without a sweeping rename.
+// "Old-master / sacred" pairing: Cormorant Garamond is a high-contrast
+// Garamond in the lineage of printed Scripture — thin hairlines, generous
+// contrast, beautiful italics — used large for display and drop-caps.
+// Hanken Grotesk is the quiet grotesque workhorse for UI, labels and body.
+// The CSS variable names are kept as `--font-inter` / `--font-playfair`
+// so the stylesheet and components keep working without a sweeping rename.
 const sans = Hanken_Grotesk({
   subsets: ["latin"],
   display: "swap",
@@ -29,8 +28,9 @@ const sans = Hanken_Grotesk({
   preload: true,
 });
 
-const serif = Fraunces({
+const serif = Cormorant_Garamond({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
   variable: "--font-playfair",

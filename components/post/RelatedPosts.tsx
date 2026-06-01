@@ -23,10 +23,10 @@ export function RelatedPosts({
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <div className="mb-10 flex items-end justify-between gap-6">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.28em] text-ink-400 dark:text-ink-500">
+            <p className="kicker text-gold-600 dark:text-gold-300">
               {t.post.relatedEyebrow(cat?.name ?? "")}
             </p>
-            <h2 className="serif-display mt-3 text-3xl leading-tight text-ink-900 dark:text-ink-50 sm:text-4xl">
+            <h2 className="serif-display mt-3 text-3xl font-medium leading-tight text-ink-900 dark:text-ink-50 sm:text-4xl">
               {t.post.relatedTitle}
             </h2>
           </div>

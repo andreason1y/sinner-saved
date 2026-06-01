@@ -54,10 +54,13 @@ export function FullArchive({ posts }: { posts: Post[] }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
         >
-          <p className="text-[11px] uppercase tracking-[0.28em] text-ink-400 dark:text-ink-500">
-            {t.archive.arsipLabel(posts.length)}
-          </p>
-          <h1 className="serif-display mt-4 text-4xl leading-[1.08] text-ink-900 dark:text-ink-50 sm:text-6xl">
+          <div className="flex items-center gap-4">
+            <span className="kicker shrink-0 text-gold-600 dark:text-gold-300">
+              {t.archive.arsipLabel(posts.length)}
+            </span>
+            <span className="h-px flex-1 bg-gold-leaf" />
+          </div>
+          <h1 className="serif-display mt-6 text-5xl font-medium leading-[1.04] text-ink-900 dark:text-ink-50 sm:text-7xl">
             {t.archive.arsipTitle}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-600 dark:text-ink-300">
