@@ -117,3 +117,49 @@ export const USFM_BY_NAME: Record<string, string> = (() => {
   });
   return map;
 })();
+
+
+/**
+ * English book names in the same canonical 66-book order, index-aligned with
+ * BIBLE_BOOKS. Used to localize a reference label when the UI locale is "en"
+ * (e.g. "Mikha 6:8" → "Micah 6:8"). Verse text itself comes from the API.
+ */
+const ENGLISH_NAMES: string[] = [
+  // Old Testament
+  "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua",
+  "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings",
+  "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job",
+  "Psalms", "Proverbs", "Ecclesiastes", "Song of Songs", "Isaiah", "Jeremiah",
+  "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah",
+  "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah",
+  "Malachi",
+  // New Testament
+  "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians",
+  "2 Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians",
+  "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus",
+  "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John",
+  "3 John", "Jude", "Revelation",
+];
+
+/** canonical Indonesian book name → English book name. */
+export const EN_BOOK_BY_NAME: Record<string, string> = (() => {
+  const map: Record<string, string> = {};
+  BIBLE_BOOKS.forEach((book, i) => {
+    if (ENGLISH_NAMES[i]) map[book.name] = ENGLISH_NAMES[i];
+  });
+  return map;
+})();
+
+/**
+ * Localizes a canonical reference's book name for display. The chapter/verse
+ * part is left untouched. Non-"en" locales return the reference unchanged.
+ */
+export function localizeReference(canonical: string, locale: string): string {
+  if (locale !== "en") return canonical;
+  const lastSpace = canonical.lastIndexOf(" ");
+  if (lastSpace < 0) return canonical;
+  const book = canonical.slice(0, lastSpace);
+  const rest = canonical.slice(lastSpace + 1);
+  const en = EN_BOOK_BY_NAME[book];
+  return en ? `${en} ${rest}` : canonical;
+}

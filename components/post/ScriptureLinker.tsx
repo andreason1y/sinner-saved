@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, X } from "lucide-react";
 import { findScriptureRefs } from "@/lib/scripture/parse";
 import { getVerse, normalizeRef } from "@/lib/scripture/verses";
+import { localizeReference } from "@/lib/scripture/books";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 type Popover = {
@@ -48,25 +49,29 @@ function hasSkippedAncestor(node: Node, root: HTMLElement): boolean {
 }
 
 // Client-side memo so the same reference is fetched at most once per session.
-// undefined = not fetched, string = text, null = fetched but unavailable.
+// Keyed by `${locale}:${ref}`. undefined = not fetched, string = text,
+// null = fetched but unavailable.
 const verseCache = new Map<string, string | null>();
 
 /**
- * Resolves verse text: curated-local first (instant), then the same-origin
- * /api/scripture proxy. Always resolves (null when unavailable) so callers can
+ * Resolves verse text for a locale: for "id", curated-local first (instant),
+ * then the /api/scripture proxy (Indonesian). For "en", the proxy with an
+ * English translation. Always resolves (null when unavailable) so callers can
  * fall back to the external reader link.
  */
-async function loadVerse(canonical: string): Promise<string | null> {
-  const local = getVerse(canonical);
-  if (local) return local.text;
+async function loadVerse(canonical: string, locale: string): Promise<string | null> {
+  if (locale === "id") {
+    const local = getVerse(canonical);
+    if (local) return local.text;
+  }
 
-  const key = normalizeRef(canonical);
+  const key = `${locale}:${normalizeRef(canonical)}`;
   if (verseCache.has(key)) return verseCache.get(key) ?? null;
 
   let text: string | null = null;
   try {
     const res = await fetch(
-      `/api/scripture?ref=${encodeURIComponent(canonical)}`
+      `/api/scripture?ref=${encodeURIComponent(canonical)}&lang=${locale}`
     );
     if (res.ok) {
       const data = await res.json();
@@ -83,10 +88,12 @@ async function loadVerse(canonical: string): Promise<string | null> {
 
 /** Synchronous peek: returns string (have text), null (known-missing), or
  *  undefined (not yet resolved → needs async load). */
-function peekVerse(canonical: string): string | null | undefined {
-  const local = getVerse(canonical);
-  if (local) return local.text;
-  const key = normalizeRef(canonical);
+function peekVerse(canonical: string, locale: string): string | null | undefined {
+  if (locale === "id") {
+    const local = getVerse(canonical);
+    if (local) return local.text;
+  }
+  const key = `${locale}:${normalizeRef(canonical)}`;
   return verseCache.has(key) ? verseCache.get(key) ?? null : undefined;
 }
 
@@ -106,7 +113,7 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
   const [pop, setPop] = useState<Popover>(null);
   const [sheet, setSheet] = useState<Sheet>(null);
   const coarseRef = useRef(false);
-  const { t, pending } = useLocale();
+  const { t, pending, locale } = useLocale();
 
   useEffect(() => {
     coarseRef.current =
@@ -176,7 +183,7 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
       window.innerWidth - margin
     );
     const canonical = target.dataset.ref ?? target.textContent ?? "";
-    const peek = peekVerse(canonical);
+    const peek = peekVerse(canonical, locale);
 
     setPop({
       ref: canonical,
@@ -187,7 +194,7 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
     });
 
     if (peek === undefined) {
-      loadVerse(canonical).then((text) => {
+      loadVerse(canonical, locale).then((text) => {
         setPop((prev) =>
           prev && prev.ref === canonical ? { ...prev, text, loading: false } : prev
         );
@@ -219,12 +226,12 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
     e.preventDefault();
     const canonical = el.dataset.ref ?? el.textContent ?? "";
     const url = el.getAttribute("href") ?? "#";
-    const peek = peekVerse(canonical);
+    const peek = peekVerse(canonical, locale);
 
     setSheet({ ref: canonical, text: peek ?? null, loading: peek === undefined, url });
 
     if (peek === undefined) {
-      loadVerse(canonical).then((text) => {
+      loadVerse(canonical, locale).then((text) => {
         setSheet((prev) =>
           prev && prev.ref === canonical ? { ...prev, text, loading: false } : prev
         );
@@ -306,7 +313,7 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
             className="pointer-events-none z-50 w-max max-w-[20rem] rounded-xl border border-ink-900/10 bg-white/95 px-4 py-3 shadow-card-hover backdrop-blur-xl dark:border-white/10 dark:bg-ink-900/95"
           >
             <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-700 dark:text-sacred-300">
-              {pop.ref}
+              {localizeReference(pop.ref, locale)}
             </p>
             {pop.loading ? (
               <p className="mt-2 flex items-center gap-2 text-sm italic text-ink-500 dark:text-ink-400">
@@ -352,7 +359,7 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
               <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-ink-900/15 dark:bg-white/15" />
               <div className="flex items-start justify-between gap-4">
                 <p className="text-xs uppercase tracking-[0.28em] text-sacred-700 dark:text-sacred-300">
-                  {sheet.ref}
+                  {localizeReference(sheet.ref, locale)}
                 </p>
                 <button
                   aria-label="Tutup"

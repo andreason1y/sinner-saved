@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getDailyVerse, type Verse } from "@/lib/scripture/verses";
+import { getDailyVerse } from "@/lib/scripture/verses";
 import { buildReaderUrl } from "@/lib/scripture/parse";
+import { localizeReference } from "@/lib/scripture/books";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+
+type DailyVerse = { ref: string; text: string };
 
 /**
  * "Ayat Hari Ini" — a single, elegantly-set verse that rotates daily.
@@ -13,14 +16,41 @@ import { useLocale } from "@/components/i18n/LocaleProvider";
  * in the visitor's own timezone — the homepage itself is statically cached,
  * so computing at render time would freeze the verse at build/revalidate
  * time. A stable placeholder is shown until mount to avoid hydration drift.
+ *
+ * Locale-aware: "id" uses the curated local text instantly; "en" fetches the
+ * English translation from /api/scripture (falling back to the local text if
+ * the API is unavailable, so the card is never empty).
  */
 export function VerseOfDay() {
-  const { t } = useLocale();
-  const [verse, setVerse] = useState<Verse | null>(null);
+  const { t, locale } = useLocale();
+  const [verse, setVerse] = useState<DailyVerse | null>(null);
 
   useEffect(() => {
-    setVerse(getDailyVerse());
-  }, []);
+    const daily = getDailyVerse();
+
+    if (locale !== "en") {
+      setVerse({ ref: daily.ref, text: daily.text });
+      return;
+    }
+
+    // English: fetch authoritative text; show placeholder until it lands.
+    let cancelled = false;
+    setVerse(null);
+    fetch(`/api/scripture?ref=${encodeURIComponent(daily.ref)}&lang=en`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled) return;
+        const text =
+          typeof d?.text === "string" && d.text.trim() ? d.text : daily.text;
+        setVerse({ ref: daily.ref, text });
+      })
+      .catch(() => {
+        if (!cancelled) setVerse({ ref: daily.ref, text: daily.text });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
 
   return (
     <section className="relative py-20 sm:py-28">
@@ -54,7 +84,7 @@ export function VerseOfDay() {
               </blockquote>
               <figcaption className="mt-7 flex flex-wrap items-center justify-between gap-4">
                 <cite className="not-italic text-sm font-medium uppercase tracking-[0.24em] text-sacred-700 dark:text-sacred-300">
-                  {verse.ref}
+                  {localizeReference(verse.ref, locale)}
                 </cite>
                 <a
                   href={buildReaderUrl(verse.ref)}
