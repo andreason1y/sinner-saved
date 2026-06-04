@@ -41,6 +41,28 @@ export function Footer() {
           <p className="mt-8 text-xs uppercase tracking-[0.32em] text-ink-400">
             By a sinner, for sinners — saved by grace alone.
           </p>
+
+          {/* Secondary links */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+            <Link
+              href="/tentang"
+              className="link-underline text-ink-200/80 hover:text-ink-50"
+            >
+              {t.footer.sectionAbout}
+            </Link>
+            <Link
+              href="/kontak"
+              className="link-underline text-ink-200/80 hover:text-ink-50"
+            >
+              {t.footer.sectionContact}
+            </Link>
+            <Link
+              href="/arsip"
+              className="link-underline text-ink-200/80 hover:text-ink-50"
+            >
+              {t.feature.archive.replace(" →", "")}
+            </Link>
+          </div>
         </div>
 
         {/* Sitemap */}
