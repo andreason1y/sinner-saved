@@ -102,6 +102,13 @@ const COPY: Record<Locale, AboutCopy> = {
           "Itulah arti “sinner saved” bagi saya: bukan pendosa yang sudah selesai diperbaiki, melainkan pendosa yang terus-menerus diselamatkan, dipulihkan, dan dipegang oleh kasih karunia yang tidak pernah bisa saya hasilkan sendiri.",
         ],
       },
+      {
+        heading: "Hidup ini untuk Tuhan",
+        paragraphs: [
+          "Dari reruntuhan itu, pelan-pelan saya mengerti: hidup ini memang untuk Tuhan, sebab kita sudah ditebus. Kita bukan milik diri sendiri — apa pun yang kita punya: pendidikan, pekerjaan, keluarga, segalanya, adalah bagi Dia.",
+          "Dan hidup bagi Tuhan bukan sekadar rajin ke gereja atau sibuk dalam pelayanan di dalam tembok gereja. Ia juga berarti memberitakan Injil — membawa kabar baik itu keluar, kepada dunia yang Dia kasihi. Di sanalah ayat yang saya pegang erat menemukan rumahnya.",
+        ],
+      },
     ],
     verseRef: "Roma 14:8",
     verse:
@@ -152,6 +159,13 @@ const COPY: Record<Locale, AboutCopy> = {
         paragraphs: [
           "It was there that God revealed something simple yet shattering: I am only a sinner with nowhere to turn. I need Him to cleanse me again, to come back to Him. And slowly — very slowly — He is restoring my life.",
           "That is what “sinner saved” means to me: not a sinner who is finished being fixed, but a sinner who is continually being saved, restored, and held by a grace I could never produce on my own.",
+        ],
+      },
+      {
+        heading: "This life is for God",
+        paragraphs: [
+          "Out of that wreckage I slowly came to understand: this life really is for God, because we have been redeemed. We are not our own — whatever we have: our education, our work, our family, all of it, is for Him.",
+          "And living for God is not merely attending church faithfully or staying busy with ministry inside its walls. It also means proclaiming the Gospel — carrying that good news outward, to the world He loves. That is where the verse I hold closely finds its home.",
         ],
       },
     ],
