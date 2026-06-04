@@ -30,6 +30,10 @@ type Dict = {
     readNow: string;
     progress: string;
   };
+  verseOfDay: {
+    eyebrow: string;
+    open: string;
+  };
   feature: {
     eyebrow: string;
     title: string;
@@ -277,6 +281,10 @@ const id: Dict = {
     readNow: "Baca sekarang →",
     progress: "selesai",
   },
+  verseOfDay: {
+    eyebrow: "Ayat Hari Ini",
+    open: "Buka di Alkitab SABDA →",
+  },
 };
 
 const en: Dict = {
@@ -424,6 +432,10 @@ const en: Dict = {
     dayOf: (d, t) => `Day ${d} of ${t}`,
     readNow: "Read now →",
     progress: "complete",
+  },
+  verseOfDay: {
+    eyebrow: "Verse of the Day",
+    open: "Open in SABDA Bible →",
   },
 };
 
