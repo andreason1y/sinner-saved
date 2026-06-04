@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   DICTIONARIES,
   DEFAULT_LOCALE,
@@ -39,6 +40,7 @@ export function LocaleProvider({
   children: React.ReactNode;
 }) {
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
+  const router = useRouter();
 
   // Hydrate from storage / cookie if it disagrees with initial.
   useEffect(() => {
@@ -61,16 +63,24 @@ export function LocaleProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setLocale = useCallback((next: Locale) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      // ignore
-    }
-    writeCookieLocale(next);
-    document.documentElement.lang = next;
-    setLocaleState(next);
-  }, []);
+  const setLocale = useCallback(
+    (next: Locale) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // ignore
+      }
+      writeCookieLocale(next);
+      document.documentElement.lang = next;
+      setLocaleState(next);
+      // Server Components (e.g. the post body, which is chosen by the
+      // ss-locale cookie at request time) don't know the cookie changed.
+      // Re-fetch them in place — no full browser reload, client state kept —
+      // so the article re-renders in the new language immediately.
+      router.refresh();
+    },
+    [router]
+  );
 
   return (
     <LocaleContext.Provider

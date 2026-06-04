@@ -228,7 +228,7 @@ export default async function PostPage({
                 Translated by machine — original in Indonesian.
               </p>
             )}
-            <ScriptureLinker>
+            <ScriptureLinker key={locale}>
               {html ? <PostBody html={html} /> : <PostContent blocks={blocks} />}
             </ScriptureLinker>
 
