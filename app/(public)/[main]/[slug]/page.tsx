@@ -78,8 +78,9 @@ export default async function PostPage({
 }: {
   params: { main: string; slug: string };
 }) {
-  const post = await getPostBySlug(params.slug);
-  if (!post || post.mainCategory !== params.main) notFound();
+  try {
+    const post = await getPostBySlug(params.slug);
+    if (!post || post.mainCategory !== params.main) notFound();
 
   // Read locale cookie for server-rendered date + labels.
   const cookieLocale = cookies().get("ss-locale")?.value;
@@ -252,4 +253,10 @@ export default async function PostPage({
       <RelatedPosts posts={related} parentCategorySlug={post.mainCategory} />
     </article>
   );
+}
+
+  } catch (error) {
+    console.error('Error in PostPage:', error);
+    notFound();
+  }
 }
