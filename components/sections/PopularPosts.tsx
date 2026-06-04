@@ -52,7 +52,7 @@ export function PopularPosts({ posts }: { posts: Post[] }) {
                     <span className="h-px w-6 bg-gold-leaf" />
                     <span className="text-[11px] uppercase tracking-[0.16em] text-ink-400 dark:text-ink-500">{formatDate(post.createdAt, locale)}</span>
                   </div>
-                  <h3 className="serif-display mt-2 line-clamp-2 text-xl font-medium leading-snug text-ink-900 transition-colors duration-300 group-hover:text-gold-700 dark:text-ink-50 dark:group-hover:text-gold-200 sm:text-2xl">
+                  <h3 className="serif-display clamp-descenders mt-2 line-clamp-2 text-xl font-medium leading-snug text-ink-900 transition-colors duration-300 group-hover:text-gold-700 dark:text-ink-50 dark:group-hover:text-gold-200 sm:text-2xl">
                     {postTitle(post, locale)}
                   </h3>
                   <p className="mt-1.5 line-clamp-1 text-sm text-ink-500 dark:text-ink-400">

@@ -211,3 +211,64 @@ ${contentHtml.slice(0, 24000)}
     return { error: msg };
   }
 }
+
+
+/* ── Suggest cover-image prompt ─────────────────────────────────────── */
+
+/**
+ * Produces a ready-to-paste prompt for an image generator (Midjourney,
+ * DALL·E, SDXL, …) describing a tasteful editorial COVER illustration that
+ * fits the article and the SinnerSaved house style. The installed model is
+ * text-only, so we generate the *prompt*, not the image itself — the editor
+ * copies it into their generator of choice and uploads the result as cover.
+ */
+export async function suggestImagePromptAction(
+  title: string,
+  excerpt: string,
+  mainCategory: string
+): Promise<{ prompt?: string; error?: string }> {
+  try {
+    if (!title.trim()) {
+      return { error: "Isi judul terlebih dahulu untuk membuat prompt gambar." };
+    }
+    const client = getClient();
+    const categoryName =
+      CATEGORIES.find((c) => c.slug === mainCategory)?.name ?? mainCategory;
+
+    const prompt = `You are the art director for "SinnerSaved", a contemplative Indonesian Christian blog with an editorial "old-master / sacred" aesthetic: warm aged-ivory parchment, antique gold, deep chiaroscuro light, Renaissance/Baroque oil-painting and fine-engraving textures — quiet, reverent, never cartoonish or kitschy.
+
+Write ONE vivid, specific ENGLISH prompt for an AI image generator (Midjourney / DALL·E / SDXL) to create a COVER illustration for the article below.
+
+Rules for the prompt you write:
+- Be symbolic and atmospheric rather than literal; tasteful and reverent.
+- Describe subject, composition, lighting, colour palette (warm ivory + antique gold + deep shadow), medium/texture, and mood.
+- Avoid depicting the face of Jesus directly — prefer hands, light, landscape, objects, or symbolic scenes.
+- The image must contain NO lettering, captions, logos, or watermarks.
+- 2 to 4 sentences, then a short comma-separated list of style tags (e.g. "chiaroscuro, oil on canvas, fine engraving detail, muted warm palette, cinematic light, editorial, no text").
+- Reply with ONLY the prompt text — no preamble, no explanation, no surrounding quotes.
+
+Category: ${categoryName}
+Title: ${title}
+Summary: ${excerpt || "(no summary provided)"}`;
+
+    const res = await client.chat.completions.create({
+      model: MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.8,
+      max_tokens: 320,
+    });
+
+    let out = res.choices[0]?.message?.content?.trim() ?? "";
+    // Strip an accidental ```code fence``` and surrounding quotes.
+    out = out.replace(/^```[a-z]*\s*/i, "").replace(/```\s*$/i, "").trim();
+    out = out.replace(/^"([\s\S]+)"$/, "$1").trim();
+    if (!out) return { error: "AI tidak mengembalikan prompt." };
+    return { prompt: out };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Gagal membuat prompt gambar.";
+    if (/rate_limit|tokens per minute|TPM|413/i.test(msg)) {
+      return { error: "Kuota AI sedang penuh. Tunggu ±1 menit lalu coba lagi." };
+    }
+    return { error: msg };
+  }
+}

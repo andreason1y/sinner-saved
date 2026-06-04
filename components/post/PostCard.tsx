@@ -113,7 +113,7 @@ export function PostCard({
               post={post}
               className="text-[10px] uppercase tracking-[0.24em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
             />
-            <h3 className="serif-display mt-1.5 line-clamp-2 text-base leading-snug text-ink-900 dark:text-ink-50">
+            <h3 className="serif-display clamp-descenders mt-1.5 line-clamp-2 text-base leading-snug text-ink-900 dark:text-ink-50">
               {title}
             </h3>
           </div>
@@ -151,7 +151,7 @@ export function PostCard({
             post={post}
             className="text-[10px] uppercase tracking-[0.28em] text-gold-200 hover:text-gold-100"
           />
-          <h3 className="serif-display mt-3 line-clamp-3 text-2xl leading-snug text-ink-50">
+          <h3 className="serif-display clamp-descenders mt-3 line-clamp-3 text-2xl leading-snug text-ink-50">
             {title}
           </h3>
           <p className="mt-2 line-clamp-2 text-sm text-ink-300">
@@ -191,7 +191,7 @@ export function PostCard({
               {subName(post.mainCategory, post.subCategory)} ·{" "}
               {formatDate(post.createdAt, locale)}
             </p>
-            <h3 className="serif-display mt-3 max-w-2xl line-clamp-3 text-3xl leading-tight text-ink-50 sm:text-4xl">
+            <h3 className="serif-display clamp-descenders mt-3 max-w-2xl line-clamp-3 text-3xl leading-tight text-ink-50 sm:text-4xl">
               {title}
             </h3>
             <p className="mt-3 max-w-xl line-clamp-2 text-sm text-ink-200">{excerpt}</p>

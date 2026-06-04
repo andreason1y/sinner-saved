@@ -67,7 +67,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                     <span className="h-px w-8 bg-gold-leaf" />
                     <span className="text-[11px] uppercase tracking-[0.18em] text-ink-300">{formatDate(hero.createdAt, locale)}</span>
                   </div>
-                  <h3 className="serif-display mt-4 max-w-3xl text-3xl font-medium leading-tight text-ink-50 line-clamp-3 sm:text-5xl">
+                  <h3 className="serif-display clamp-descenders mt-4 max-w-3xl text-3xl font-medium leading-tight text-ink-50 line-clamp-3 sm:text-5xl">
                     {postTitle(hero, locale)}
                   </h3>
                   <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-200 line-clamp-2 sm:text-base">
@@ -111,7 +111,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                       <p className="kicker text-gold-600 dark:text-gold-300">
                         {categoryName(post.mainCategory)}
                       </p>
-                      <h3 className="serif-display mt-3 text-xl font-medium leading-snug text-ink-900 line-clamp-2 dark:text-ink-50 sm:text-2xl">
+                      <h3 className="serif-display clamp-descenders mt-3 text-xl font-medium leading-snug text-ink-900 line-clamp-2 dark:text-ink-50 sm:text-2xl">
                         {postTitle(post, locale)}
                       </h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-600 dark:text-ink-300">
