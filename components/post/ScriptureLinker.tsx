@@ -106,7 +106,7 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
   const [pop, setPop] = useState<Popover>(null);
   const [sheet, setSheet] = useState<Sheet>(null);
   const coarseRef = useRef(false);
-  const { t } = useLocale();
+  const { t, pending } = useLocale();
 
   useEffect(() => {
     coarseRef.current =
@@ -259,7 +259,35 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
       onBlur={() => setPop(null)}
       onClick={onClick}
     >
-      {children}
+      <div
+        className={
+          pending
+            ? "pointer-events-none select-none opacity-40 blur-[1px] transition-[opacity,filter] duration-300"
+            : "transition-[opacity,filter] duration-300"
+        }
+        aria-busy={pending}
+      >
+        {children}
+      </div>
+
+      {/* Translation-in-progress hint (locale switch re-renders the body
+          server-side, which may take a moment the first time). */}
+      <AnimatePresence>
+        {pending && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            className="fixed inset-x-0 bottom-6 z-50 flex justify-center px-4"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-ink-900/10 bg-white/95 px-4 py-2 text-sm font-medium text-ink-700 shadow-card-hover backdrop-blur-xl dark:border-white/10 dark:bg-ink-900/95 dark:text-ink-200">
+              <Loader2 size={15} className="animate-spin text-gold-600 dark:text-gold-300" />
+              {t.post.translating}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Desktop popover */}
       <AnimatePresence>
