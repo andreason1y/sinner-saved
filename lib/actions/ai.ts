@@ -235,17 +235,21 @@ export async function suggestImagePromptAction(
     const categoryName =
       CATEGORIES.find((c) => c.slug === mainCategory)?.name ?? mainCategory;
 
-    const prompt = `You are the art director for "SinnerSaved", a contemplative Indonesian Christian blog with an editorial "old-master / sacred" aesthetic: warm aged-ivory parchment, antique gold, deep chiaroscuro light, Renaissance/Baroque oil-painting and fine-engraving textures — quiet, reverent, never cartoonish or kitschy.
+    const prompt = `You are the art director for "SinnerSaved", a contemplative Indonesian Christian blog. EVERY cover must look like a museum-quality FINE-ART OIL PAINTING in the spirit of the old masters (Rembrandt, Caravaggio, Georges de La Tour) — never a photograph, 3D render, or cartoon.
 
-Write ONE vivid, specific ENGLISH prompt for an AI image generator (Midjourney / DALL·E / SDXL) to create a COVER illustration for the article below.
+House style: warm aged-ivory and antique gold, deep umber chiaroscuro shadow, one dramatic light source, visible oil brushwork and impasto, reverent and quiet.
 
-Rules for the prompt you write:
-- Be symbolic and atmospheric rather than literal; tasteful and reverent.
-- Describe subject, composition, lighting, colour palette (warm ivory + antique gold + deep shadow), medium/texture, and mood.
-- Avoid depicting the face of Jesus directly — prefer hands, light, landscape, objects, or symbolic scenes.
-- The image must contain NO lettering, captions, logos, or watermarks.
-- 2 to 4 sentences, then a short comma-separated list of style tags (e.g. "chiaroscuro, oil on canvas, fine engraving detail, muted warm palette, cinematic light, editorial, no text").
-- Reply with ONLY the prompt text — no preamble, no explanation, no surrounding quotes.
+Write ONE prompt for an image generator (Midjourney / DALL·E / SDXL) for a COVER illustration of the article below.
+
+Return it as a SINGLE line in exactly this shape:
+<vivid painterly scene: subject + composition + lighting + palette + mood>, oil painting, old master style, chiaroscuro, visible brushstrokes, warm ivory and antique gold palette, cinematic light, fine art, no text --ar 16:9
+
+Hard rules:
+- It MUST read as a hand-painted oil painting — keep the words "oil painting", "old master", and "chiaroscuro" in the tags.
+- Symbolic and atmospheric, never literal or cheesy. Prefer hands, light, a single lamp, bread and wine, an open scroll, a doorway, weather, landscape, or still-life — rather than faces. Do NOT depict the face of Jesus.
+- Landscape composition with the main subject CENTERED (the cover gets cropped on some cards). End the line with exactly: --ar 16:9
+- NO lettering, captions, logos, close-up faces, or watermarks.
+- Reply with ONLY the single prompt line — no preamble, no quotes, no explanation.
 
 Category: ${categoryName}
 Title: ${title}
@@ -254,15 +258,19 @@ Summary: ${excerpt || "(no summary provided)"}`;
     const res = await client.chat.completions.create({
       model: MODEL,
       messages: [{ role: "user", content: prompt }],
-      temperature: 0.8,
+      temperature: 0.85,
       max_tokens: 320,
     });
 
     let out = res.choices[0]?.message?.content?.trim() ?? "";
-    // Strip an accidental ```code fence``` and surrounding quotes.
+    // Strip an accidental ```code fence``` and surrounding quotes, then collapse
+    // to a single line so the --ar flag stays on the prompt.
     out = out.replace(/^```[a-z]*\s*/i, "").replace(/```\s*$/i, "").trim();
     out = out.replace(/^"([\s\S]+)"$/, "$1").trim();
+    out = out.replace(/\s*\n+\s*/g, " ").trim();
     if (!out) return { error: "AI tidak mengembalikan prompt." };
+    // Guarantee a landscape aspect ratio even if the model dropped it.
+    if (!/--ar\s/.test(out)) out += " --ar 16:9";
     return { prompt: out };
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Gagal membuat prompt gambar.";

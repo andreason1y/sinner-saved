@@ -627,8 +627,10 @@ export function PostForm({
                     className="w-full resize-y rounded-md border border-ink-900/10 bg-white px-2.5 py-2 text-[11px] leading-relaxed text-ink-700 outline-none focus:border-ink-900"
                   />
                   <p className="mt-1 text-[10px] leading-relaxed text-ink-400">
-                    Tempel ke Midjourney, DALL·E, atau SDXL, lalu unggah hasilnya
-                    sebagai cover di atas.
+                    Gaya lukisan minyak old-master, rasio 16:9 lanskap (≈1600×900).
+                    Tempel ke Midjourney (tanda <code>--ar 16:9</code> sudah
+                    disertakan), atau DALL·E / SDXL — pilih ukuran lebar/landscape —
+                    lalu unggah hasilnya sebagai cover di atas.
                   </p>
                 </div>
               )}
