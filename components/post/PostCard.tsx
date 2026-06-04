@@ -62,7 +62,7 @@ export function PostCard({
       <motion.article layout layoutId={layoutId} className="h-full">
         <Link
           href={href}
-          className="group flex h-full gap-4 rounded-2xl bg-parchment-light p-4 shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
+          className="group flex h-full gap-4 rounded-2xl bg-parchment-light p-4 shadow-card ring-1 ring-ink-900/10 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
         >
           {post.cover && (
             <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
@@ -77,9 +77,13 @@ export function PostCard({
           )}
           <div className="flex flex-1 flex-col justify-between">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-gold-600 dark:text-gold-300">
+              <Link
+                href={`/kategori/${post.mainCategory}/${post.subCategory}`}
+                onClick={(e) => e.stopPropagation()}
+                className="text-[10px] uppercase tracking-[0.24em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
+              >
                 {sub}
-              </p>
+              </Link>
               <h3 className="serif-display mt-1.5 line-clamp-2 text-base leading-snug text-ink-900 dark:text-ink-50">
                 {post.title}
               </h3>
@@ -99,7 +103,7 @@ export function PostCard({
       <motion.article layout layoutId={layoutId} className="h-full">
         <Link
           href={href}
-          className="group relative block h-full overflow-hidden rounded-2xl bg-ink-950 text-ink-50 shadow-card ring-1 ring-white/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-300/45"
+          className="group relative block h-full overflow-hidden rounded-2xl bg-ink-950 text-ink-50 shadow-card ring-1 ring-white/10 transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-300/45"
         >
           {post.cover && (
             <div className="relative aspect-[16/10] overflow-hidden">
@@ -108,15 +112,19 @@ export function PostCard({
                 alt={post.title}
                 fill
                 sizes="(min-width: 768px) 50vw, 100vw"
-                className="object-cover opacity-75 transition-all duration-[1100ms] ease-out group-hover:scale-[1.05] group-hover:opacity-90"
+                className="object-cover opacity-75 transition-all duration-700 ease-out group-hover:scale-[1.05] group-hover:opacity-90"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-transparent" />
             </div>
           )}
           <div className="p-6">
-            <p className="text-[10px] uppercase tracking-[0.28em] text-gold-200">
+            <Link
+              href={`/kategori/${post.mainCategory}/${post.subCategory}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-[10px] uppercase tracking-[0.28em] text-gold-200 hover:text-gold-100"
+            >
               {sub}
-            </p>
+            </Link>
             <h3 className="serif-display mt-3 line-clamp-3 text-2xl leading-snug text-ink-50">
               {post.title}
             </h3>
@@ -171,7 +179,7 @@ export function PostCard({
     <motion.article layout layoutId={layoutId} className="h-full">
       <Link
         href={href}
-        className="group block h-full overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
+        className="group block h-full overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
       >
         {post.cover && (
           <div className="relative aspect-[4/3] overflow-hidden">
@@ -180,14 +188,18 @@ export function PostCard({
               alt={post.title}
               fill
               sizes="(min-width: 1024px) 33vw, 100vw"
-              className="object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.05]"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
             />
           </div>
         )}
         <div className="flex flex-1 flex-col p-5">
-          <p className="text-[10px] uppercase tracking-[0.28em] text-gold-600 dark:text-gold-300">
+          <Link
+            href={`/kategori/${post.mainCategory}/${post.subCategory}`}
+            onClick={(e) => e.stopPropagation()}
+            className="text-[10px] uppercase tracking-[0.28em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
+          >
             {sub}
-          </p>
+          </Link>
           <h3 className="serif-display mt-3 line-clamp-2 text-xl leading-snug text-ink-900 dark:text-ink-50">
             {highlight(post.title, highlightTerms)}
           </h3>

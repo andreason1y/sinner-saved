@@ -32,11 +32,13 @@ const cardVariants: Variants = {
 export function CategoryArchive({
   category,
   posts,
+  initialSub = null,
 }: {
   category: MainCategory;
   posts: Post[];
+  initialSub?: string | null;
 }) {
-  const [activeSub, setActiveSub] = useState<string | null>(null);
+  const [activeSub, setActiveSub] = useState<string | null>(initialSub);
   const { t, locale } = useLocale();
   category = localizeCategory(category, locale);
 
