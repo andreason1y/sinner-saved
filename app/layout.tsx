@@ -4,6 +4,7 @@ import { Hanken_Grotesk, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider, NoFlashScript } from "@/components/theme/ThemeProvider";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import {
   DEFAULT_LOCALE,
   LOCALES,
@@ -100,7 +101,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-parchment text-ink-900 antialiased dark:bg-ink-950 dark:text-ink-50">
         <ThemeProvider>
-          <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
+          <ErrorBoundary>
+            <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
+          </ErrorBoundary>
         </ThemeProvider>
       </body>
     </html>

@@ -26,10 +26,18 @@ export default async function CategoryPage({
 }: {
   params: { main: string };
 }) {
-  const category = getCategory(params.main);
-  if (!category) notFound();
+  try {
+    const category = getCategory(params.main);
+    if (!category) notFound();
 
-  const posts = await getPostsByMainCategory(category.slug);
+    const posts = await getPostsByMainCategory(category.slug);
+    
+    // Handle case where posts might be null or undefined
+    const safePosts = Array.isArray(posts) ? posts : [];
 
-  return <CategoryArchive category={category} posts={posts} />;
+    return <CategoryArchive category={category} posts={safePosts} />;
+  } catch (error) {
+    console.error('Error in CategoryPage:', error);
+    notFound();
+  }
 }
