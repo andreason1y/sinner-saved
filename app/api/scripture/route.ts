@@ -12,11 +12,14 @@ import { getVerse, normalizeRef } from "@/lib/scripture/verses";
  *  - We can auto-discover the Indonesian translation code at runtime, so no
  *    brittle hardcoded id is needed.
  *
- * Resolution order for a reference:
- *  1. Curated local dataset (instant, hand-verified) — see lib/scripture/verses.ts
- *  2. Upstream Free-Use Bible API (https://bible.helloao.org) — Indonesian
- *     translation, auto-discovered (override with env BIBLE_TRANSLATION).
- *  3. On any failure → 404, and the client falls back to the SABDA link.
+ * Locale-aware via ?lang=id|en (default id):
+ *  - id: curated local dataset first (instant, hand-verified), then the
+ *    upstream Indonesian translation (auto-discovered; override
+ *    BIBLE_TRANSLATION).
+ *  - en: upstream English translation (default BSB; override
+ *    BIBLE_TRANSLATION_EN). The curated dataset is Indonesian-only, so it is
+ *    skipped for en.
+ *  On any failure → 404, and the client falls back to the SABDA link.
  *
  * This route NEVER throws: every upstream interaction is guarded so a bad
  * response can only degrade to the link fallback, never a 500.
@@ -50,34 +53,41 @@ function parseRef(ref: string): ParsedRef | null {
   return { usfm, chapter, verseStart, verseEnd };
 }
 
-// Warm-lambda cache for the resolved translation id.
+// Warm-lambda cache for the resolved Indonesian translation id.
 // undefined = not yet resolved, null = none available.
-let cachedTranslation: string | null | undefined;
+let cachedIndonesian: string | null | undefined;
 
-async function resolveTranslation(): Promise<string | null> {
+async function resolveTranslation(lang: string): Promise<string | null> {
+  if (lang === "en") {
+    // BSB (Berean Standard Bible) is helloao's documented default English
+    // translation and is always present.
+    return process.env.BIBLE_TRANSLATION_EN || "BSB";
+  }
+
+  // Indonesian.
   if (process.env.BIBLE_TRANSLATION) return process.env.BIBLE_TRANSLATION;
-  if (cachedTranslation !== undefined) return cachedTranslation;
+  if (cachedIndonesian !== undefined) return cachedIndonesian;
 
   try {
     const res = await fetch(`${API_BASE}/available_translations.json`, {
       next: { revalidate },
     });
-    if (!res.ok) return (cachedTranslation = null);
+    if (!res.ok) return (cachedIndonesian = null);
     const data: unknown = await res.json();
     const list: any[] = Array.isArray(data)
       ? data
       : (data as any)?.translations ?? [];
 
     const isIndonesian = (t: any) => {
-      const lang = String(t?.language ?? t?.languageCode ?? "").toLowerCase();
+      const lng = String(t?.language ?? t?.languageCode ?? "").toLowerCase();
       const en = String(
         t?.languageEnglishName ?? t?.languageName ?? ""
       ).toLowerCase();
       return (
-        lang === "ind" ||
-        lang === "id" ||
-        lang.startsWith("id-") ||
-        lang.startsWith("ind") ||
+        lng === "ind" ||
+        lng === "id" ||
+        lng.startsWith("id-") ||
+        lng.startsWith("ind") ||
         en.includes("indonesia")
       );
     };
@@ -90,10 +100,10 @@ async function resolveTranslation(): Promise<string | null> {
       )
     );
     const chosen = tb ?? candidates[0];
-    cachedTranslation = chosen ? String(chosen.id ?? chosen.shortName) : null;
-    return cachedTranslation;
+    cachedIndonesian = chosen ? String(chosen.id ?? chosen.shortName) : null;
+    return cachedIndonesian;
   } catch {
-    return (cachedTranslation = null);
+    return (cachedIndonesian = null);
   }
 }
 
@@ -109,9 +119,9 @@ function extractText(content: unknown): string {
   return "";
 }
 
-async function fetchVerseText(p: ParsedRef): Promise<string | null> {
+async function fetchVerseText(p: ParsedRef, lang: string): Promise<string | null> {
   if (p.verseStart == null) return null; // chapter-only is too long for a popover
-  const translation = await resolveTranslation();
+  const translation = await resolveTranslation(lang);
   if (!translation) return null;
 
   try {
@@ -151,15 +161,19 @@ function withCache(body: Record<string, unknown>, status = 200) {
 }
 
 export async function GET(request: Request) {
-  const ref = new URL(request.url).searchParams.get("ref")?.trim();
+  const params = new URL(request.url).searchParams;
+  const ref = params.get("ref")?.trim();
+  const lang = params.get("lang") === "en" ? "en" : "id";
   if (!ref) {
     return NextResponse.json({ error: "missing ref" }, { status: 400 });
   }
 
-  // 1) Curated local first — instant + hand-verified.
-  const local = getVerse(ref);
-  if (local) {
-    return withCache({ ref: local.ref, text: local.text, source: "local" });
+  // 1) Curated local first — instant + hand-verified (Indonesian only).
+  if (lang === "id") {
+    const local = getVerse(ref);
+    if (local) {
+      return withCache({ ref: local.ref, text: local.text, source: "local" });
+    }
   }
 
   // 2) Upstream API.
@@ -167,9 +181,9 @@ export async function GET(request: Request) {
   if (!parsed) {
     return NextResponse.json({ error: "unrecognized ref" }, { status: 404 });
   }
-  const text = await fetchVerseText(parsed);
+  const text = await fetchVerseText(parsed, lang);
   if (!text) {
     return NextResponse.json({ error: "not found" }, { status: 404 });
   }
-  return withCache({ ref, text, source: "api" });
+  return withCache({ ref, text, source: "api", lang });
 }
