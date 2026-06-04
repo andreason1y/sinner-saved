@@ -5,7 +5,7 @@ import Link from "next/link";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { SectionHeader } from "./SectionHeader";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RuangAlkitab({ posts }: { posts: Post[] }) {
@@ -58,10 +58,10 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                         {post.subCategory.replace(/-/g, " ")}
                       </p>
                       <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">
-                        {post.title}
+                        {postTitle(post, locale)}
                       </h3>
                       <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
-                        {post.excerpt}
+                        {postExcerpt(post, locale)}
                       </p>
                       <p className="mt-4 text-xs text-ink-500 dark:text-ink-400">
                         {formatDate(post.createdAt, locale)}
