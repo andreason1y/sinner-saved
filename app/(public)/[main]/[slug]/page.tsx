@@ -184,9 +184,12 @@ export default async function PostPage({
             <ChevronLeft size={12} />
             {category?.name}
           </Link>
-          <p className="kicker mt-3 text-gold-600/80 dark:text-gold-300/80">
+          <Link
+            href={`/kategori/${post.mainCategory}/${post.subCategory}`}
+            className="kicker mt-3 block text-gold-600/80 hover:text-gold-600 dark:text-gold-300/80 dark:hover:text-gold-300"
+          >
             {subName}
-          </p>
+          </Link>
           <h1 className="serif-display mt-4 break-words text-4xl font-medium leading-[1.06] text-ink-900 dark:text-ink-50 sm:text-6xl">
             {displayTitle}
           </h1>
