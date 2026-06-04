@@ -187,6 +187,16 @@ html.dark .pill {
   letter-spacing: 0;
 }
 
+/* Descender-safe clamping.
+ * Cormorant Garamond has deep descenders (g, y, p, j). `-webkit-line-clamp`
+ * truncates with `overflow: hidden`, which clips those tails on the last
+ * visible line. A hair of bottom padding moves the clip boundary below the
+ * descenders; an equal negative margin keeps surrounding layout unchanged. */
+.clamp-descenders {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
 /* Kicker — small-caps label with wide tracking, used above section titles */
 .kicker {
   font-family: var(--font-inter), system-ui, sans-serif;

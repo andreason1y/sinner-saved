@@ -15,6 +15,7 @@ import {
   suggestSubcategoryAction,
   suggestMainCategoryAction,
   polishContentAction,
+  suggestImagePromptAction,
 } from "@/lib/actions/ai";
 import { getTranslationsAction } from "@/lib/actions/translate";
 import { CATEGORIES } from "@/lib/categories";
@@ -31,6 +32,8 @@ import {
   Sparkles,
   Languages,
   Wand2,
+  Copy,
+  Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -78,6 +81,11 @@ export function PostForm({
   const [translating, setTranslating] = useState(false);
   const [cover, setCover] = useState(initial?.cover ?? "");
   const [uploading, setUploading] = useState(false);
+  // AI cover-image prompt helper (text-only model → suggests a prompt to
+  // paste into an external image generator).
+  const [imagePrompt, setImagePrompt] = useState("");
+  const [suggestingImage, setSuggestingImage] = useState(false);
+  const [copiedImagePrompt, setCopiedImagePrompt] = useState(false);
   const [main, setMain] = useState(
     initial?.mainCategory ?? CATEGORIES[0].slug
   );
@@ -152,6 +160,34 @@ export function PostForm({
       }
     } finally {
       setTranslating(false);
+    }
+  };
+
+  const handleSuggestImagePrompt = async () => {
+    const title = titleRef.current?.value ?? "";
+    const excerpt = excerptRef.current?.value ?? "";
+    if (!title) {
+      window.alert("Isi judul terlebih dahulu untuk membuat prompt gambar.");
+      return;
+    }
+    setSuggestingImage(true);
+    try {
+      const res = await suggestImagePromptAction(title, excerpt, main);
+      if (res.prompt) setImagePrompt(res.prompt);
+      else if (res.error) window.alert(res.error);
+    } finally {
+      setSuggestingImage(false);
+    }
+  };
+
+  const copyImagePrompt = async () => {
+    if (!imagePrompt) return;
+    try {
+      await navigator.clipboard.writeText(imagePrompt);
+      setCopiedImagePrompt(true);
+      setTimeout(() => setCopiedImagePrompt(false), 1800);
+    } catch {
+      // clipboard unavailable — ignore
     }
   };
 
@@ -544,6 +580,61 @@ export function PostForm({
               placeholder="atau tempel URL gambar…"
               className="mt-2 w-full rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-xs text-ink-800 outline-none focus:border-ink-900"
             />
+
+            {/* AI cover-image prompt helper */}
+            <div className="mt-3 border-t border-ink-900/10 pt-3">
+              <button
+                type="button"
+                onClick={handleSuggestImagePrompt}
+                disabled={suggestingImage}
+                title="Buat prompt ilustrasi cover dengan AI (untuk Midjourney / DALL·E / SDXL)"
+                className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-sacred-400/60 bg-sacred-50 px-3 py-2 text-[11px] font-medium text-sacred-700 transition-colors hover:bg-sacred-100 disabled:opacity-50"
+              >
+                {suggestingImage ? (
+                  <Loader2 size={12} className="animate-spin" />
+                ) : (
+                  <Wand2 size={12} />
+                )}
+                {suggestingImage ? "Membuat prompt…" : "Sarankan prompt gambar (AI)"}
+              </button>
+
+              {imagePrompt && (
+                <div className="mt-2 rounded-lg border border-ink-900/10 bg-parchment-deep/20 p-2.5">
+                  <div className="mb-1.5 flex items-center justify-between">
+                    <span className="text-[10px] uppercase tracking-[0.22em] text-ink-400">
+                      Prompt gambar
+                    </span>
+                    <button
+                      type="button"
+                      onClick={copyImagePrompt}
+                      className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] text-ink-500 transition-colors hover:bg-white hover:text-ink-900"
+                    >
+                      {copiedImagePrompt ? (
+                        <>
+                          <Check size={11} /> Tersalin
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={11} /> Salin
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <textarea
+                    value={imagePrompt}
+                    onChange={(e) => setImagePrompt(e.target.value)}
+                    rows={6}
+                    className="w-full resize-y rounded-md border border-ink-900/10 bg-white px-2.5 py-2 text-[11px] leading-relaxed text-ink-700 outline-none focus:border-ink-900"
+                  />
+                  <p className="mt-1 text-[10px] leading-relaxed text-ink-400">
+                    Gaya lukisan minyak old-master, rasio 16:9 lanskap (≈1600×900).
+                    Tempel ke Midjourney (tanda <code>--ar 16:9</code> sudah
+                    disertakan), atau DALL·E / SDXL — pilih ukuran lebar/landscape —
+                    lalu unggah hasilnya sebagai cover di atas.
+                  </p>
+                </div>
+              )}
+            </div>
           </SidebarBlock>
 
           <SidebarBlock label="Slug">
