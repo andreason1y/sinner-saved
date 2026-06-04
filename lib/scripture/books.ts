@@ -90,3 +90,30 @@ export const BOOK_TOKENS: string[] = BIBLE_BOOKS.flatMap((b) => [
   b.name,
   ...b.aliases,
 ]).sort((a, b) => b.length - a.length);
+
+
+/**
+ * USFM book IDs in canonical 66-book order — index-aligned with BIBLE_BOOKS
+ * above, so the mapping stays correct by construction. Used to query external
+ * Bible APIs (e.g. helloao) which key chapters by USFM id (GEN, JHN, …).
+ */
+const USFM_ORDER: string[] = [
+  // Perjanjian Lama (39)
+  "GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA",
+  "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST", "JOB", "PSA", "PRO",
+  "ECC", "SNG", "ISA", "JER", "LAM", "EZK", "DAN", "HOS", "JOL", "AMO",
+  "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL",
+  // Perjanjian Baru (27)
+  "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH",
+  "PHP", "COL", "1TH", "2TH", "1TI", "2TI", "TIT", "PHM", "HEB", "JAS",
+  "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV",
+];
+
+/** canonical Indonesian book name → USFM id (e.g. "Yohanes" → "JHN"). */
+export const USFM_BY_NAME: Record<string, string> = (() => {
+  const map: Record<string, string> = {};
+  BIBLE_BOOKS.forEach((book, i) => {
+    if (USFM_ORDER[i]) map[book.name] = USFM_ORDER[i];
+  });
+  return map;
+})();

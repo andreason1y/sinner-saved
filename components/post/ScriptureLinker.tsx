@@ -2,19 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { findScriptureRefs } from "@/lib/scripture/parse";
-import { getVerse } from "@/lib/scripture/verses";
+import { getVerse, normalizeRef } from "@/lib/scripture/verses";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 type Popover = {
   ref: string;
   text: string | null;
+  loading: boolean;
   top: number;
   left: number;
 } | null;
 
-type Sheet = { ref: string; text: string | null; url: string } | null;
+type Sheet = {
+  ref: string;
+  text: string | null;
+  loading: boolean;
+  url: string;
+} | null;
 
 // Text nodes inside these elements are left untouched (already links, code
 // samples, or headings used as TOC anchors).
@@ -41,21 +47,59 @@ function hasSkippedAncestor(node: Node, root: HTMLElement): boolean {
   return false;
 }
 
+// Client-side memo so the same reference is fetched at most once per session.
+// undefined = not fetched, string = text, null = fetched but unavailable.
+const verseCache = new Map<string, string | null>();
+
+/**
+ * Resolves verse text: curated-local first (instant), then the same-origin
+ * /api/scripture proxy. Always resolves (null when unavailable) so callers can
+ * fall back to the external reader link.
+ */
+async function loadVerse(canonical: string): Promise<string | null> {
+  const local = getVerse(canonical);
+  if (local) return local.text;
+
+  const key = normalizeRef(canonical);
+  if (verseCache.has(key)) return verseCache.get(key) ?? null;
+
+  let text: string | null = null;
+  try {
+    const res = await fetch(
+      `/api/scripture?ref=${encodeURIComponent(canonical)}`
+    );
+    if (res.ok) {
+      const data = await res.json();
+      if (typeof data?.text === "string" && data.text.trim()) {
+        text = data.text;
+      }
+    }
+  } catch {
+    text = null;
+  }
+  verseCache.set(key, text);
+  return text;
+}
+
+/** Synchronous peek: returns string (have text), null (known-missing), or
+ *  undefined (not yet resolved → needs async load). */
+function peekVerse(canonical: string): string | null | undefined {
+  const local = getVerse(canonical);
+  if (local) return local.text;
+  const key = normalizeRef(canonical);
+  return verseCache.has(key) ? verseCache.get(key) ?? null : undefined;
+}
+
 /**
  * Wraps post body content and, after render, turns every Bible reference in
- * the prose into a link to an Indonesian Bible reader.
+ * the prose into a link to an Indonesian Bible reader, and shows the verse
+ * text inline.
  *
- * - Desktop (fine pointer): hovering/focusing a reference shows a popover.
- *   When the verse is in our curated set, the popover shows the full text;
- *   otherwise just the citation + "open in SABDA" hint. Clicking still opens
- *   the external reader.
+ * - Desktop (fine pointer): hovering/focusing a reference shows a popover with
+ *   the verse text (fetched on demand, cached). Clicking opens the reader.
  * - Mobile (coarse pointer, no hover): tapping a reference opens a bottom
- *   sheet with the verse text and an explicit button to open SABDA, instead
- *   of navigating away immediately.
- *
- * We post-process the live DOM rather than the HTML string so we never break
- * existing markup (links, code blocks) and ship zero extra render cost on the
- * server.
+ *   sheet with the verse text + a button to open the full reader, instead of
+ *   navigating away immediately.
  */
 export function ScriptureLinker({ children }: { children: React.ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -132,12 +176,23 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
       window.innerWidth - margin
     );
     const canonical = target.dataset.ref ?? target.textContent ?? "";
+    const peek = peekVerse(canonical);
+
     setPop({
       ref: canonical,
-      text: getVerse(canonical)?.text ?? null,
+      text: peek ?? null,
+      loading: peek === undefined,
       top: rect.top,
       left,
     });
+
+    if (peek === undefined) {
+      loadVerse(canonical).then((text) => {
+        setPop((prev) =>
+          prev && prev.ref === canonical ? { ...prev, text, loading: false } : prev
+        );
+      });
+    }
   }
 
   function onPointerOver(e: React.MouseEvent) {
@@ -163,11 +218,18 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
     if (!(el instanceof HTMLElement)) return;
     e.preventDefault();
     const canonical = el.dataset.ref ?? el.textContent ?? "";
-    setSheet({
-      ref: canonical,
-      text: getVerse(canonical)?.text ?? null,
-      url: el.getAttribute("href") ?? "#",
-    });
+    const url = el.getAttribute("href") ?? "#";
+    const peek = peekVerse(canonical);
+
+    setSheet({ ref: canonical, text: peek ?? null, loading: peek === undefined, url });
+
+    if (peek === undefined) {
+      loadVerse(canonical).then((text) => {
+        setSheet((prev) =>
+          prev && prev.ref === canonical ? { ...prev, text, loading: false } : prev
+        );
+      });
+    }
   }
 
   // A fixed popover detaches from its anchor on scroll — dismiss it.
@@ -218,8 +280,13 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
             <p className="text-[10px] uppercase tracking-[0.28em] text-sacred-700 dark:text-sacred-300">
               {pop.ref}
             </p>
-            {pop.text ? (
-              <p className="serif-display mt-2 max-h-48 overflow-hidden text-sm leading-snug text-ink-800 dark:text-ink-100">
+            {pop.loading ? (
+              <p className="mt-2 flex items-center gap-2 text-sm italic text-ink-500 dark:text-ink-400">
+                <Loader2 size={13} className="animate-spin" />
+                {t.post.scriptureLoading}
+              </p>
+            ) : pop.text ? (
+              <p className="serif-display mt-2 max-h-60 overflow-hidden text-sm leading-snug text-ink-800 dark:text-ink-100">
                 {pop.text}
               </p>
             ) : (
@@ -268,7 +335,12 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
                 </button>
               </div>
 
-              {sheet.text ? (
+              {sheet.loading ? (
+                <p className="mt-3 flex items-center gap-2 text-base italic text-ink-500 dark:text-ink-400">
+                  <Loader2 size={16} className="animate-spin" />
+                  {t.post.scriptureLoading}
+                </p>
+              ) : sheet.text ? (
                 <p className="serif-display mt-3 text-lg leading-relaxed text-ink-900 dark:text-ink-50">
                   {sheet.text}
                 </p>

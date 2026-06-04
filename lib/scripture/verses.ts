@@ -188,6 +188,100 @@ const ENTRIES: Verse[] = [
     ref: "Wahyu 21:4",
     text: "dan Ia akan menghapus segala air mata dari mata mereka, dan maut tidak akan ada lagi; tidak akan ada lagi perkabungan, atau ratap tangis, atau dukacita, sebab segala sesuatu yang lama itu telah berlalu.",
   },
+
+  // ── Ayat yang lebih jarang dikutip — dipakai untuk rotasi "Ayat Hari Ini" ──
+  {
+    ref: "Ulangan 31:8",
+    text: "Sebab TUHAN, Dia sendiri akan berjalan di depanmu, Dia sendiri akan menyertai engkau, Dia tidak akan membiarkan engkau dan tidak akan meninggalkan engkau; janganlah takut dan janganlah patah hati.",
+  },
+  {
+    ref: "Mazmur 37:4",
+    text: "dan bergembiralah karena TUHAN; maka Ia akan memberikan kepadamu apa yang diinginkan hatimu.",
+  },
+  {
+    ref: "Mazmur 73:26",
+    text: "Sekalipun dagingku dan hatiku habis lenyap, gunung batuku dan bagianku tetaplah Allah selama-lamanya.",
+  },
+  {
+    ref: "Mazmur 90:12",
+    text: "Ajarlah kami menghitung hari-hari kami sedemikian, hingga kami beroleh hati yang bijaksana.",
+  },
+  {
+    ref: "Mazmur 139:23-24",
+    text: "Selidikilah aku, ya Allah, dan kenallah hatiku, ujilah aku dan kenallah pikiran-pikiranku; lihatlah, apakah jalanku serong, dan tuntunlah aku di jalan yang kekal!",
+  },
+  {
+    ref: "Amsal 16:9",
+    text: "Hati manusia memikir-mikirkan jalannya, tetapi Tuhanlah yang menentukan arah langkahnya.",
+  },
+  {
+    ref: "Amsal 18:10",
+    text: "Nama TUHAN adalah menara yang kuat, ke sanalah orang benar berlari dan ia menjadi selamat.",
+  },
+  {
+    ref: "Pengkhotbah 3:11",
+    text: "Ia membuat segala sesuatu indah pada waktunya, bahkan Ia memberikan kekekalan dalam hati mereka. Tetapi manusia tidak dapat menyelami pekerjaan yang dilakukan Allah dari awal sampai akhir.",
+  },
+  {
+    ref: "Yesaya 26:3",
+    text: "Yang hatinya teguh Kaujagai dengan damai sejahtera, sebab kepada-Mulah ia percaya.",
+  },
+  {
+    ref: "Yesaya 43:2",
+    text: "Apabila engkau menyeberang melalui air, Aku akan menyertai engkau, atau melalui sungai-sungai, engkau tidak akan dihanyutkan; apabila engkau berjalan melalui api, engkau tidak akan dihanguskan, dan nyala api tidak akan membakar engkau.",
+  },
+  {
+    ref: "Ratapan 3:25-26",
+    text: "TUHAN adalah baik bagi orang yang berharap kepada-Nya, bagi jiwa yang mencari Dia. Adalah baik menanti dengan diam pertolongan TUHAN.",
+  },
+  {
+    ref: "Mikha 6:8",
+    text: "Hai manusia, telah diberitahukan kepadamu apa yang baik. Dan apakah yang dituntut TUHAN dari padamu: selain berlaku adil, mencintai kesetiaan, dan hidup dengan rendah hati di hadapan Allahmu?",
+  },
+  {
+    ref: "Nahum 1:7",
+    text: "TUHAN itu baik; Ia adalah tempat pengungsian pada waktu kesusahan; Ia mengenal orang-orang yang berlindung kepada-Nya.",
+  },
+  {
+    ref: "Habakuk 3:17-18",
+    text: "Sekalipun pohon ara tidak berbunga, pohon anggur tidak berbuah, hasil pohon zaitun mengecewakan, sekalipun ladang tidak menghasilkan bahan makanan, kambing domba terhalau dari kurungan, dan tidak ada lembu dalam kandang, namun aku akan bersorak-sorak di dalam TUHAN, beria-ria di dalam Allah yang menyelamatkan aku.",
+  },
+  {
+    ref: "Zefanya 3:17",
+    text: "TUHAN Allahmu ada di antaramu sebagai pahlawan yang memberi kemenangan. Ia bergirang karena engkau dengan sukacita, Ia membaharui engkau dalam kasih-Nya, Ia bersorak-sorak karena engkau dengan sukacita.",
+  },
+  {
+    ref: "Roma 12:12",
+    text: "Bersukacitalah dalam pengharapan, sabarlah dalam kesesakan, dan bertekunlah dalam doa!",
+  },
+  {
+    ref: "2 Korintus 12:9",
+    text: "Tetapi jawab Tuhan kepadaku: \u201cCukuplah kasih karunia-Ku bagimu, sebab justru dalam kelemahanlah kuasa-Ku menjadi sempurna.\u201d Sebab itu terlebih suka aku bermegah atas kelemahanku, supaya kuasa Kristus turun menaungi aku.",
+  },
+  {
+    ref: "Galatia 6:9",
+    text: "Janganlah kita jemu-jemu berbuat baik, karena apabila sudah datang waktunya, kita akan menuai, jika kita tidak menjadi lemah.",
+  },
+  {
+    ref: "Kolose 3:2",
+    text: "Pikirkanlah perkara yang di atas, bukan yang di bumi.",
+  },
+  {
+    ref: "1 Tesalonika 5:16-18",
+    text: "Bersukacitalah senantiasa. Tetaplah berdoa. Mengucap syukurlah dalam segala hal, sebab itulah yang dikehendaki Allah di dalam Kristus Yesus bagi kamu.",
+  },
+  {
+    ref: "Yakobus 1:2-3",
+    text: "Anggaplah sebagai suatu kebahagiaan, saudara-saudaraku, apabila kamu jatuh ke dalam berbagai-bagai pencobaan, sebab kamu tahu, bahwa ujian terhadap imanmu itu menghasilkan ketekunan.",
+  },
+  {
+    ref: "Yakobus 1:17",
+    text: "Setiap pemberian yang baik dan setiap anugerah yang sempurna, datangnya dari atas, diturunkan dari Bapa segala terang; pada-Nya tidak ada perubahan atau bayangan karena pertukaran.",
+  },
+  {
+    ref: "1 Petrus 2:9",
+    text: "Tetapi kamulah bangsa yang terpilih, imamat yang rajani, bangsa yang kudus, umat kepunyaan Allah sendiri, supaya kamu memberitakan perbuatan-perbuatan yang besar dari Dia, yang telah memanggil kamu keluar dari kegelapan kepada terang-Nya yang ajaib.",
+  },
 ];
 
 /** canonical (normalized) → verse */
@@ -202,40 +296,36 @@ export function getVerse(ref: string): Verse | null {
 }
 
 /**
- * Ordered list of references used by the "Ayat Harian" card. A deterministic
- * day-of-year index keeps the verse stable for everyone for the whole day.
+ * Ordered list of references used by the "Ayat Harian" card. Intentionally
+ * skips the most over-quoted verses (Yoh 3:16, Maz 23, Flp 4:13, Rm 8:28, …)
+ * in favour of deeper cuts. Every entry here MUST exist in VERSES above so the
+ * card always has verified local text. A deterministic day-of-year index keeps
+ * the verse stable for everyone for the whole day.
  */
 export const DAILY_VERSES: string[] = [
-  "Yohanes 3:16",
-  "Mazmur 23:1",
-  "Filipi 4:13",
-  "Roma 8:28",
-  "Yeremia 29:11",
-  "Yesaya 41:10",
-  "Amsal 3:5-6",
-  "Matius 11:28",
-  "Filipi 4:6",
-  "Yesaya 40:31",
-  "Roma 12:2",
-  "2 Korintus 5:17",
-  "Ratapan 3:22-23",
-  "Yosua 1:9",
-  "Mazmur 27:1",
-  "Ibrani 11:1",
-  "1 Petrus 5:7",
-  "Galatia 2:20",
-  "Roma 5:8",
-  "Mazmur 119:105",
-  "Matius 6:33",
-  "Yohanes 14:6",
-  "Efesus 2:8-9",
-  "Kolose 3:23",
-  "1 Yohanes 1:9",
-  "Roma 6:23",
-  "Filipi 1:6",
-  "Yohanes 8:32",
-  "Mazmur 23:4",
-  "Wahyu 21:4",
+  "Mikha 6:8",
+  "Zefanya 3:17",
+  "Amsal 16:9",
+  "Ratapan 3:25-26",
+  "Pengkhotbah 3:11",
+  "Yesaya 26:3",
+  "Mazmur 90:12",
+  "Habakuk 3:17-18",
+  "2 Korintus 12:9",
+  "Mazmur 139:23-24",
+  "Yakobus 1:2-3",
+  "Amsal 18:10",
+  "Nahum 1:7",
+  "Roma 12:12",
+  "Yesaya 43:2",
+  "1 Tesalonika 5:16-18",
+  "Ulangan 31:8",
+  "Mazmur 37:4",
+  "Galatia 6:9",
+  "Yakobus 1:17",
+  "Mazmur 73:26",
+  "Kolose 3:2",
+  "1 Petrus 2:9",
 ];
 
 /** Day-of-year (1–366) in the given date's local time. */

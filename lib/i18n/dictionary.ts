@@ -108,6 +108,7 @@ type Dict = {
     share: string;
     linkCopied: string;
     scriptureOpen: string;
+    scriptureLoading: string;
   };
   contact: {
     eyebrow: string;
@@ -240,6 +241,7 @@ const id: Dict = {
     share: "Bagikan",
     linkCopied: "Tautan disalin",
     scriptureOpen: "Buka di Alkitab SABDA →",
+    scriptureLoading: "Memuat ayat…",
   },
   contact: {
     eyebrow: "Kontak",
@@ -392,6 +394,7 @@ const en: Dict = {
     share: "Share",
     linkCopied: "Link copied",
     scriptureOpen: "Open in SABDA Bible →",
+    scriptureLoading: "Loading verse…",
   },
   contact: {
     eyebrow: "Contact",
