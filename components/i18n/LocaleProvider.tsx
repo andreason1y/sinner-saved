@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
+import { useRouter } from "next/navigation";
 import {
   DICTIONARIES,
   DEFAULT_LOCALE,
@@ -12,6 +20,9 @@ type Ctx = {
   locale: Locale;
   setLocale: (l: Locale) => void;
   t: (typeof DICTIONARIES)[Locale];
+  /** True while server components re-render after a locale switch (e.g. the
+   *  article body is being (re)translated). UI can show a subtle indicator. */
+  pending: boolean;
 };
 
 const LocaleContext = createContext<Ctx | null>(null);
@@ -39,6 +50,8 @@ export function LocaleProvider({
   children: React.ReactNode;
 }) {
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
 
   // Hydrate from storage / cookie if it disagrees with initial.
   useEffect(() => {
@@ -61,20 +74,32 @@ export function LocaleProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setLocale = useCallback((next: Locale) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      // ignore
-    }
-    writeCookieLocale(next);
-    document.documentElement.lang = next;
-    setLocaleState(next);
-  }, []);
+  const setLocale = useCallback(
+    (next: Locale) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // ignore
+      }
+      writeCookieLocale(next);
+      document.documentElement.lang = next;
+      setLocaleState(next);
+      // Server Components (e.g. the post body, which is chosen by the
+      // ss-locale cookie at request time) don't know the cookie changed.
+      // Re-fetch them in place — no full browser reload, client state kept —
+      // so the article re-renders in the new language immediately. Wrapped in
+      // a transition so `pending` stays true until the (possibly translated)
+      // content is ready, letting the UI show a loading hint.
+      startTransition(() => {
+        router.refresh();
+      });
+    },
+    [router]
+  );
 
   return (
     <LocaleContext.Provider
-      value={{ locale, setLocale, t: DICTIONARIES[locale] }}
+      value={{ locale, setLocale, t: DICTIONARIES[locale], pending }}
     >
       {children}
     </LocaleContext.Provider>
@@ -88,6 +113,7 @@ export function useLocale() {
       locale: DEFAULT_LOCALE,
       setLocale: () => {},
       t: DICTIONARIES[DEFAULT_LOCALE],
+      pending: false,
     };
   }
   return ctx;

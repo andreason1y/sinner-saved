@@ -228,19 +228,20 @@ export default async function PostPage({
                 Translated by machine — original in Indonesian.
               </p>
             )}
-            <ScriptureLinker>
+            <ScriptureLinker key={locale}>
               {html ? <PostBody html={html} /> : <PostContent blocks={blocks} />}
             </ScriptureLinker>
 
             {post.tags && post.tags.length > 0 && (
               <div className="mt-16 flex flex-wrap gap-2 border-t border-ink-900/10 pt-8 dark:border-white/10">
                 {post.tags.map((tag) => (
-                  <span
+                  <Link
                     key={tag}
-                    className="rounded-full border border-ink-900/10 bg-white/60 px-3 py-1 text-xs text-ink-700 dark:border-white/10 dark:bg-white/[0.04] dark:text-ink-300"
+                    href={`/tag/${encodeURIComponent(tag)}`}
+                    className="rounded-full border border-ink-900/10 bg-white/60 px-3 py-1 text-xs text-ink-700 transition-colors hover:border-gold-400/60 hover:bg-gold-100/40 hover:text-ink-900 dark:border-white/10 dark:bg-white/[0.04] dark:text-ink-300 dark:hover:border-gold-300/40 dark:hover:bg-white/[0.08] dark:hover:text-ink-50"
                   >
                     #{tag}
-                  </span>
+                  </Link>
                 ))}
               </div>
             )}

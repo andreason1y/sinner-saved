@@ -1,5 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { BibleReadingCard } from "@/components/sections/BibleReadingCard";
+import { VerseOfDay } from "@/components/sections/VerseOfDay";
 import { FeaturedBento } from "@/components/sections/FeaturedBento";
 import { PopularPosts } from "@/components/sections/PopularPosts";
 import { RuangAlkitab } from "@/components/sections/RuangAlkitab";
@@ -43,6 +44,7 @@ export default async function HomePage() {
       <JsonLd data={organizationSchema()} />
       <Hero />
       <BibleReadingCard />
+      <VerseOfDay />
       <FeaturedBento posts={featured} />
       <PopularPosts posts={popular} />
       <RuangAlkitab posts={alkitab} />

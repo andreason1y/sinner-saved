@@ -109,6 +109,23 @@ export async function getPostsByMainCategory(
   return typeof limit === "number" ? filtered.slice(0, limit) : filtered;
 }
 
+/** Unique, sorted list of tags across all published posts. */
+export async function getAllTags(): Promise<string[]> {
+  const all = await getPublishedPosts();
+  const set = new Set<string>();
+  for (const p of all) for (const tag of p.tags ?? []) set.add(tag);
+  return Array.from(set).sort((a, b) => a.localeCompare(b, "id"));
+}
+
+/** Published posts carrying the given tag (case-insensitive match). */
+export async function getPostsByTag(tag: string): Promise<Post[]> {
+  const all = await getPublishedPosts();
+  const norm = tag.trim().toLowerCase();
+  return all.filter((p) =>
+    (p.tags ?? []).some((x) => x.toLowerCase() === norm)
+  );
+}
+
 export const getPostBySlug = cache(async (
   slug: string
 ): Promise<(Post & { contentHtml?: string }) | null> => {

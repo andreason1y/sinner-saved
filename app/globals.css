@@ -442,3 +442,49 @@ html.dark .post-prose blockquote.scripture {
 html.dark .post-prose blockquote.scripture::before {
   color: rgb(205 171 104);
 }
+
+
+/* ============================================================
+ * Skeleton loading — shown via route-level loading.tsx while the
+ * server renders the destination. Gives instant feedback on click.
+ * ============================================================ */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(21, 16, 10, 0.07);
+  border-radius: 0.75rem;
+}
+html.dark .skeleton {
+  background: rgba(239, 230, 211, 0.06);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 252, 244, 0.55) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+html.dark .skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(205, 171, 104, 0.1) 50%,
+    transparent 100%
+  );
+}
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}

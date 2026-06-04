@@ -30,6 +30,10 @@ type Dict = {
     readNow: string;
     progress: string;
   };
+  verseOfDay: {
+    eyebrow: string;
+    open: string;
+  };
   feature: {
     eyebrow: string;
     title: string;
@@ -104,6 +108,8 @@ type Dict = {
     share: string;
     linkCopied: string;
     scriptureOpen: string;
+    scriptureLoading: string;
+    translating: string;
   };
   contact: {
     eyebrow: string;
@@ -236,6 +242,8 @@ const id: Dict = {
     share: "Bagikan",
     linkCopied: "Tautan disalin",
     scriptureOpen: "Buka di Alkitab SABDA →",
+    scriptureLoading: "Memuat ayat…",
+    translating: "Menerjemahkan…",
   },
   contact: {
     eyebrow: "Kontak",
@@ -276,6 +284,10 @@ const id: Dict = {
     dayOf: (d, t) => `Hari ke-${d} dari ${t}`,
     readNow: "Baca sekarang →",
     progress: "selesai",
+  },
+  verseOfDay: {
+    eyebrow: "Ayat Hari Ini",
+    open: "Buka di Alkitab SABDA →",
   },
 };
 
@@ -384,6 +396,8 @@ const en: Dict = {
     share: "Share",
     linkCopied: "Link copied",
     scriptureOpen: "Open in SABDA Bible →",
+    scriptureLoading: "Loading verse…",
+    translating: "Translating…",
   },
   contact: {
     eyebrow: "Contact",
@@ -424,6 +438,10 @@ const en: Dict = {
     dayOf: (d, t) => `Day ${d} of ${t}`,
     readNow: "Read now →",
     progress: "complete",
+  },
+  verseOfDay: {
+    eyebrow: "Verse of the Day",
+    open: "Open in SABDA Bible →",
   },
 };
 
