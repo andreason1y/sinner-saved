@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/categories";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
@@ -68,10 +68,10 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                     <span className="text-[11px] uppercase tracking-[0.18em] text-ink-300">{formatDate(hero.createdAt, locale)}</span>
                   </div>
                   <h3 className="serif-display mt-4 max-w-3xl text-3xl font-medium leading-tight text-ink-50 line-clamp-3 sm:text-5xl">
-                    {hero.title}
+                    {postTitle(hero, locale)}
                   </h3>
                   <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-200 line-clamp-2 sm:text-base">
-                    {hero.excerpt}
+                    {postExcerpt(hero, locale)}
                   </p>
                   <div className="mt-6 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-ink-100">
                     <span className="link-underline">{t.feature.readMore}</span>
@@ -112,10 +112,10 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                         {categoryName(post.mainCategory)}
                       </p>
                       <h3 className="serif-display mt-3 text-xl font-medium leading-snug text-ink-900 line-clamp-2 dark:text-ink-50 sm:text-2xl">
-                        {post.title}
+                        {postTitle(post, locale)}
                       </h3>
                       <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-ink-600 dark:text-ink-300">
-                        {post.excerpt}
+                        {postExcerpt(post, locale)}
                       </p>
                     </div>
                     <div className="mt-5 flex items-center justify-between text-[11px] uppercase tracking-[0.16em] text-ink-500 dark:text-ink-400">

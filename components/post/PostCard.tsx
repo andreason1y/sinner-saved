@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Post } from "@/lib/types";
 import { CATEGORIES } from "@/lib/categories";
-import { formatDate } from "@/lib/utils";
+import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 function subName(mainSlug: string, subSlug: string) {
@@ -86,6 +86,8 @@ export function PostCard({
 }) {
   const href = `/${post.mainCategory}/${post.slug}`;
   const { locale, t } = useLocale();
+  const title = postTitle(post, locale);
+  const excerpt = postExcerpt(post, locale);
 
   if (variant === "compact") {
     return (
@@ -98,7 +100,7 @@ export function PostCard({
           <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl">
             <Image
               src={post.cover}
-              alt={post.title}
+              alt={title}
               fill
               sizes="96px"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
@@ -112,7 +114,7 @@ export function PostCard({
               className="text-[10px] uppercase tracking-[0.24em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
             />
             <h3 className="serif-display mt-1.5 line-clamp-2 text-base leading-snug text-ink-900 dark:text-ink-50">
-              {post.title}
+              {title}
             </h3>
           </div>
           <p className="text-xs text-ink-500 dark:text-ink-400">
@@ -120,7 +122,7 @@ export function PostCard({
             {post.readingMinutes && ` · ${t.feature.readingTime(post.readingMinutes)}`}
           </p>
         </div>
-        <CardLink href={href} label={post.title} />
+        <CardLink href={href} label={title} />
       </motion.article>
     );
   }
@@ -136,7 +138,7 @@ export function PostCard({
           <div className="relative aspect-[16/10] overflow-hidden">
             <Image
               src={post.cover}
-              alt={post.title}
+              alt={title}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover opacity-75 transition-all duration-700 ease-out group-hover:scale-[1.05] group-hover:opacity-90"
@@ -150,17 +152,17 @@ export function PostCard({
             className="text-[10px] uppercase tracking-[0.28em] text-gold-200 hover:text-gold-100"
           />
           <h3 className="serif-display mt-3 line-clamp-3 text-2xl leading-snug text-ink-50">
-            {post.title}
+            {title}
           </h3>
           <p className="mt-2 line-clamp-2 text-sm text-ink-300">
-            {post.excerpt}
+            {excerpt}
           </p>
           <div className="mt-5 flex items-center justify-between text-xs text-ink-300">
             <span>{formatDate(post.createdAt, locale)}</span>
             <span className="link-underline">{t.feature.readMore} →</span>
           </div>
         </div>
-        <CardLink href={href} label={post.title} />
+        <CardLink href={href} label={title} />
       </motion.article>
     );
   }
@@ -176,7 +178,7 @@ export function PostCard({
             <div className="relative aspect-[16/11] w-full overflow-hidden lg:aspect-auto lg:h-full">
               <Image
                 src={post.cover}
-                alt={post.title}
+                alt={title}
                 fill
                 sizes="(min-width: 1024px) 60vw, 100vw"
                 className="object-cover transition-transform duration-[1100ms] ease-out group-hover:scale-[1.05]"
@@ -190,9 +192,9 @@ export function PostCard({
               {formatDate(post.createdAt, locale)}
             </p>
             <h3 className="serif-display mt-3 max-w-2xl line-clamp-3 text-3xl leading-tight text-ink-50 sm:text-4xl">
-              {post.title}
+              {title}
             </h3>
-            <p className="mt-3 max-w-xl line-clamp-2 text-sm text-ink-200">{post.excerpt}</p>
+            <p className="mt-3 max-w-xl line-clamp-2 text-sm text-ink-200">{excerpt}</p>
           </div>
         </Link>
       </motion.article>
@@ -210,7 +212,7 @@ export function PostCard({
         <div className="relative aspect-[4/3] overflow-hidden">
           <Image
             src={post.cover}
-            alt={post.title}
+            alt={title}
             fill
             sizes="(min-width: 1024px) 33vw, 100vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
@@ -223,10 +225,10 @@ export function PostCard({
           className="text-[10px] uppercase tracking-[0.28em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
         />
         <h3 className="serif-display mt-3 line-clamp-2 text-xl leading-snug text-ink-900 dark:text-ink-50">
-          {highlight(post.title, highlightTerms)}
+          {highlight(title, highlightTerms)}
         </h3>
         <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
-          {highlight(post.excerpt, highlightTerms)}
+          {highlight(excerpt, highlightTerms)}
         </p>
         <div className="mt-4 flex items-center justify-between text-xs text-ink-500 dark:text-ink-400">
           <span>{formatDate(post.createdAt, locale)}</span>
@@ -235,7 +237,7 @@ export function PostCard({
           )}
         </div>
       </div>
-      <CardLink href={href} label={post.title} />
+      <CardLink href={href} label={title} />
     </motion.article>
   );
 }

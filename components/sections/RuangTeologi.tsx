@@ -5,7 +5,7 @@ import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function RuangTeologi({ posts }: { posts: Post[] }) {
@@ -52,10 +52,10 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
                     {post.subCategory.replace(/-/g, " ")}
                   </p>
                   <h3 className="serif-display mt-4 text-2xl font-medium leading-snug text-ink-50 sm:text-3xl">
-                    {post.title}
+                    {postTitle(post, locale)}
                   </h3>
                   <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-ink-300">
-                    {post.excerpt}
+                    {postExcerpt(post, locale)}
                   </p>
                   <div className="mt-7 flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-ink-400">
                     <span>{formatDate(post.createdAt, locale)}</span>

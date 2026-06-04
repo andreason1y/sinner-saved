@@ -75,35 +75,76 @@ export const BIBLE_BOOKS: BibleBook[] = [
   { name: "Wahyu", aliases: ["Why", "Wah"] },
 ];
 
-/** alias / name (lowercased) → canonical display name */
+/**
+ * English book names in the same canonical 66-book order, index-aligned with
+ * BIBLE_BOOKS. Two jobs:
+ *  1. Detect references inside an English-translated article body (e.g.
+ *     "John 3:16") and map them back to the canonical Indonesian reference.
+ *  2. Localize a reference label for display ("Mikha 6:8" → "Micah 6:8").
+ */
+const ENGLISH_NAMES: string[] = [
+  // Old Testament
+  "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua",
+  "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings",
+  "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job",
+  "Psalms", "Proverbs", "Ecclesiastes", "Song of Songs", "Isaiah", "Jeremiah",
+  "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah",
+  "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah",
+  "Malachi",
+  // New Testament
+  "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians",
+  "2 Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians",
+  "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus",
+  "Philemon", "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John",
+  "3 John", "Jude", "Revelation",
+];
+
+/** Extra English spellings a translation engine might produce. */
+const ENGLISH_ALIASES: Record<string, string> = {
+  Psalm: "Mazmur",
+  "Song of Solomon": "Kidung Agung",
+};
+
+/** alias / name (lowercased) → canonical Indonesian display name. Includes
+ *  Indonesian names + aliases AND English names + variants, so references in
+ *  either language are recognized. */
 export const BOOK_LOOKUP: Record<string, string> = (() => {
   const map: Record<string, string> = {};
-  for (const book of BIBLE_BOOKS) {
+  BIBLE_BOOKS.forEach((book, i) => {
     map[book.name.toLowerCase()] = book.name;
     for (const alias of book.aliases) map[alias.toLowerCase()] = book.name;
+    const en = ENGLISH_NAMES[i];
+    if (en) map[en.toLowerCase()] = book.name;
+  });
+  for (const [alias, canonical] of Object.entries(ENGLISH_ALIASES)) {
+    map[alias.toLowerCase()] = canonical;
   }
   return map;
 })();
 
-/** Every token (name + aliases), sorted longest-first for greedy matching. */
-export const BOOK_TOKENS: string[] = BIBLE_BOOKS.flatMap((b) => [
-  b.name,
-  ...b.aliases,
-]).sort((a, b) => b.length - a.length);
-
+/** Every token (Indonesian + English names & aliases), sorted longest-first
+ *  for greedy matching. De-duplicated (some names are identical, e.g. Amos). */
+export const BOOK_TOKENS: string[] = (() => {
+  const tokens = new Set<string>();
+  BIBLE_BOOKS.forEach((book, i) => {
+    tokens.add(book.name);
+    for (const alias of book.aliases) tokens.add(alias);
+    if (ENGLISH_NAMES[i]) tokens.add(ENGLISH_NAMES[i]);
+  });
+  for (const alias of Object.keys(ENGLISH_ALIASES)) tokens.add(alias);
+  return Array.from(tokens).sort((a, b) => b.length - a.length);
+})();
 
 /**
- * USFM book IDs in canonical 66-book order — index-aligned with BIBLE_BOOKS
- * above, so the mapping stays correct by construction. Used to query external
- * Bible APIs (e.g. helloao) which key chapters by USFM id (GEN, JHN, …).
+ * USFM book IDs in canonical 66-book order — index-aligned with BIBLE_BOOKS,
+ * so the mapping stays correct by construction. Used to query external Bible
+ * APIs that key chapters by USFM id (GEN, JHN, …).
  */
 const USFM_ORDER: string[] = [
-  // Perjanjian Lama (39)
   "GEN", "EXO", "LEV", "NUM", "DEU", "JOS", "JDG", "RUT", "1SA", "2SA",
   "1KI", "2KI", "1CH", "2CH", "EZR", "NEH", "EST", "JOB", "PSA", "PRO",
   "ECC", "SNG", "ISA", "JER", "LAM", "EZK", "DAN", "HOS", "JOL", "AMO",
   "OBA", "JON", "MIC", "NAM", "HAB", "ZEP", "HAG", "ZEC", "MAL",
-  // Perjanjian Baru (27)
   "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH",
   "PHP", "COL", "1TH", "2TH", "1TI", "2TI", "TIT", "PHM", "HEB", "JAS",
   "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV",
@@ -117,3 +158,26 @@ export const USFM_BY_NAME: Record<string, string> = (() => {
   });
   return map;
 })();
+
+/** canonical Indonesian book name → English book name. */
+export const EN_BOOK_BY_NAME: Record<string, string> = (() => {
+  const map: Record<string, string> = {};
+  BIBLE_BOOKS.forEach((book, i) => {
+    if (ENGLISH_NAMES[i]) map[book.name] = ENGLISH_NAMES[i];
+  });
+  return map;
+})();
+
+/**
+ * Localizes a canonical reference's book name for display. The chapter/verse
+ * part is left untouched. Non-"en" locales return the reference unchanged.
+ */
+export function localizeReference(canonical: string, locale: string): string {
+  if (locale !== "en") return canonical;
+  const lastSpace = canonical.lastIndexOf(" ");
+  if (lastSpace < 0) return canonical;
+  const book = canonical.slice(0, lastSpace);
+  const rest = canonical.slice(lastSpace + 1);
+  const en = EN_BOOK_BY_NAME[book];
+  return en ? `${en} ${rest}` : canonical;
+}
