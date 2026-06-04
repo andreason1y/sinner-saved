@@ -8,6 +8,7 @@ export const DEFAULT_LOCALE: Locale = "id";
 type Dict = {
   nav: {
     contact: string;
+    about: string;
     search: string;
     openMenu: string;
     closeMenu: string;
@@ -141,6 +142,7 @@ type Dict = {
 const id: Dict = {
   nav: {
     contact: "Kontak",
+    about: "Tentang",
     search: "Cari",
     openMenu: "Buka menu",
     closeMenu: "Tutup menu",
@@ -294,6 +296,7 @@ const id: Dict = {
 const en: Dict = {
   nav: {
     contact: "Contact",
+    about: "About",
     search: "Search",
     openMenu: "Open menu",
     closeMenu: "Close menu",

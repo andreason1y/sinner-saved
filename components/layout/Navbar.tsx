@@ -144,8 +144,14 @@ export function Navbar() {
             );
           })}
           <Link
-            href="/kontak"
+            href="/tentang"
             className="ml-1 inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium tracking-wide text-ink-700 transition-colors hover:text-ink-900 dark:text-ink-200 dark:hover:text-ink-50"
+          >
+            {t.nav.about}
+          </Link>
+          <Link
+            href="/kontak"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium tracking-wide text-ink-700 transition-colors hover:text-ink-900 dark:text-ink-200 dark:hover:text-ink-50"
           >
             <Mail size={13} className="opacity-70" />
             {t.nav.contact}
@@ -213,6 +219,18 @@ export function Navbar() {
                   </Link>
                   <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
                     {t.search.intro}
+                  </p>
+                </li>
+                <li>
+                  <Link
+                    href="/tentang"
+                    onClick={() => setOpen(false)}
+                    className="serif-display block text-2xl text-ink-900 dark:text-ink-50"
+                  >
+                    {t.nav.about}
+                  </Link>
+                  <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
+                    {t.footer.tagline.split(",")[0]}
                   </p>
                 </li>
                 <li>
