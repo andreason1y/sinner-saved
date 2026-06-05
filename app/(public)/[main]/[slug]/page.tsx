@@ -151,72 +151,68 @@ export default async function PostPage({
       <ReadingProgress />
 
       {post.cover && (
-        <div className="relative h-[55vh] min-h-[420px] w-full overflow-hidden">
-          <Image
-            src={post.cover}
-            alt={displayTitle}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-parchment/80 to-transparent dark:from-ink-950/80" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ink-950/10 to-parchment dark:to-ink-950" />
+        /* Option B — banner above, title below: the cover image shows in
+         * full as a contained banner (full-bleed on mobile, rounded card on
+         * larger screens). No overlap, no floating card — the heading sits
+         * calmly beneath it on the parchment background. */
+        <div className="mx-auto w-full max-w-6xl px-0 sm:px-5">
+          <div className="relative aspect-[16/10] w-full overflow-hidden shadow-card sm:mt-8 sm:aspect-[21/9] sm:rounded-3xl">
+            <Image
+              src={post.cover}
+              alt={displayTitle}
+              fill
+              priority
+              sizes="(min-width: 1152px) 1152px, 100vw"
+              className="object-cover"
+            />
+          </div>
         </div>
       )}
 
       <header
-        className={`relative mx-auto max-w-3xl px-5 ${
-          post.cover ? "-mt-32 pb-12 pt-0" : "pt-32 pb-12"
+        className={`relative mx-auto max-w-3xl px-5 pb-12 ${
+          post.cover ? "pt-10 sm:pt-14" : "pt-32"
         } lg:px-0`}
       >
-        <div
-          className={`rounded-3xl ${
-            post.cover
-              ? "bg-parchment p-8 shadow-card dark:bg-ink-900 sm:p-12"
-              : ""
-          }`}
+        <Link
+          href={`/kategori/${post.mainCategory}`}
+          className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.28em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
         >
-          <Link
-            href={`/kategori/${post.mainCategory}`}
-            className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.28em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
-          >
-            <ChevronLeft size={12} />
-            {category?.name}
-          </Link>
-          <Link
-            href={`/kategori/${post.mainCategory}/${post.subCategory}`}
-            className="kicker mt-3 block text-gold-600/80 hover:text-gold-600 dark:text-gold-300/80 dark:hover:text-gold-300"
-          >
-            {subName}
-          </Link>
-          <h1 className="serif-display mt-4 break-words text-4xl font-medium leading-[1.06] text-ink-900 dark:text-ink-50 sm:text-6xl">
-            {displayTitle}
-          </h1>
-          <p className="mt-6 break-words text-lg leading-relaxed text-ink-600 dark:text-ink-300 sm:text-xl">
-            {displayExcerpt}
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-500 dark:text-ink-400">
-            <time dateTime={post.createdAt}>
-              {formatDate(post.createdAt, locale)}
-            </time>
-            {post.readingMinutes && (
-              <>
-                <span aria-hidden className="text-ink-300 dark:text-ink-600">
-                  ·
-                </span>
-                <span>{t.feature.readingTime(post.readingMinutes)}</span>
-              </>
-            )}
-            <span aria-hidden className="text-ink-300 dark:text-ink-600">
-              ·
-            </span>
-            <ShareButton
-              title={displayTitle}
-              label={t.post.share}
-              copiedLabel={t.post.linkCopied}
-            />
-          </div>
+          <ChevronLeft size={12} />
+          {category?.name}
+        </Link>
+        <Link
+          href={`/kategori/${post.mainCategory}/${post.subCategory}`}
+          className="kicker mt-3 block text-gold-600/80 hover:text-gold-600 dark:text-gold-300/80 dark:hover:text-gold-300"
+        >
+          {subName}
+        </Link>
+        <h1 className="serif-display mt-4 break-words text-4xl font-medium leading-[1.06] text-ink-900 dark:text-ink-50 sm:text-6xl">
+          {displayTitle}
+        </h1>
+        <p className="mt-6 break-words text-lg leading-relaxed text-ink-600 dark:text-ink-300 sm:text-xl">
+          {displayExcerpt}
+        </p>
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-500 dark:text-ink-400">
+          <time dateTime={post.createdAt}>
+            {formatDate(post.createdAt, locale)}
+          </time>
+          {post.readingMinutes && (
+            <>
+              <span aria-hidden className="text-ink-300 dark:text-ink-600">
+                ·
+              </span>
+              <span>{t.feature.readingTime(post.readingMinutes)}</span>
+            </>
+          )}
+          <span aria-hidden className="text-ink-300 dark:text-ink-600">
+            ·
+          </span>
+          <ShareButton
+            title={displayTitle}
+            label={t.post.share}
+            copiedLabel={t.post.linkCopied}
+          />
         </div>
       </header>
 
