@@ -155,7 +155,7 @@ export default async function PostPage({
          * over the cover image. A light fade at the very top keeps the
          * transparent navbar legible in both themes; a dark scrim at the
          * bottom anchors the text. */
-        <header className="relative flex min-h-[80vh] w-full items-end overflow-hidden">
+        <header className="relative flex min-h-[52vh] w-full items-end overflow-hidden sm:min-h-[58vh]">
           <Image
             src={post.cover}
             alt={displayTitle}
@@ -164,10 +164,10 @@ export default async function PostPage({
             sizes="100vw"
             className="object-cover"
           />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-parchment/90 to-transparent dark:from-ink-950/90" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/45 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-parchment/90 to-transparent dark:from-ink-950/90" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/40 to-transparent" />
 
-          <div className="relative mx-auto w-full max-w-3xl px-5 pb-12 sm:pb-16 lg:px-0">
+          <div className="relative mx-auto w-full max-w-3xl px-5 pb-10 sm:pb-14 lg:px-0">
             <Link
               href={`/kategori/${post.mainCategory}`}
               className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.28em] text-gold-200 transition-colors hover:text-gold-100"
