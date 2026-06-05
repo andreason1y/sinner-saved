@@ -230,7 +230,7 @@ export function PostCard({
         <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
           {highlight(excerpt, highlightTerms)}
         </p>
-        <div className="mt-4 flex items-center justify-between text-xs text-ink-500 dark:text-ink-400">
+        <div className="mt-auto flex items-center justify-between pt-4 text-xs text-ink-500 dark:text-ink-400">
           <span>{formatDate(post.createdAt, locale)}</span>
           {post.readingMinutes && (
             <span>{t.feature.readingTime(post.readingMinutes)}</span>

@@ -84,8 +84,13 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
             </FadeInUp>
           )}
 
-          {rest.slice(0, 4).map((post) => (
-            <FadeInUp key={post.id} className="sm:col-span-3 lg:col-span-5">
+          {rest.slice(0, 4).map((post, i) => (
+            <FadeInUp
+              key={post.id}
+              className={`sm:col-span-3 ${
+                i < 2 ? "lg:col-span-5" : "lg:col-span-6"
+              }`}
+            >
               <Link
                 href={`/${post.mainCategory}/${post.slug}`}
                 className="group relative block h-full overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"

@@ -36,7 +36,7 @@ export function RuangLensa({ posts }: { posts: Post[] }) {
             <FadeInUp key={post.id} className="group">
               <Link
                 href={`/${post.mainCategory}/${post.slug}`}
-                className="relative block h-full overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
+                className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
               >
                 {post.cover && (
                   <div className="relative aspect-[4/5] w-full overflow-hidden">
@@ -59,11 +59,11 @@ export function RuangLensa({ posts }: { posts: Post[] }) {
                     </div>
                   </div>
                 )}
-                <div className="p-5">
+                <div className="flex flex-1 flex-col p-5">
                   <p className="line-clamp-3 text-sm leading-relaxed text-ink-600 dark:text-ink-300">
                     {postExcerpt(post, locale)}
                   </p>
-                  <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
+                  <p className="mt-auto pt-4 text-[11px] uppercase tracking-[0.18em] text-ink-500 dark:text-ink-400">
                     {formatDate(post.createdAt, locale)}
                   </p>
                 </div>
