@@ -150,8 +150,12 @@ export default async function PostPage({
       <JsonLd data={breadcrumbSchema(post)} />
       <ReadingProgress />
 
-      {post.cover && (
-        <div className="relative h-[55vh] min-h-[420px] w-full overflow-hidden">
+      {post.cover ? (
+        /* Option A — immersive hero: title, excerpt and meta sit directly
+         * over the cover image. A light fade at the very top keeps the
+         * transparent navbar legible in both themes; a dark scrim at the
+         * bottom anchors the text. */
+        <header className="relative flex min-h-[52vh] w-full items-end overflow-hidden sm:min-h-[58vh]">
           <Image
             src={post.cover}
             alt={displayTitle}
@@ -160,23 +164,54 @@ export default async function PostPage({
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-parchment/80 to-transparent dark:from-ink-950/80" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-ink-950/10 to-parchment dark:to-ink-950" />
-        </div>
-      )}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-parchment/90 to-transparent dark:from-ink-950/90" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/40 to-transparent" />
 
-      <header
-        className={`relative mx-auto max-w-3xl px-5 ${
-          post.cover ? "-mt-32 pb-12 pt-0" : "pt-32 pb-12"
-        } lg:px-0`}
-      >
-        <div
-          className={`rounded-3xl ${
-            post.cover
-              ? "bg-parchment p-8 shadow-card dark:bg-ink-900 sm:p-12"
-              : ""
-          }`}
-        >
+          <div className="relative mx-auto w-full max-w-3xl px-5 pb-10 sm:pb-14 lg:px-0">
+            <Link
+              href={`/kategori/${post.mainCategory}`}
+              className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.28em] text-gold-200 transition-colors hover:text-gold-100"
+            >
+              <ChevronLeft size={12} />
+              {category?.name}
+            </Link>
+            <Link
+              href={`/kategori/${post.mainCategory}/${post.subCategory}`}
+              className="mt-3 block text-[0.7rem] font-medium uppercase tracking-[0.34em] text-parchment/70 transition-colors hover:text-parchment"
+            >
+              {subName}
+            </Link>
+            <h1 className="serif-display mt-4 break-words text-4xl font-medium leading-[1.06] text-parchment-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)] sm:text-6xl">
+              {displayTitle}
+            </h1>
+            <p className="mt-6 max-w-2xl break-words text-lg leading-relaxed text-parchment/85 sm:text-xl">
+              {displayExcerpt}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-parchment/75">
+              <time dateTime={post.createdAt}>
+                {formatDate(post.createdAt, locale)}
+              </time>
+              {post.readingMinutes && (
+                <>
+                  <span aria-hidden className="text-parchment/40">
+                    ·
+                  </span>
+                  <span>{t.feature.readingTime(post.readingMinutes)}</span>
+                </>
+              )}
+              <span aria-hidden className="text-parchment/40">
+                ·
+              </span>
+              <ShareButton
+                title={displayTitle}
+                label={t.post.share}
+                copiedLabel={t.post.linkCopied}
+              />
+            </div>
+          </div>
+        </header>
+      ) : (
+        <header className="relative mx-auto max-w-3xl px-5 pb-12 pt-32 lg:px-0">
           <Link
             href={`/kategori/${post.mainCategory}`}
             className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.28em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
@@ -217,10 +252,14 @@ export default async function PostPage({
               copiedLabel={t.post.linkCopied}
             />
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
-      <div className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
+      <div
+        className={`mx-auto max-w-7xl px-5 pb-16 lg:px-8 ${
+          post.cover ? "pt-12 sm:pt-16" : ""
+        }`}
+      >
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="min-w-0 lg:col-span-8 lg:col-start-2">
             {locale === "en" && html && (

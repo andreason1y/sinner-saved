@@ -39,7 +39,7 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                 <FadeInUp key={post.id}>
                   <Link
                     href={`/${post.mainCategory}/${post.slug}`}
-                    className="group block h-full overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl bg-parchment-light shadow-card ring-1 ring-ink-900/10 transition-all duration-500 hover:-translate-y-1 hover:shadow-card-hover hover:ring-gold-400/60 dark:bg-ink-900 dark:ring-white/10 dark:hover:ring-gold-300/40"
                   >
                     {post.cover && (
                       <div className="relative aspect-[4/3] overflow-hidden">
@@ -53,17 +53,17 @@ export function RuangAlkitab({ posts }: { posts: Post[] }) {
                         <div className="absolute inset-0 ring-1 ring-inset ring-ink-950/5" />
                       </div>
                     )}
-                    <div className="p-6">
+                    <div className="flex flex-1 flex-col p-6">
                       <p className="kicker text-gold-600 dark:text-gold-300">
                         {post.subCategory.replace(/-/g, " ")}
                       </p>
-                      <h3 className="serif-display mt-3 text-xl leading-snug text-ink-900 dark:text-ink-50">
+                      <h3 className="serif-display mt-3 line-clamp-2 text-xl leading-snug text-ink-900 dark:text-ink-50">
                         {postTitle(post, locale)}
                       </h3>
                       <p className="mt-2 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
                         {postExcerpt(post, locale)}
                       </p>
-                      <p className="mt-4 text-xs text-ink-500 dark:text-ink-400">
+                      <p className="mt-auto pt-4 text-xs text-ink-500 dark:text-ink-400">
                         {formatDate(post.createdAt, locale)}
                       </p>
                     </div>
