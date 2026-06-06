@@ -255,7 +255,11 @@ export default async function PostPage({
         </header>
       )}
 
-      <div className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
+      <div
+        className={`mx-auto max-w-7xl px-5 pb-16 lg:px-8 ${
+          post.cover ? "pt-12 sm:pt-16" : ""
+        }`}
+      >
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="min-w-0 lg:col-span-8 lg:col-start-2">
             {locale === "en" && html && (
