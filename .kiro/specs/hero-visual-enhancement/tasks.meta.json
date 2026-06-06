@@ -1,0 +1,255 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Add stacking layers to `components/sections/Hero.tsx`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407074
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764414462
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764548410
+      }
+    ],
+    "2.1 Add the `OpenBookLineArt` inline SVG to `components/sections/Hero.tsx`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407077
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764558021
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764644377
+      }
+    ],
+    "2.2 Render the Line_Art inside the decorative band": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407080
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764758770
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764834817
+      }
+    ],
+    "3.1 Add the fleuron watermark and grain wash markup to `components/sections/Hero.tsx`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407083
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764655367
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764728216
+      }
+    ],
+    "4. Checkpoint - structure renders behind content": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407085
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764842748
+      }
+    ],
+    "5.1 Add base Line_Art and Ornament_Layer utilities to `app/globals.css`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407087
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764848209
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764943452
+      }
+    ],
+    "5.2 Add dark-mode overrides in `app/globals.css`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407089
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764946453
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765011124
+      }
+    ],
+    "6.1 Add tablet scale override and overflow-clip safeguards in `app/globals.css`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407092
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765014113
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765081812
+      }
+    ],
+    "7.1 Add reduced-motion handling in `app/globals.css`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407094
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765085005
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765144280
+      }
+    ],
+    "8.1 Verify and adjust legibility/clipping in `components/sections/Hero.tsx` and `app/globals.css`": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407097
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765148973
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765559393
+      }
+    ],
+    "9.1 Document and perform manual verification of the rendered hero": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407100
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765562477
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765708146
+      }
+    ],
+    "10. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764407102
+      },
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765711936
+      }
+    ],
+    "1. Establish the decorative stacking context in the Hero": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764548413
+      }
+    ],
+    "3. Implement the Ornament_Layer (fleuron watermark + paper-grain wash)": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764728221
+      }
+    ],
+    "2. Implement the inline open-book + light-rays Line_Art SVG": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780764834820
+      }
+    ],
+    "5. Add decorative utility classes and per-theme tuning in globals.css": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765011126
+      }
+    ],
+    "6. Implement responsive scaling and overflow safety": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765081817
+      }
+    ],
+    "7. Implement motion-preference compliance": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765144282
+      }
+    ],
+    "8. Legibility, contrast, and payload safeguards": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765559402
+      }
+    ],
+    "9. Final verification - manual visual & accessibility checks": [
+      {
+        "executionId": "7c36f1ad-0cb9-4bcc-9163-a9f3d507c151",
+        "chatSessionId": "f33ea1d1-704c-4c20-bba2-cd70fbd1e034",
+        "timestamp": 1780765708155
+      }
+    ]
+  }
+}
