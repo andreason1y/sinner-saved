@@ -10,7 +10,7 @@ import {
   getPublishedPosts,
 } from "@/lib/posts";
 import { translatePostAction } from "@/lib/actions/translate";
-import { getCategory } from "@/lib/categories";
+import { getCategory, localizeCategory } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
 import { PostContent } from "@/components/post/PostContent";
 import { PostBody } from "@/components/post/PostBody";
@@ -89,7 +89,10 @@ export default async function PostPage({
       : DEFAULT_LOCALE;
   const t = DICTIONARIES[locale];
 
-  const category = getCategory(post.mainCategory);
+  const rawCategory = getCategory(post.mainCategory);
+  const category = rawCategory
+    ? localizeCategory(rawCategory, locale)
+    : undefined;
   const subName =
     category?.subcategories.find((s) => s.slug === post.subCategory)?.name ??
     post.subCategory;
