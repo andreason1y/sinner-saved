@@ -498,3 +498,122 @@ html.dark .skeleton::after {
     animation: none;
   }
 }
+
+
+/* ============================================================
+ * Hero decorative layer — purely presentational utilities.
+ * Two restrained layers sit BEHIND the hero's primary content:
+ *   • .hero-lineart           → thin gold open-book line-art (upper-right head)
+ *   • .hero-fleuron-watermark → large, faint fleuron bleeding off the top-right
+ *   • .hero-grain-wash        → soft paper-grain wash over the section
+ * All gold color is sourced from the existing tokens (`var(--gold)` and, for
+ * the line-art, `currentColor` inherited from `text-gold-*`). No hard-coded
+ * color literals are introduced here. Opacities stay within the spec'd ranges.
+ * Dark-mode opacity/blend overrides live in a later rule set.
+ * ============================================================ */
+
+/* Thin gold line-art — anchored in the upper-right head region so it sits
+ * beside the date label (below the masthead rule), never over the headline.
+ * Color is inherited via `currentColor` from `text-gold-*` on the element. */
+.hero-lineart {
+  position: absolute;
+  /* top:4rem drops the motif's visible rays-tip (~6rem from the section top) a
+   * hair BELOW the date-label glyph box (which ends ~5.8rem at the sm:pt-20
+   * masthead row), guaranteeing zero overlap with the date label at desktop
+   * (Req 1.2). The book stays in the right-hand whitespace, ~120px clear of the
+   * short-wrapping headline glyphs (Req 1.6/3.3); the section's overflow-hidden
+   * clips any bleed. */
+  top: 4rem;
+  right: 1.25rem;
+  width: 9rem;
+  opacity: 0.12; /* Light_Mode: within the required 0.05–0.20 range */
+}
+
+/* Large fleuron watermark — bleeds off the top-right corner, kept very faint.
+ * Gold comes from the existing token (also applied by the companion `.fleuron`
+ * class on the same element). */
+.hero-fleuron-watermark {
+  position: absolute;
+  top: -2rem;
+  right: -1rem;
+  font-size: 16rem;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.08; /* Light_Mode: within the required 0.00–0.12 range */
+  user-select: none;
+}
+
+/* Paper-grain wash — leans on the existing `bg-grain` texture; kept subtle and
+ * multiplied into the warm paper base for the printed-page feel. */
+.hero-grain-wash {
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+
+/* ── Hero decorative layer — Dark_Mode overrides ────────────────────────────
+ * Keyed off `html.dark` (the same theming hook used throughout this file), so
+ * every decorative element flips to the dark-theme tokens with no light-token
+ * bleed. All gold still comes from `var(--gold)` / `currentColor`; no color
+ * literals are introduced. Opacities stay within the spec'd ranges:
+ *   • line-art ≤ 0.20  • fleuron ≤ 0.08 (dark)
+ * The grain wash switches to `screen` because dark backgrounds need the grain
+ * lifted (added) rather than multiplied (subtracted) to stay perceptible.
+ * ============================================================ */
+
+html.dark .hero-lineart {
+  opacity: 0.16; /* Dark_Mode: within the required 0.05–0.20 range */
+}
+
+html.dark .hero-fleuron-watermark {
+  opacity: 0.06; /* Dark_Mode: within the required 0.00–0.08 range */
+}
+
+html.dark .hero-grain-wash {
+  opacity: 0.18;
+  mix-blend-mode: screen; /* light mode multiplies; screen suits dark bases */
+}
+
+
+/* ── Hero line-art — responsive scaling & overflow safety ───────────────────
+ * Three responsive bands for the decorative `.hero-lineart`:
+ *   • Mobile  (<768px)  → suppressed entirely via the `hidden` class in the
+ *                          Hero markup; no rule needed here.
+ *   • Tablet  (768–1023.98px) → intermediate scale (between the suppressed
+ *                          mobile state and the full desktop scale) that stays
+ *                          clear of the headline; defined below.
+ *   • Desktop (≥1024px) → the base `.hero-lineart` rule above (full scale,
+ *                          width 9rem) applies unchanged.
+ * Horizontal-overflow safety: the line-art and the fleuron watermark are
+ * intentionally allowed to bleed toward / past the top-right edge, but the
+ * hero `<section>` already carries `relative overflow-hidden`, which clips any
+ * decorative bleed. No decorative element can therefore widen the document or
+ * introduce a horizontal scrollbar at any viewport from 320px to 1920px.
+ * ============================================================ */
+
+/* Tablet (768–1023.98px): pull the line-art down to an intermediate scale and
+ * nudge it inward/up so it remains a counterweight beside the date label
+ * without crowding the headline. Values sit between the (suppressed) mobile
+ * state and the full desktop scale (width 9rem / top 3.5rem). */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .hero-lineart {
+    width: 6.5rem; /* intermediate: < desktop 9rem, > suppressed mobile */
+    top: 3rem;
+    right: 1rem;
+  }
+}
+
+
+/* ── Hero line-art — reduced-motion handling ────────────────────────────────
+ * When the user prefers reduced motion, suppress any transition/animation on
+ * the decorative line-art so it renders in its final resting state. This
+ * complements framer-motion's own reduced-motion handling on the existing
+ * `reveal` variant (the motion.div wrapping the line-art), guaranteeing a
+ * static end state even if JS/framer-motion does not run. Purely presentational
+ * — no color literals, no new motion is introduced. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-lineart {
+    transition: none;
+    animation: none;
+  }
+}
