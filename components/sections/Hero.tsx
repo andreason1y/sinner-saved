@@ -16,37 +16,24 @@ function OpenBookLineArt() {
       strokeWidth={1.25}
       strokeLinecap="round"
       strokeLinejoin="round"
-      vectorEffect="non-scaling-stroke"
       aria-hidden="true"
       focusable="false"
     >
       {/* Left page — top edge curving out from the gutter */}
-      <path
-        d="M60 76 C 44 66 26 64 9 70"
-        vectorEffect="non-scaling-stroke"
-      />
+      <path d="M60 76 C 44 66 26 64 9 70" />
       {/* Left page — lower leaf edge, mirroring the curve */}
-      <path
-        d="M60 82 C 44 73 26 71 9 76"
-        vectorEffect="non-scaling-stroke"
-      />
+      <path d="M60 82 C 44 73 26 71 9 76" />
       {/* Right page — top edge, mirror of the left */}
-      <path
-        d="M60 76 C 76 66 94 64 111 70"
-        vectorEffect="non-scaling-stroke"
-      />
+      <path d="M60 76 C 76 66 94 64 111 70" />
       {/* Right page — lower leaf edge */}
-      <path
-        d="M60 82 C 76 73 94 71 111 76"
-        vectorEffect="non-scaling-stroke"
-      />
+      <path d="M60 82 C 76 73 94 71 111 76" />
       {/* Central spine rising from the gutter */}
-      <path d="M60 78 L60 56" vectorEffect="non-scaling-stroke" />
+      <path d="M60 78 L60 56" />
       {/* Light rays fanning up from the gutter */}
-      <path d="M60 52 L60 30" vectorEffect="non-scaling-stroke" />
-      <path d="M53 53 L46 35" vectorEffect="non-scaling-stroke" />
-      <path d="M67 53 L74 35" vectorEffect="non-scaling-stroke" />
-      <path d="M47 55 L38 42" vectorEffect="non-scaling-stroke" />
+      <path d="M60 52 L60 30" />
+      <path d="M53 53 L46 35" />
+      <path d="M67 53 L74 35" />
+      <path d="M47 55 L38 42" />
     </svg>
   );
 }

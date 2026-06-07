@@ -528,6 +528,15 @@ html.dark .skeleton::after {
   opacity: 0.12; /* Light_Mode: within the required 0.05–0.20 range */
 }
 
+/* Promote the inner SVG (not the framer-motion-animated `.hero-lineart`
+ * wrapper) to its own GPU compositor layer. Scrolling then composites a cached
+ * layer instead of re-rasterizing the strokes each frame — eliminating the
+ * hero scroll jank. Purely a rendering hint; no visual change. */
+.hero-lineart svg {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 /* Large fleuron watermark — bleeds off the top-right corner, kept very faint.
  * Gold comes from the existing token (also applied by the companion `.fleuron`
  * class on the same element). */
