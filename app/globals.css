@@ -540,14 +540,11 @@ html.dark .skeleton::after {
   top: 4rem;
   right: 1.25rem;
   width: 9rem;
+  height: auto; /* keep the <img>'s intrinsic aspect ratio at width 9rem */
   opacity: 0.12; /* Light_Mode: within the required 0.05–0.20 range */
-}
-
-/* Promote the inner SVG (not the framer-motion-animated `.hero-lineart`
- * wrapper) to its own GPU compositor layer. Scrolling then composites a cached
- * layer instead of re-rasterizing the strokes each frame — eliminating the
- * hero scroll jank. Purely a rendering hint; no visual change. */
-.hero-lineart svg {
+  /* Promote the line-art to its own GPU compositor layer so scrolling
+   * composites a cached layer instead of repainting. Now applied to the
+   * static <img> (the inline SVG / framer-motion wrapper was removed). */
   transform: translateZ(0);
   backface-visibility: hidden;
 }
@@ -579,6 +576,9 @@ html.dark .skeleton::after {
 
 html.dark .hero-lineart {
   opacity: 0.16; /* Dark_Mode: within the required 0.05–0.20 range */
+  /* The asset's gold is now a fixed literal (#b8924a) since <img> can't use
+   * currentColor; lift it slightly so it reads well on the dark background. */
+  filter: brightness(1.18) saturate(1.05);
 }
 
 html.dark .hero-fleuron-watermark {
