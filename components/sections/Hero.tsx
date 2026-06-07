@@ -3,54 +3,6 @@
 import { motion } from "framer-motion";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
-// Line_Art motif — a minimalist open book with fine light rays rising from the
-// gutter (no cross). Purely decorative: the parent is aria-hidden. All strokes
-// inherit the gold token via `currentColor`, use no color literals, and keep a
-// hairline weight (≤1.5) that does not scale with the SVG.
-function OpenBookLineArt() {
-  return (
-    <svg
-      viewBox="0 0 120 90"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.25}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      vectorEffect="non-scaling-stroke"
-      aria-hidden="true"
-      focusable="false"
-    >
-      {/* Left page — top edge curving out from the gutter */}
-      <path
-        d="M60 76 C 44 66 26 64 9 70"
-        vectorEffect="non-scaling-stroke"
-      />
-      {/* Left page — lower leaf edge, mirroring the curve */}
-      <path
-        d="M60 82 C 44 73 26 71 9 76"
-        vectorEffect="non-scaling-stroke"
-      />
-      {/* Right page — top edge, mirror of the left */}
-      <path
-        d="M60 76 C 76 66 94 64 111 70"
-        vectorEffect="non-scaling-stroke"
-      />
-      {/* Right page — lower leaf edge */}
-      <path
-        d="M60 82 C 76 73 94 71 111 76"
-        vectorEffect="non-scaling-stroke"
-      />
-      {/* Central spine rising from the gutter */}
-      <path d="M60 78 L60 56" vectorEffect="non-scaling-stroke" />
-      {/* Light rays fanning up from the gutter */}
-      <path d="M60 52 L60 30" vectorEffect="non-scaling-stroke" />
-      <path d="M53 53 L46 35" vectorEffect="non-scaling-stroke" />
-      <path d="M67 53 L74 35" vectorEffect="non-scaling-stroke" />
-      <path d="M47 55 L38 42" vectorEffect="non-scaling-stroke" />
-    </svg>
-  );
-}
-
 export function Hero() {
   const { t, locale } = useLocale();
 
@@ -83,23 +35,15 @@ export function Hero() {
     <section className="relative overflow-hidden">
       {/* Decorative layer — purely presentational, behind Primary_Content (contents added in later tasks) */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
-        {/* Ornament_Layer: large fleuron watermark (reuses the existing gold-token .fleuron glyph) */}
-        <span className="hero-fleuron-watermark fleuron" aria-hidden>
-          &#10070;
-        </span>
-        {/* Ornament_Layer: soft paper-grain wash (reuses the existing bg-grain texture) */}
-        <span className="hero-grain-wash absolute inset-0 bg-grain" aria-hidden />
-        {/* Line_Art: open book + light rays, upper-right head region. Reuses the
-            hero's existing `reveal` variant (no new easing/duration). */}
-        <motion.div
-          custom={0}
-          variants={reveal}
-          initial="hidden"
-          animate="show"
-          className="hero-lineart hidden text-gold-500 dark:text-gold-300 md:block"
-        >
-          <OpenBookLineArt />
-        </motion.div>
+        {/* Line_Art: open book + light rays, upper-right head region. Served as
+            a static rasterized asset (like the article images) — no inline SVG
+            DOM and no framer-motion animation path. */}
+        <img
+          src="/hero-book.svg"
+          alt=""
+          aria-hidden="true"
+          className="hero-lineart hidden md:block"
+        />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 pt-14 lg:px-8 sm:pt-20">

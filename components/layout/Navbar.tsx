@@ -55,7 +55,7 @@ export function Navbar() {
       className={cn(
         "sticky top-0 z-50 transition-[backdrop-filter,background-color,border-color] duration-500",
         scrolled
-          ? "border-b border-ink-900/10 bg-parchment/80 backdrop-blur-xl dark:border-white/10 dark:bg-ink-950/70"
+          ? "border-b border-ink-900/10 bg-parchment/90 backdrop-blur-sm dark:border-white/10 dark:bg-ink-950/80"
           : "border-b border-transparent bg-parchment/0"
       )}
     >
