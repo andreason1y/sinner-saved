@@ -87,8 +87,6 @@ export function Hero() {
         <span className="hero-fleuron-watermark fleuron" aria-hidden>
           &#10070;
         </span>
-        {/* Ornament_Layer: soft paper-grain wash (reuses the existing bg-grain texture) */}
-        <span className="hero-grain-wash absolute inset-0 bg-grain" aria-hidden />
         {/* Line_Art: open book + light rays, upper-right head region. Reuses the
             hero's existing `reveal` variant (no new easing/duration). */}
         <motion.div
