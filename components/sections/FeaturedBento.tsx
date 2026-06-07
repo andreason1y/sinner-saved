@@ -100,7 +100,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
               >
                 <div className="grid h-full grid-cols-5">
                   {post.cover && (
-                    <div className="relative col-span-2 aspect-[4/5] overflow-hidden">
+                    <div className="relative col-span-2 h-full min-h-[200px] overflow-hidden">
                       <Image
                         src={post.cover}
                         alt={post.title}
