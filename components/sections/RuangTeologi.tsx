@@ -5,8 +5,17 @@ import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
+import { CATEGORIES } from "@/lib/categories";
+import type { Locale } from "@/lib/i18n/dictionary";
 import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+
+function subName(mainSlug: string, subSlug: string, locale: Locale) {
+  const cat = CATEGORIES.find((c) => c.slug === mainSlug);
+  const sub = cat?.subcategories.find((s) => s.slug === subSlug);
+  if (!sub) return subSlug.replace(/-/g, " ");
+  return locale === "en" ? (sub.nameEn ?? sub.name) : sub.name;
+}
 
 export function RuangTeologi({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
@@ -49,7 +58,7 @@ export function RuangTeologi({ posts }: { posts: Post[] }) {
                 )}
                 <div className="relative flex flex-1 flex-col p-7 sm:p-8">
                   <p className="kicker text-gold-300">
-                    {post.subCategory.replace(/-/g, " ")}
+                    {subName(post.mainCategory, post.subCategory, locale)}
                   </p>
                   <h3 className="serif-display mt-4 line-clamp-2 text-2xl font-medium leading-snug text-ink-50 sm:text-3xl">
                     {postTitle(post, locale)}

@@ -5,8 +5,17 @@ import { Quote } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
+import { CATEGORIES } from "@/lib/categories";
+import type { Locale } from "@/lib/i18n/dictionary";
 import { formatDate } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+
+function subName(mainSlug: string, subSlug: string, locale: Locale) {
+  const cat = CATEGORIES.find((c) => c.slug === mainSlug);
+  const sub = cat?.subcategories.find((s) => s.slug === subSlug);
+  if (!sub) return subSlug.replace(/-/g, " ");
+  return locale === "en" ? (sub.nameEn ?? sub.name) : sub.name;
+}
 
 type NoteCard = {
   id: string;
@@ -59,7 +68,7 @@ export function SinnersNote({ posts }: { posts: Post[] }) {
                 >
                   <div className="flex items-center justify-between">
                     <span className={`kicker ${isDark ? "text-gold-300" : "text-gold-600 dark:text-gold-300"}`}>
-                      {post.subCategory.replace(/-/g, " ")}
+                      {subName(post.mainCategory, post.subCategory, locale)}
                     </span>
                     <Quote size={15} className={isDark ? "text-gold-300/70" : "text-gold-500/70 dark:text-gold-300/70"} />
                   </div>

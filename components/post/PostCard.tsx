@@ -5,12 +5,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Post } from "@/lib/types";
 import { CATEGORIES } from "@/lib/categories";
+import type { Locale } from "@/lib/i18n/dictionary";
 import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
-function subName(mainSlug: string, subSlug: string) {
+function subName(mainSlug: string, subSlug: string, locale: Locale) {
   const cat = CATEGORIES.find((c) => c.slug === mainSlug);
-  return cat?.subcategories.find((s) => s.slug === subSlug)?.name ?? subSlug;
+  const sub = cat?.subcategories.find((s) => s.slug === subSlug);
+  if (!sub) return subSlug;
+  return locale === "en" ? (sub.nameEn ?? sub.name) : sub.name;
 }
 
 function escapeRegExp(s: string) {
@@ -51,16 +54,18 @@ type Variant = "default" | "compact" | "feature" | "dark";
 function SubCategoryLink({
   post,
   className,
+  locale,
 }: {
   post: Post;
   className: string;
+  locale: Locale;
 }) {
   return (
     <Link
       href={`/kategori/${post.mainCategory}/${post.subCategory}`}
       className={`relative z-10 self-start ${className}`}
     >
-      {subName(post.mainCategory, post.subCategory)}
+      {subName(post.mainCategory, post.subCategory, locale)}
     </Link>
   );
 }
@@ -111,6 +116,7 @@ export function PostCard({
           <div>
             <SubCategoryLink
               post={post}
+              locale={locale}
               className="text-[10px] uppercase tracking-[0.24em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
             />
             <h3 className="serif-display clamp-descenders mt-1.5 line-clamp-2 text-base leading-snug text-ink-900 dark:text-ink-50">
@@ -149,6 +155,7 @@ export function PostCard({
         <div className="p-6">
           <SubCategoryLink
             post={post}
+            locale={locale}
             className="text-[10px] uppercase tracking-[0.28em] text-gold-200 hover:text-gold-100"
           />
           <h3 className="serif-display clamp-descenders mt-3 line-clamp-3 text-2xl leading-snug text-ink-50">
@@ -188,7 +195,7 @@ export function PostCard({
           )}
           <div className="absolute inset-x-0 bottom-0 p-8">
             <p className="text-[10px] uppercase tracking-[0.28em] text-gold-200">
-              {subName(post.mainCategory, post.subCategory)} ·{" "}
+              {subName(post.mainCategory, post.subCategory, locale)} ·{" "}
               {formatDate(post.createdAt, locale)}
             </p>
             <h3 className="serif-display clamp-descenders mt-3 max-w-2xl line-clamp-3 text-3xl leading-tight text-ink-50 sm:text-4xl">
@@ -222,6 +229,7 @@ export function PostCard({
       <div className="flex flex-1 flex-col p-5">
         <SubCategoryLink
           post={post}
+          locale={locale}
           className="text-[10px] uppercase tracking-[0.28em] text-gold-600 hover:text-gold-700 dark:text-gold-300 dark:hover:text-gold-200"
         />
         <h3 className="serif-display mt-3 line-clamp-2 text-xl leading-snug text-ink-900 dark:text-ink-50">

@@ -6,12 +6,15 @@ import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
 import { CATEGORIES } from "@/lib/categories";
+import type { Locale } from "@/lib/i18n/dictionary";
 import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
-function subName(mainSlug: string, subSlug: string) {
+function subName(mainSlug: string, subSlug: string, locale: Locale) {
   const cat = CATEGORIES.find((c) => c.slug === mainSlug);
-  return cat?.subcategories.find((s) => s.slug === subSlug)?.name ?? subSlug;
+  const sub = cat?.subcategories.find((s) => s.slug === subSlug);
+  if (!sub) return subSlug;
+  return locale === "en" ? (sub.nameEn ?? sub.name) : sub.name;
 }
 
 export function PopularPosts({ posts }: { posts: Post[] }) {
@@ -48,7 +51,7 @@ export function PopularPosts({ posts }: { posts: Post[] }) {
                 {/* Body */}
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2.5">
-                    <span className="kicker text-gold-600 dark:text-gold-300">{subName(post.mainCategory, post.subCategory)}</span>
+                    <span className="kicker text-gold-600 dark:text-gold-300">{subName(post.mainCategory, post.subCategory, locale)}</span>
                     <span className="h-px w-6 bg-gold-leaf" />
                     <span className="text-[11px] uppercase tracking-[0.16em] text-ink-400 dark:text-ink-500">{formatDate(post.createdAt, locale)}</span>
                   </div>

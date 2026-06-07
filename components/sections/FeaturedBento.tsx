@@ -4,12 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/categories";
 import type { Post } from "@/lib/types";
+import type { Locale } from "@/lib/i18n/dictionary";
 import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 
-function categoryName(slug: string) {
-  return CATEGORIES.find((c) => c.slug === slug)?.name ?? "—";
+function categoryName(slug: string, locale: Locale) {
+  const cat = CATEGORIES.find((c) => c.slug === slug);
+  if (!cat) return "—";
+  return locale === "en" ? (cat.nameEn ?? cat.name) : cat.name;
 }
 
 export function FeaturedBento({ posts }: { posts: Post[] }) {
@@ -63,7 +66,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                 <div className="pointer-events-none absolute inset-5 ring-1 ring-inset ring-gold-200/20 sm:inset-8" />
                 <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
                   <div className="flex items-center gap-3">
-                    <span className="kicker text-gold-300">{categoryName(hero.mainCategory)}</span>
+                    <span className="kicker text-gold-300">{categoryName(hero.mainCategory, locale)}</span>
                     <span className="h-px w-8 bg-gold-leaf" />
                     <span className="text-[11px] uppercase tracking-[0.18em] text-ink-300">{formatDate(hero.createdAt, locale)}</span>
                   </div>
@@ -114,7 +117,7 @@ export function FeaturedBento({ posts }: { posts: Post[] }) {
                   >
                     <div>
                       <p className="kicker text-gold-600 dark:text-gold-300">
-                        {categoryName(post.mainCategory)}
+                        {categoryName(post.mainCategory, locale)}
                       </p>
                       <h3 className="serif-display clamp-descenders mt-3 text-xl font-medium leading-snug text-ink-900 line-clamp-2 dark:text-ink-50 sm:text-2xl">
                         {postTitle(post, locale)}

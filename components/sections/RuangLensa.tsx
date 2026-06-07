@@ -5,8 +5,17 @@ import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 import { StaggerContainer, FadeInUp } from "@/components/motion/Reveal";
 import type { Post } from "@/lib/types";
+import { CATEGORIES } from "@/lib/categories";
+import type { Locale } from "@/lib/i18n/dictionary";
 import { formatDate, postExcerpt, postTitle } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/LocaleProvider";
+
+function subName(mainSlug: string, subSlug: string, locale: Locale) {
+  const cat = CATEGORIES.find((c) => c.slug === mainSlug);
+  const sub = cat?.subcategories.find((s) => s.slug === subSlug);
+  if (!sub) return subSlug.replace(/-/g, " ");
+  return locale === "en" ? (sub.nameEn ?? sub.name) : sub.name;
+}
 
 export function RuangLensa({ posts }: { posts: Post[] }) {
   const { t, locale } = useLocale();
@@ -51,7 +60,7 @@ export function RuangLensa({ posts }: { posts: Post[] }) {
                     <div className="absolute inset-3 ring-1 ring-inset ring-gold-200/25" />
                     <div className="absolute inset-x-0 bottom-0 p-5">
                       <p className="kicker text-gold-200">
-                        {post.subCategory.replace(/-/g, " ")}
+                        {subName(post.mainCategory, post.subCategory, locale)}
                       </p>
                       <h3 className="serif-display mt-2 text-xl font-medium leading-snug text-ink-50">
                         {postTitle(post, locale)}
