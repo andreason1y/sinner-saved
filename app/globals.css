@@ -43,15 +43,30 @@ body {
    * material, not glow.
    */
   background-color: #f4ecdb;
+  transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Vignette is painted on a composited, viewport-pinned layer instead of
+ * `background-attachment: fixed` on <body>, which forced a full-viewport
+ * repaint on every scroll frame (the main source of scroll jank, also buggy
+ * on iOS). Visually identical — the glow stays pinned to the viewport — but
+ * now it lives on its own GPU layer that the browser simply composites. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image:
     radial-gradient(120% 90% at 50% -10%, rgba(255, 252, 244, 0.7) 0%, rgba(255, 252, 244, 0) 45%),
     radial-gradient(120% 120% at 50% 110%, rgba(73, 57, 31, 0.10) 0%, rgba(73, 57, 31, 0) 55%);
-  background-attachment: fixed;
-  transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 html.dark body {
   background-color: #120c06;
+}
+
+html.dark body::before {
   background-image:
     radial-gradient(120% 90% at 50% -10%, rgba(205, 171, 104, 0.05) 0%, rgba(205, 171, 104, 0) 45%),
     radial-gradient(120% 120% at 50% 110%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 55%);
@@ -549,6 +564,8 @@ html.dark .skeleton::after {
   color: var(--gold);
   opacity: 0.08; /* Light_Mode: within the required 0.00–0.12 range */
   user-select: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 
