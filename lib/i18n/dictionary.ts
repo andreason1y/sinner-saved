@@ -321,7 +321,7 @@ const en: Dict = {
     readingTime: (m) => `${m} min read`,
   },
   ruangAlkitab: {
-    eyebrow: "01 / Ruang Alkitab",
+    eyebrow: "01 / Scripture Room",
     title: "Text. Context. Original tongue.",
     blurb:
       "Reading Scripture from its historical, cultural, and original-language setting — without losing the warmth of faith.",
@@ -329,11 +329,11 @@ const en: Dict = {
     factsHint: "Hover or tap to flip",
     didYouKnow: "Did you know?",
     flipBack: "Flip card",
-    latest: "Latest in Ruang Alkitab",
+    latest: "Latest in Scripture Room",
     seeMore: "See all →",
   },
   ruangTeologi: {
-    eyebrow: "02 / Ruang Teologi",
+    eyebrow: "02 / Theology Room",
     title: "Understanding faith with clarity and humility.",
     blurb:
       "Exploring doctrine, apologetics, and questions of faith — so we come to know God and his word more deeply.",
@@ -346,7 +346,7 @@ const en: Dict = {
     rankLabel: "Rank",
   },
   ruangLensa: {
-    eyebrow: "03 / Ruang Lensa",
+    eyebrow: "03 / Gospel Lens",
     title: "The Gospel reads the world.",
     blurb:
       "Looking at culture, figures, and our age through the Gospel's lens — a different way of seeing the ordinary.",
