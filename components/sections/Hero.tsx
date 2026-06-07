@@ -35,10 +35,6 @@ export function Hero() {
     <section className="relative overflow-hidden">
       {/* Decorative layer — purely presentational, behind Primary_Content (contents added in later tasks) */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
-        {/* Ornament_Layer: large fleuron watermark (reuses the existing gold-token .fleuron glyph) */}
-        <span className="hero-fleuron-watermark fleuron" aria-hidden>
-          &#10070;
-        </span>
         {/* Line_Art: open book + light rays, upper-right head region. Served as
             a static rasterized asset (like the article images) — no inline SVG
             DOM and no framer-motion animation path. */}

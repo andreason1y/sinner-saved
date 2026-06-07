@@ -26,9 +26,17 @@ html.dark {
   --line: rgba(239, 230, 211, 0.12);
 }
 
+html {
+  /* The solid base color lives on <html> so the viewport-pinned, composited
+   * `body::before` vignette (z-index:-1) paints ABOVE it instead of being
+   * hidden behind an opaque <body> background. The theme-switch animation also
+   * lives here now, so the base still cross-fades between light/dark. */
+  background-color: var(--background);
+  transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 html,
 body {
-  background-color: var(--background);
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -41,9 +49,11 @@ body {
    * (the page feels lit from the centre, like a spread under gallery light)
    * and a barely-there fibre texture. No neon halo — richness comes from
    * material, not glow.
+   *
+   * <body> itself is transparent: the solid base color is painted by <html>,
+   * which lets the fixed `body::before` vignette show through above it and
+   * below the page content.
    */
-  background-color: #f4ecdb;
-  transition: background-color 350ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Vignette is painted on a composited, viewport-pinned layer instead of
@@ -60,10 +70,6 @@ body::before {
   background-image:
     radial-gradient(120% 90% at 50% -10%, rgba(255, 252, 244, 0.7) 0%, rgba(255, 252, 244, 0) 45%),
     radial-gradient(120% 120% at 50% 110%, rgba(73, 57, 31, 0.10) 0%, rgba(73, 57, 31, 0) 55%);
-}
-
-html.dark body {
-  background-color: #120c06;
 }
 
 html.dark body::before {
@@ -517,9 +523,8 @@ html.dark .skeleton::after {
 
 /* ============================================================
  * Hero decorative layer — purely presentational utilities.
- * Two restrained layers sit BEHIND the hero's primary content:
+ * One restrained layer sits BEHIND the hero's primary content:
  *   • .hero-lineart           → thin gold open-book line-art (upper-right head)
- *   • .hero-fleuron-watermark → large, faint fleuron bleeding off the top-right
  * All gold color is sourced from the existing tokens (`var(--gold)` and, for
  * the line-art, `currentColor` inherited from `text-gold-*`). No hard-coded
  * color literals are introduced here. Opacities stay within the spec'd ranges.
@@ -549,29 +554,13 @@ html.dark .skeleton::after {
   backface-visibility: hidden;
 }
 
-/* Large fleuron watermark — bleeds off the top-right corner, kept very faint.
- * Gold comes from the existing token (also applied by the companion `.fleuron`
- * class on the same element). */
-.hero-fleuron-watermark {
-  position: absolute;
-  top: -2rem;
-  right: -1rem;
-  font-size: 16rem;
-  line-height: 1;
-  color: var(--gold);
-  opacity: 0.08; /* Light_Mode: within the required 0.00–0.12 range */
-  user-select: none;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
 
 /* ── Hero decorative layer — Dark_Mode overrides ────────────────────────────
  * Keyed off `html.dark` (the same theming hook used throughout this file), so
  * every decorative element flips to the dark-theme tokens with no light-token
  * bleed. All gold still comes from `var(--gold)` / `currentColor`; no color
  * literals are introduced. Opacities stay within the spec'd ranges:
- *   • line-art ≤ 0.20  • fleuron ≤ 0.08 (dark)
+ *   • line-art ≤ 0.20
  * ============================================================ */
 
 html.dark .hero-lineart {
@@ -579,10 +568,6 @@ html.dark .hero-lineart {
   /* The asset's gold is now a fixed literal (#b8924a) since <img> can't use
    * currentColor; lift it slightly so it reads well on the dark background. */
   filter: brightness(1.18) saturate(1.05);
-}
-
-html.dark .hero-fleuron-watermark {
-  opacity: 0.06; /* Dark_Mode: within the required 0.00–0.08 range */
 }
 
 
@@ -595,7 +580,7 @@ html.dark .hero-fleuron-watermark {
  *                          clear of the headline; defined below.
  *   • Desktop (≥1024px) → the base `.hero-lineart` rule above (full scale,
  *                          width 9rem) applies unchanged.
- * Horizontal-overflow safety: the line-art and the fleuron watermark are
+ * Horizontal-overflow safety: the line-art is
  * intentionally allowed to bleed toward / past the top-right edge, but the
  * hero `<section>` already carries `relative overflow-hidden`, which clips any
  * decorative bleed. No decorative element can therefore widen the document or
