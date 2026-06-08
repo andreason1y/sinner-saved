@@ -13,8 +13,8 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 lg:grid-cols-12 lg:px-8">
         {/* Brand block */}
         <div className="lg:col-span-5">
-          <p className="serif-display text-5xl font-medium text-ink-50">
-            Sinner<span className="italic text-gold-300">Saved</span>
+          <p className="serif-display text-5xl font-normal text-ink-50">
+            Sinner<span className="font-semibold text-gold-300">Saved</span>
           </p>
           <div className="mt-5 h-px w-24 bg-gold-leaf" />
           <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-300">
