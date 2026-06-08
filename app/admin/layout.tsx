@@ -37,7 +37,7 @@ export default async function AdminLayout({
           <aside className="hidden w-64 shrink-0 border-r border-ink-900/10 bg-parchment p-6 lg:block">
             <Link href="/" className="block">
               <span className="serif-display text-xl tracking-tightest text-ink-900">
-                Sinner<span className="italic text-sacred-500">Saved</span>
+                Sinner<span className="font-semibold text-sacred-500">Saved</span>
               </span>
               <p className="mt-0.5 text-[10px] uppercase tracking-[0.32em] text-ink-500">
                 Admin Panel

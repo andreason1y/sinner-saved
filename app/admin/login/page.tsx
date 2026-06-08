@@ -15,7 +15,7 @@ export default function AdminLoginPage({ searchParams }: Props) {
             Admin Panel
           </p>
           <h1 className="serif-display mt-3 text-4xl tracking-tightest text-ink-900">
-            Sinner<span className="italic text-sacred-500">Saved</span>
+            Sinner<span className="font-semibold text-sacred-500">Saved</span>
           </h1>
           <p className="mt-3 text-sm text-ink-500">
             Akses dibatasi untuk admin saja.
