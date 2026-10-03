@@ -39,7 +39,7 @@ export function Footer() {
           </div>
 
           <p className="mt-8 text-xs uppercase tracking-[0.32em] text-ink-400">
-            By a sinner, for sinners — saved by grace alone.
+            By a sinner, for sinners. Saved by grace alone.
           </p>
 
           {/* Secondary links */}

@@ -267,7 +267,7 @@ export default async function PostPage({
           <div className="min-w-0 lg:col-span-8 lg:col-start-2">
             {locale === "en" && html && (
               <p className="mb-6 text-xs text-ink-400 dark:text-ink-500">
-                Translated by machine — original in Indonesian.
+                Translated by machine, original in Indonesian.
               </p>
             )}
             <ScriptureLinker key={locale}>

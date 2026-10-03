@@ -61,7 +61,7 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
                 </blockquote>
                 {block.cite && (
                   <figcaption className="mt-3 text-sm uppercase tracking-[0.28em] text-ink-500 dark:text-ink-400">
-                    — {block.cite}
+                    {block.cite}
                   </figcaption>
                 )}
               </figure>
@@ -80,7 +80,7 @@ export function PostContent({ blocks }: { blocks: ContentBlock[] }) {
                   {block.text}
                 </blockquote>
                 <figcaption className="mt-4 text-sm font-medium tracking-wide text-sacred-700 dark:text-sacred-300">
-                  — {block.reference}
+                  {block.reference}
                 </figcaption>
               </figure>
             );

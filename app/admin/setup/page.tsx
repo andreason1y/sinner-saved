@@ -54,8 +54,8 @@ export default async function AdminSetupPage({ searchParams }: Props) {
           Aktifkan Database
         </h1>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-ink-500">
-          Halaman ini menyiapkan project Supabase Anda — apply skema, set
-          policies, buat user admin, dan isi 9 artikel awal — dalam dua
+          Halaman ini menyiapkan project Supabase Anda: apply skema, set
+          policies, buat user admin, dan isi 9 artikel awal, dalam dua
           langkah singkat.
         </p>
 
@@ -147,7 +147,7 @@ export default async function AdminSetupPage({ searchParams }: Props) {
                 </code>{" "}
                 lewat REST API. Buka SQL Editor Supabase Anda, paste isi
                 file <code>supabase/schema.sql</code>, klik <em>Run</em>.
-                Skripnya idempotent — aman di-run ulang.
+                Skripnya idempotent, aman di-run ulang.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <a
@@ -193,7 +193,7 @@ export default async function AdminSetupPage({ searchParams }: Props) {
               <p className="text-sm leading-relaxed text-ink-600">
                 Akan membuat user admin (kalau belum ada) dan upsert 9
                 artikel sample sebagai status <em>published</em>. Aman
-                diulang — tidak akan duplikasi.
+                diulang, tidak akan duplikasi.
               </p>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <Field
