@@ -2,6 +2,7 @@ import { cache } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "./supabase/server";
 import type { Post } from "./types";
+import { STATIC_POSTS } from "./static-posts";
 
 /**
  * Database row shape (snake_case) → app shape (camelCase).
@@ -65,7 +66,10 @@ export function isSupabaseConfigured() {
 }
 
 async function queryPublishedPosts(): Promise<Post[]> {
-  if (!isSupabaseConfigured()) return [];
+  const staticItems: Post[] = STATIC_POSTS.map(
+    ({ contentHtml: _h, contentHtmlEn: _he, ...rest }) => rest
+  );
+  if (!isSupabaseConfigured()) return staticItems;
   try {
     // Public reads use a stateless anon client (no cookies). This makes the
     // function safe to call from generateStaticParams during the build.
@@ -82,12 +86,14 @@ async function queryPublishedPosts(): Promise<Post[]> {
 
     if (error) {
       console.warn("[posts] supabase error:", error.message);
-      return [];
+      return staticItems;
     }
-    return (data as PostRow[]).map(rowToPost);
+    const dbPosts = (data as PostRow[]).map(rowToPost);
+    const dbSlugs = new Set(dbPosts.map((p) => p.slug));
+    return [...dbPosts, ...staticItems.filter((p) => !dbSlugs.has(p.slug))];
   } catch (e) {
     console.warn("[posts] supabase query failed:", (e as Error).message);
-    return [];
+    return staticItems;
   }
 }
 
@@ -147,6 +153,8 @@ export const getPostBySlug = cache(async (
       console.warn("[posts] getPostBySlug failed:", (e as Error).message);
     }
   }
+  const staticPost = STATIC_POSTS.find((p) => p.slug === slug);
+  if (staticPost) return staticPost;
   return null;
 });
 
