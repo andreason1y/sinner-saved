@@ -12,6 +12,7 @@ export const CATEGORIES: MainCategory[] = [
     blurbEn:
       "Reading Scripture through its historical, cultural, and original-language context — without losing the warmth of faith.",
     subcategories: [
+      { slug: "tokoh-alkitab", name: "Tokoh Alkitab", nameEn: "Biblical Characters" },
       { slug: "biblical-facts", name: "Biblical Facts", nameEn: "Biblical Facts" },
       { slug: "sejarah-budaya", name: "Sejarah & Budaya", nameEn: "History & Culture" },
       { slug: "makna-kata-asli", name: "Makna Kata Asli", nameEn: "Original Word Meaning" },
