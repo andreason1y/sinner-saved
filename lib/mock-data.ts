@@ -26,7 +26,7 @@ function sampleContent(opening: string): ContentBlock[] {
     },
     {
       type: "paragraph",
-      text: "Saya pikir di sinilah kerendahan hati menjadi alat eksegesis yang penting — sama pentingnya dengan kamus Yunani atau peta sejarah. Kalau kita masuk ke dalam teks dengan asumsi bahwa kita sudah tahu jawabannya, kita akan keluar dengan persis apa yang kita bawa masuk. Tidak lebih.",
+      text: "Saya pikir di sinilah kerendahan hati menjadi alat eksegesis yang penting, sama pentingnya dengan kamus Yunani atau peta sejarah. Kalau kita masuk ke dalam teks dengan asumsi bahwa kita sudah tahu jawabannya, kita akan keluar dengan persis apa yang kita bawa masuk. Tidak lebih.",
     },
     {
       type: "heading",
@@ -40,7 +40,7 @@ function sampleContent(opening: string): ContentBlock[] {
       items: [
         "Baca konteks sebelum baca ayat. Pasal sebelum kalimat. Kitab sebelum pasal.",
         "Tanya: kepada siapa awalnya teks ini ditulis? Apa yang sudah mereka tahu?",
-        "Biarkan teks yang sulit tetap sulit dulu — jangan terburu-buru menjinakkannya.",
+        "Biarkan teks yang sulit tetap sulit dulu, jangan terburu-buru menjinakkannya.",
       ],
     },
     {
@@ -56,7 +56,7 @@ function sampleContent(opening: string): ContentBlock[] {
     },
     {
       type: "paragraph",
-      text: "Kata Yunani untuk 'kasih karunia' adalah charis (χάρις). Tapi yang menarik bukan etimologinya — yang menarik adalah bagaimana Paulus terus-menerus mengulanginya di hampir setiap pembukaan suratnya, seolah-olah ia takut kita akan lupa.",
+      text: "Kata Yunani untuk 'kasih karunia' adalah charis (χάρις). Tapi yang menarik bukan etimologinya, yang menarik adalah bagaimana Paulus terus-menerus mengulanginya di hampir setiap pembukaan suratnya, seolah-olah ia takut kita akan lupa.",
     },
     {
       type: "code",
@@ -66,7 +66,7 @@ function sampleContent(opening: string): ContentBlock[] {
     },
     {
       type: "paragraph",
-      text: "Charis hymin kai eirēnē — kasih karunia bagimu, dan damai sejahtera. Urutannya selalu sama: kasih karunia dulu. Damai datang sesudahnya, sebagai buah, bukan sebagai prasyarat.",
+      text: "Charis hymin kai eirēnē, kasih karunia bagimu, dan damai sejahtera. Urutannya selalu sama: kasih karunia dulu. Damai datang sesudahnya, sebagai buah, bukan sebagai prasyarat.",
     },
     { type: "divider" },
     {
@@ -77,7 +77,7 @@ function sampleContent(opening: string): ContentBlock[] {
     },
     {
       type: "paragraph",
-      text: "Tulisan ini bukan kesimpulan. Ia lebih seperti kursi kayu di pojok perpustakaan — tempat saya duduk sebentar, mencatat apa yang saya baca, lalu kembali ke rak untuk mencari kitab berikutnya. Saya berharap Anda yang membaca ini juga sedang melakukan hal yang sama, di pojok ruangan Anda sendiri.",
+      text: "Tulisan ini bukan kesimpulan. Ia lebih seperti kursi kayu di pojok perpustakaan, tempat saya duduk sebentar, mencatat apa yang saya baca, lalu kembali ke rak untuk mencari kitab berikutnya. Saya berharap Anda yang membaca ini juga sedang melakukan hal yang sama, di pojok ruangan Anda sendiri.",
     },
   ];
 }
@@ -121,7 +121,7 @@ export const MOCK_POSTS: Post[] = [
     readingMinutes: 11,
     author: SAMPLE_AUTHOR,
     content: sampleContent(
-      "Setiap dekade, ada satu generasi teolog yang mencoba menggeser salib dari pusat. Kadang dengan alasan pastoral — 'gambar Allah yang menghukum Anak-Nya itu kejam' — kadang dengan alasan filosofis. Saya mengerti niatnya. Tapi saya tetap belum yakin kita bisa kehilangan substitusi tanpa juga kehilangan Injil itu sendiri."
+      "Setiap dekade, ada satu generasi teolog yang mencoba menggeser salib dari pusat. Kadang dengan alasan pastoral, 'gambar Allah yang menghukum Anak-Nya itu kejam', kadang dengan alasan filosofis. Saya mengerti niatnya. Tapi saya tetap belum yakin kita bisa kehilangan substitusi tanpa juga kehilangan Injil itu sendiri."
     ),
   },
   {
@@ -129,7 +129,7 @@ export const MOCK_POSTS: Post[] = [
     title: "Bonhoeffer dan Harga Sebuah Kasih Karunia",
     slug: "bonhoeffer-dan-harga-sebuah-kasih-karunia",
     excerpt:
-      "Sebuah biografi singkat tentang teolog Jerman yang menulis 'Cost of Discipleship' — dan kemudian membayarnya dengan nyawa.",
+      "Sebuah biografi singkat tentang teolog Jerman yang menulis 'Cost of Discipleship', dan kemudian membayarnya dengan nyawa.",
     cover:
       "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&auto=format&fit=crop&q=80",
     mainCategory: "ruang-lensa",
@@ -141,7 +141,7 @@ export const MOCK_POSTS: Post[] = [
     readingMinutes: 9,
     author: SAMPLE_AUTHOR,
     content: sampleContent(
-      "Dietrich Bonhoeffer menulis Nachfolge — yang kita kenal sebagai The Cost of Discipleship — di tahun 1937. Ia berusia 31. Tujuh tahun kemudian, ia digantung di kamp Flossenbürg, dua minggu sebelum kamp itu dibebaskan oleh tentara Sekutu. Saya tidak bisa membaca bukunya tanpa mengingat ujung kalimat hidupnya."
+      "Dietrich Bonhoeffer menulis Nachfolge, yang kita kenal sebagai The Cost of Discipleship, di tahun 1937. Ia berusia 31. Tujuh tahun kemudian, ia digantung di kamp Flossenbürg, dua minggu sebelum kamp itu dibebaskan oleh tentara Sekutu. Saya tidak bisa membaca bukunya tanpa mengingat ujung kalimat hidupnya."
     ),
   },
   {
@@ -149,7 +149,7 @@ export const MOCK_POSTS: Post[] = [
     title: "Saya Berdoa, Tapi Langit Diam",
     slug: "saya-berdoa-tapi-langit-diam",
     excerpt:
-      "Catatan kecil dari sebuah malam yang panjang — ketika doa terasa seperti berbicara ke langit-langit kamar.",
+      "Catatan kecil dari sebuah malam yang panjang, ketika doa terasa seperti berbicara ke langit-langit kamar.",
     mainCategory: "sinners-note",
     subCategory: "refleksi",
     tags: ["doa", "kekeringan rohani"],
@@ -167,7 +167,7 @@ export const MOCK_POSTS: Post[] = [
     title: "Yerusalem di Abad Pertama: Kota yang Dilihat Yesus",
     slug: "yerusalem-abad-pertama",
     excerpt:
-      "Sebelum membaca Injil seperti dongeng modern, kita perlu mencium debu jalanan Yerusalem yang sesak — pajak, Romawi, dan harapan mesianis.",
+      "Sebelum membaca Injil seperti dongeng modern, kita perlu mencium debu jalanan Yerusalem yang sesak, pajak, Romawi, dan harapan mesianis.",
     cover:
       "https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=1600&auto=format&fit=crop&q=80",
     mainCategory: "ruang-alkitab",
@@ -179,7 +179,7 @@ export const MOCK_POSTS: Post[] = [
     readingMinutes: 8,
     author: SAMPLE_AUTHOR,
     content: sampleContent(
-      "Kita sering membayangkan Yerusalem di zaman Yesus seperti latar drama Natal anak Sekolah Minggu — bersih, sunyi, dan agak sepia. Tapi Yerusalem abad pertama adalah kota yang sesak, sengit, dan secara politik genting. Sebuah kota yang sedang diduduki, dan rakyatnya tahu itu setiap kali mereka berjumpa tentara Romawi di tikungan jalan."
+      "Kita sering membayangkan Yerusalem di zaman Yesus seperti latar drama Natal anak Sekolah Minggu, bersih, sunyi, dan agak sepia. Tapi Yerusalem abad pertama adalah kota yang sesak, sengit, dan secara politik genting. Sebuah kota yang sedang diduduki, dan rakyatnya tahu itu setiap kali mereka berjumpa tentara Romawi di tikungan jalan."
     ),
   },
   {
@@ -187,7 +187,7 @@ export const MOCK_POSTS: Post[] = [
     title: "Apologetika yang Tidak Berteriak",
     slug: "apologetika-yang-tidak-berteriak",
     excerpt:
-      "Membela iman bukan tentang menang argumen di kolom komentar. Ini tentang menjawab dengan lemah lembut dan hormat — 1 Petrus 3:15.",
+      "Membela iman bukan tentang menang argumen di kolom komentar. Ini tentang menjawab dengan lemah lembut dan hormat, 1 Petrus 3:15.",
     cover:
       "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1600&auto=format&fit=crop&q=80",
     mainCategory: "ruang-teologi",
@@ -199,7 +199,7 @@ export const MOCK_POSTS: Post[] = [
     readingMinutes: 6,
     author: SAMPLE_AUTHOR,
     content: sampleContent(
-      "Petrus menulis 'siap sedia memberi pertanggungan jawab kepada tiap-tiap orang yang meminta pertanggungan jawab dari kamu tentang pengharapan yang ada padamu' — lalu, hampir tidak ada yang mengutip lanjutannya — 'tetapi haruslah dengan lemah lembut dan hormat.' Apologetika yang baik bukan hanya tentang argumen yang benar; ia juga tentang cara menyampaikan yang manusiawi."
+      "Petrus menulis 'siap sedia memberi pertanggungan jawab kepada tiap-tiap orang yang meminta pertanggungan jawab dari kamu tentang pengharapan yang ada padamu', lalu, hampir tidak ada yang mengutip lanjutannya, 'tetapi haruslah dengan lemah lembut dan hormat.' Apologetika yang baik bukan hanya tentang argumen yang benar; ia juga tentang cara menyampaikan yang manusiawi."
     ),
   },
   {
@@ -207,7 +207,7 @@ export const MOCK_POSTS: Post[] = [
     title: "Filter, Performance, dan Citra Allah",
     slug: "filter-performance-dan-citra-allah",
     excerpt:
-      "Era media sosial menjual versi terbaik dari diri kita. Tapi Injil justru memulai dari versi terburuk — dan tetap menyebut kita berharga.",
+      "Era media sosial menjual versi terbaik dari diri kita. Tapi Injil justru memulai dari versi terburuk, dan tetap menyebut kita berharga.",
     cover:
       "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1600&auto=format&fit=crop&q=80",
     mainCategory: "ruang-lensa",
@@ -219,7 +219,7 @@ export const MOCK_POSTS: Post[] = [
     readingMinutes: 7,
     author: SAMPLE_AUTHOR,
     content: sampleContent(
-      "Setiap aplikasi yang kita buka pagi ini meminta hal yang sama dari kita: tampilkan versi yang lebih bersih dari dirimu. Lebih cerah, lebih percaya diri, lebih sukses. Filter bukan hanya menutupi pori-pori — ia juga, secara halus, menutupi anugerah."
+      "Setiap aplikasi yang kita buka pagi ini meminta hal yang sama dari kita: tampilkan versi yang lebih bersih dari dirimu. Lebih cerah, lebih percaya diri, lebih sukses. Filter bukan hanya menutupi pori-pori, ia juga, secara halus, menutupi anugerah."
     ),
   },
   {
@@ -245,7 +245,7 @@ export const MOCK_POSTS: Post[] = [
     title: "Roma 9: Ayat yang Membuat Banyak Orang Pulang",
     slug: "roma-9-ayat-yang-membuat-banyak-orang-pulang",
     excerpt:
-      "Predestinasi, bejana kemurkaan, dan kedaulatan Allah. Pasal yang tidak ramah untuk dipajang — tapi kita tetap harus membacanya.",
+      "Predestinasi, bejana kemurkaan, dan kedaulatan Allah. Pasal yang tidak ramah untuk dipajang, tapi kita tetap harus membacanya.",
     cover:
       "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=1600&auto=format&fit=crop&q=80",
     mainCategory: "ruang-alkitab",
@@ -257,7 +257,7 @@ export const MOCK_POSTS: Post[] = [
     readingMinutes: 12,
     author: SAMPLE_AUTHOR,
     content: sampleContent(
-      "Kalau Anda membaca Roma satu kali dalam satu duduk — yang sebenarnya cara Paulus mengharapkan suratnya dibaca — Anda akan sampai di pasal 9 dengan kepala sedikit pusing. Argumennya berat, kalimatnya panjang, dan implikasinya tidak ramah untuk PR Sekolah Minggu."
+      "Kalau Anda membaca Roma satu kali dalam satu duduk, yang sebenarnya cara Paulus mengharapkan suratnya dibaca, Anda akan sampai di pasal 9 dengan kepala sedikit pusing. Argumennya berat, kalimatnya panjang, dan implikasinya tidak ramah untuk PR Sekolah Minggu."
     ),
   },
 ];
@@ -309,7 +309,7 @@ export const BIBLICAL_FACTS: BiblicalFact[] = [
     question:
       "Mengapa Yesus menangis di kubur Lazarus padahal Ia akan membangkitkannya?",
     answer:
-      "Karena harapan tidak meniadakan duka. Yesus tidak menyangkal kesedihan demi alasan teologis. Empati yang sejati tetap sah meskipun kita tahu akhir cerita — dan ini berarti: dukacita Anda hari ini bukan tanda iman yang lemah.",
+      "Karena harapan tidak meniadakan duka. Yesus tidak menyangkal kesedihan demi alasan teologis. Empati yang sejati tetap sah meskipun kita tahu akhir cerita, dan ini berarti: dukacita Anda hari ini bukan tanda iman yang lemah.",
     reference: "Yohanes 11:33–35",
   },
   {
@@ -337,7 +337,7 @@ export const BIBLICAL_FACTS: BiblicalFact[] = [
     id: "bf5",
     question: "Mengapa Yesus menyebut Petrus 'Iblis' segera setelah memujinya?",
     answer:
-      "Karena pikiran manusiawi — sehalus apa pun — bisa menjadi musuh salib. Petrus mengaku Yesus sebagai Mesias dengan benar, lalu segera menasihati-Nya untuk menghindari penderitaan. Niat baik tanpa pemahaman salib adalah suara yang sama yang berkata di taman, 'engkau tidak akan mati.'",
+      "Karena pikiran manusiawi, sehalus apa pun, bisa menjadi musuh salib. Petrus mengaku Yesus sebagai Mesias dengan benar, lalu segera menasihati-Nya untuk menghindari penderitaan. Niat baik tanpa pemahaman salib adalah suara yang sama yang berkata di taman, 'engkau tidak akan mati.'",
     reference: "Matius 16:16–23",
   },
   {
@@ -345,7 +345,7 @@ export const BIBLICAL_FACTS: BiblicalFact[] = [
     question:
       "Apa arti 'Allahku, mengapa Engkau meninggalkan Aku' jika Yesus tahu Mazmur 22 berakhir kemenangan?",
     answer:
-      "Yesus tidak putus asa — Ia mengaktifkan seluruh Mazmur dengan mengutip baris pertama. Tetapi pada saat itu Ia juga sungguh-sungguh menanggung pemisahan yang seharusnya menjadi bagian kita. Ratapan dan kemenangan, dua-duanya, adalah Injil.",
+      "Yesus tidak putus asa, Ia mengaktifkan seluruh Mazmur dengan mengutip baris pertama. Tetapi pada saat itu Ia juga sungguh-sungguh menanggung pemisahan yang seharusnya menjadi bagian kita. Ratapan dan kemenangan, dua-duanya, adalah Injil.",
     reference: "Matius 27:46; Mazmur 22",
   },
 ];
