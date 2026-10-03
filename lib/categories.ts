@@ -6,11 +6,11 @@ export const CATEGORIES: MainCategory[] = [
     name: "Ruang Alkitab",
     tagline: "Teks. Konteks. Bahasa asli.",
     blurb:
-      "Membaca Kitab Suci dari latar sejarah, budaya, dan bahasa aslinya — tanpa kehilangan kehangatan iman.",
+      "Membaca Kitab Suci dari latar sejarah, budaya, dan bahasa aslinya, tanpa kehilangan kehangatan iman.",
     nameEn: "Scripture Room",
     taglineEn: "Text. Context. Original tongue.",
     blurbEn:
-      "Reading Scripture through its historical, cultural, and original-language context — without losing the warmth of faith.",
+      "Reading Scripture through its historical, cultural, and original-language context, without losing the warmth of faith.",
     subcategories: [
       { slug: "tokoh-alkitab", name: "Tokoh Alkitab", nameEn: "Biblical Characters" },
       { slug: "biblical-facts", name: "Biblical Facts", nameEn: "Biblical Facts" },
@@ -25,11 +25,11 @@ export const CATEGORIES: MainCategory[] = [
     name: "Ruang Teologi",
     tagline: "Memahami iman dengan jernih dan rendah hati.",
     blurb:
-      "Menggali doktrin, apologetika, dan pertanyaan iman — supaya kita makin mengenal Allah dan firman-Nya.",
+      "Menggali doktrin, apologetika, dan pertanyaan iman, supaya kita makin mengenal Allah dan firman-Nya.",
     nameEn: "Theology Room",
     taglineEn: "Understanding faith with clarity and humility.",
     blurbEn:
-      "Exploring doctrine, apologetics, and questions of faith — so we come to know God and his word more deeply.",
+      "Exploring doctrine, apologetics, and questions of faith, so we come to know God and his word more deeply.",
     subcategories: [
       { slug: "teologi", name: "Teologi", nameEn: "Theology" },
       { slug: "bedah-doktrin", name: "Bedah Doktrin", nameEn: "Doctrine Study" },
@@ -42,11 +42,11 @@ export const CATEGORIES: MainCategory[] = [
     name: "Ruang Lensa",
     tagline: "Injil membaca dunia.",
     blurb:
-      "Melihat budaya, tokoh, dan zaman lewat lensa Injil — sebuah cara berbeda untuk memandang yang biasa.",
+      "Melihat budaya, tokoh, dan zaman lewat lensa Injil, sebuah cara berbeda untuk memandang yang biasa.",
     nameEn: "Gospel Lens",
     taglineEn: "The Gospel reads the world.",
     blurbEn:
-      "Seeing culture, people, and time through the lens of the Gospel — a different way of looking at the familiar.",
+      "Seeing culture, people, and time through the lens of the Gospel, a different way of looking at the familiar.",
     subcategories: [
       { slug: "lensa-injil-budaya", name: "Lensa Injil & Budaya", nameEn: "Gospel & Culture Lens" },
       { slug: "biografi-singkat", name: "Biografi Singkat", nameEn: "Short Biographies" },
@@ -57,11 +57,11 @@ export const CATEGORIES: MainCategory[] = [
     name: "Sinner's Note",
     tagline: "Catatan kecil seorang pendosa.",
     blurb:
-      "Refleksi yang jujur dan tidak rapi — fragmen-fragmen iman, kegagalan, dan anugerah yang menemukan saya berulang kali.",
+      "Refleksi yang jujur dan tidak rapi, fragmen-fragmen iman, kegagalan, dan anugerah yang menemukan saya berulang kali.",
     nameEn: "Sinner's Note",
     taglineEn: "Small notes of a sinner.",
     blurbEn:
-      "Honest and unpolished reflections — fragments of faith, failure, and grace found again and again.",
+      "Honest and unpolished reflections, fragments of faith, failure, and grace found again and again.",
     subcategories: [
       { slug: "refleksi", name: "Refleksi", nameEn: "Reflection" },
       { slug: "catatan", name: "Catatan", nameEn: "Notes" },
