@@ -163,7 +163,7 @@ export async function polishContentAction(
 ): Promise<{ html?: string; error?: string }> {
   try {
     const plain = stripHtml(contentHtml);
-    if (!plain) return { error: "Konten kosong — tidak ada yang dirapikan." };
+    if (!plain) return { error: "Konten kosong, tidak ada yang dirapikan." };
 
     const client = getClient();
     const prompt = `Kamu adalah korektor (proofreader) untuk blog Kristen bernama SinnerSaved.

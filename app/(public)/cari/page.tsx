@@ -8,9 +8,9 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Cari Tulisan",
   description:
-    "Cari di seluruh arsip SinnerSaved — berdasarkan judul, kutipan, tag, atau kategori.",
+    "Cari di seluruh arsip SinnerSaved, berdasarkan judul, kutipan, tag, atau kategori.",
   openGraph: {
-    title: "Cari Tulisan — SinnerSaved",
+    title: "Cari Tulisan · SinnerSaved",
     description: "Cari di seluruh arsip SinnerSaved.",
     type: "website",
   },

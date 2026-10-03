@@ -27,7 +27,7 @@ export function generateMetadata({
   const sub = cat.subcategories.find((s) => s.slug === params.sub);
   if (!sub) return {};
   return {
-    title: `${sub.name} — ${cat.name}`,
+    title: `${sub.name} · ${cat.name}`,
     description: cat.blurb,
   };
 }

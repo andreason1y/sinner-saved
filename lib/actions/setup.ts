@@ -270,7 +270,7 @@ export async function seedSampleDataAction(formData: FormData): Promise<void> {
     try {
       html = injectIds(generateHTML(meta.content_json as never, exts));
     } catch (e) {
-      errors.push(`${meta.slug}: render gagal — ${(e as Error).message}`);
+      errors.push(`${meta.slug}: render gagal, ${(e as Error).message}`);
       continue;
     }
     const minutes = readingMins(html);

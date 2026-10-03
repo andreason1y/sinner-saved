@@ -6,7 +6,7 @@
 export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://sinner-saved.xyz",
   name: "SinnerSaved",
-  title: "SinnerSaved — Catatan Iman",
+  title: "SinnerSaved · Catatan Iman",
   description:
     "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
   locale: "id_ID",

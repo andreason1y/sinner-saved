@@ -123,7 +123,7 @@ export default async function AdminSetupPage({ searchParams }: Props) {
             detail={
               status.adminUserExists
                 ? "Sudah ada akun admin"
-                : "Belum ada — akan dibuat di langkah 2"
+                : "Belum ada, akan dibuat di langkah 2"
             }
           />
         </div>

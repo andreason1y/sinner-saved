@@ -3,17 +3,17 @@ import type { MainCategory } from "./types";
 export const CATEGORIES: MainCategory[] = [
   {
     slug: "ruang-alkitab",
-    name: "Ruang Alkitab",
-    tagline: "Teks. Konteks. Bahasa asli.",
+    name: "Bacaan & Teks",
+    tagline: "Baca pelan-pelan, satu ayat demi satu ayat.",
     blurb:
-      "Membaca Kitab Suci dari latar sejarah, budaya, dan bahasa aslinya, tanpa kehilangan kehangatan iman.",
-    nameEn: "Scripture Room",
-    taglineEn: "Text. Context. Original tongue.",
+      "Bacaan Alkitab dari teks, konteks, sampai bahasa aslinya. Pelan-pelan saja, yang penting masuk.",
+    nameEn: "Reading & Text",
+    taglineEn: "Read slowly, one verse at a time.",
     blurbEn:
-      "Reading Scripture through its historical, cultural, and original-language context, without losing the warmth of faith.",
+      "Reading Scripture from the text, the context, and its original language. Slowly, but it sinks in.",
     subcategories: [
       { slug: "tokoh-alkitab", name: "Tokoh Alkitab", nameEn: "Biblical Characters" },
-      { slug: "biblical-facts", name: "Biblical Facts", nameEn: "Biblical Facts" },
+      { slug: "biblical-facts", name: "Fakta Alkitab", nameEn: "Biblical Facts" },
       { slug: "sejarah-budaya", name: "Sejarah & Budaya", nameEn: "History & Culture" },
       { slug: "makna-kata-asli", name: "Makna Kata Asli", nameEn: "Original Word Meaning" },
       { slug: "di-balik-ayat", name: "Di Balik Ayat", nameEn: "Behind the Verse" },
@@ -22,31 +22,31 @@ export const CATEGORIES: MainCategory[] = [
   },
   {
     slug: "ruang-teologi",
-    name: "Ruang Teologi",
-    tagline: "Memahami iman dengan jernih dan rendah hati.",
+    name: "Kebenaran Firman",
+    tagline: "Mengerti yang kita percaya.",
     blurb:
-      "Menggali doktrin, apologetika, dan pertanyaan iman, supaya kita makin mengenal Allah dan firman-Nya.",
-    nameEn: "Theology Room",
-    taglineEn: "Understanding faith with clarity and humility.",
+      "Doktrin, apologetika, dan pertanyaan iman yang sering muncul, ditelusuri pelan-pelan supaya makin kenal Allah dan firman-Nya.",
+    nameEn: "The Word's Truth",
+    taglineEn: "Knowing what we believe.",
     blurbEn:
-      "Exploring doctrine, apologetics, and questions of faith, so we come to know God and his word more deeply.",
+      "Doctrine, apologetics, and the questions of faith that keep coming up, worked through slowly so we know God and his word better.",
     subcategories: [
       { slug: "teologi", name: "Teologi", nameEn: "Theology" },
       { slug: "bedah-doktrin", name: "Bedah Doktrin", nameEn: "Doctrine Study" },
-      { slug: "apologetics", name: "Apologetics", nameEn: "Apologetics" },
+      { slug: "apologetics", name: "Apologetika", nameEn: "Apologetics" },
       { slug: "kritik", name: "Telaah", nameEn: "Review" },
     ],
   },
   {
     slug: "ruang-lensa",
-    name: "Ruang Lensa",
-    tagline: "Injil membaca dunia.",
+    name: "Injil & Budaya",
+    tagline: "Injil yang baca dunia.",
     blurb:
-      "Melihat budaya, tokoh, dan zaman lewat lensa Injil, sebuah cara berbeda untuk memandang yang biasa.",
-    nameEn: "Gospel Lens",
-    taglineEn: "The Gospel reads the world.",
+      "Melihat budaya, tokoh, dan zaman lewat Injil. Cara lain buat memandang hal-hal yang biasa kita lewatin.",
+    nameEn: "Gospel & Culture",
+    taglineEn: "The Gospel reading the world.",
     blurbEn:
-      "Seeing culture, people, and time through the lens of the Gospel, a different way of looking at the familiar.",
+      "Looking at culture, people, and the times through the Gospel. A different way of seeing what we usually walk past.",
     subcategories: [
       { slug: "lensa-injil-budaya", name: "Lensa Injil & Budaya", nameEn: "Gospel & Culture Lens" },
       { slug: "biografi-singkat", name: "Biografi Singkat", nameEn: "Short Biographies" },
@@ -54,14 +54,14 @@ export const CATEGORIES: MainCategory[] = [
   },
   {
     slug: "sinners-note",
-    name: "Sinner's Note",
+    name: "Catatan Iman",
     tagline: "Catatan kecil seorang pendosa.",
     blurb:
-      "Refleksi yang jujur dan tidak rapi, fragmen-fragmen iman, kegagalan, dan anugerah yang menemukan saya berulang kali.",
-    nameEn: "Sinner's Note",
+      "Refleksi jujur dan nggak rapi: iman, kegagalan, dan anugerah yang menemukan saya berulang kali.",
+    nameEn: "Notes of Faith",
     taglineEn: "Small notes of a sinner.",
     blurbEn:
-      "Honest and unpolished reflections, fragments of faith, failure, and grace found again and again.",
+      "Honest, unpolished reflections: faith, failure, and the grace that keeps finding me.",
     subcategories: [
       { slug: "refleksi", name: "Refleksi", nameEn: "Reflection" },
       { slug: "catatan", name: "Catatan", nameEn: "Notes" },

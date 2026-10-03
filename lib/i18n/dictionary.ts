@@ -154,7 +154,7 @@ const id: Dict = {
   hero: {
     tagline: "Catatan iman seorang pendosa",
     intro:
-      "SinnerSaved adalah tempat saya menulis pelan-pelan — tentang teks Alkitab, doktrin, budaya, dan catatan-catatan jujur seorang pendosa yang diselamatkan oleh kasih karunia.",
+      "SinnerSaved adalah tempat saya menulis pelan-pelan, tentang teks Alkitab, doktrin, budaya, dan catatan-catatan jujur seorang pendosa yang diselamatkan oleh kasih karunia.",
     cta: "Mulai membaca",
     explore: "Telusuri kategori →",
   },
@@ -167,42 +167,42 @@ const id: Dict = {
     readingTime: (m) => `${m} menit baca`,
   },
   ruangAlkitab: {
-    eyebrow: "01 / Ruang Alkitab",
-    title: "Teks. Konteks. Bahasa asli.",
+    eyebrow: "01 / Bacaan & Teks",
+    title: "Ayat demi ayat, pelan-pelan.",
     blurb:
-      "Membaca Kitab Suci dari latar sejarah, budaya, dan bahasa aslinya — tanpa kehilangan kehangatan iman.",
-    factsLabel: "Biblical Facts",
+      "Membaca Kitab Suci dari latar sejarah, budaya, dan bahasa aslinya, tanpa kehilangan kehangatan iman.",
+    factsLabel: "Fakta Alkitab",
     factsHint: "Hover atau klik untuk membuka",
     didYouKnow: "Tahukah kamu?",
     flipBack: "Balik kartu",
-    latest: "Tulisan terbaru di Ruang Alkitab",
+    latest: "Tulisan terbaru di Bacaan & Teks",
     seeMore: "Selengkapnya →",
   },
   ruangTeologi: {
-    eyebrow: "02 / Ruang Teologi",
-    title: "Memahami iman dengan jernih dan rendah hati.",
+    eyebrow: "02 / Kebenaran Firman",
+    title: "Mengerti yang kita percaya.",
     blurb:
-      "Menggali doktrin, apologetika, dan pertanyaan iman — supaya kita makin mengenal Allah dan firman-Nya.",
+      "Menggali doktrin, apologetika, dan pertanyaan iman, supaya kita makin mengenal Allah dan firman-Nya.",
   },
   popular: {
     eyebrow: "Paling Banyak Dibaca",
     title: "Yang sedang ramai dibaca.",
     blurb:
-      "Tulisan-tulisan yang paling sering dibuka pembaca belakangan ini — tempat yang baik untuk mulai.",
+      "Tulisan-tulisan yang paling sering dibuka pembaca belakangan ini, tempat yang baik untuk mulai.",
     rankLabel: "Peringkat",
   },
   ruangLensa: {
-    eyebrow: "03 / Ruang Lensa",
+    eyebrow: "03 / Injil & Budaya",
     title: "Injil membaca dunia.",
     blurb:
-      "Melihat budaya, tokoh, dan zaman lewat lensa Injil — sebuah cara berbeda untuk memandang yang biasa.",
+      "Melihat budaya, tokoh, dan zaman lewat lensa Injil, sebuah cara berbeda untuk memandang yang biasa.",
   },
   sinnersNote: {
-    eyebrow: "04 / Sinner's Note",
+    eyebrow: "04 / Catatan Iman",
     title: "Catatan kecil seorang pendosa.",
     blurb:
-      "Refleksi yang jujur dan tidak rapi — fragmen-fragmen iman, kegagalan, dan anugerah yang menemukan saya berulang kali.",
-    sideText: "By a sinner — saved by grace",
+      "Refleksi yang jujur dan tidak rapi, fragmen-fragmen iman, kegagalan, dan anugerah yang menemukan saya berulang kali.",
+    sideText: "By a sinner, saved by grace",
     readNote: "Baca catatan →",
   },
   archive: {
@@ -210,16 +210,16 @@ const id: Dict = {
     all: "Semua",
     emptyTitle: "Belum ada tulisan di sub-kategori ini.",
     emptyBody:
-      "Saya menulis pelan-pelan — coba lagi dalam beberapa hari, atau jelajah sub-kategori lain di atas.",
+      "Saya menulis pelan-pelan, coba lagi dalam beberapa hari, atau jelajah sub-kategori lain di atas.",
     arsipTitle: "Arsip Tulisan",
     arsipIntro:
-      "Semua tulisan yang pernah saya terbitkan — dari tafsir teks Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
+      "Semua tulisan yang pernah saya terbitkan, dari tafsir teks Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
     arsipLabel: (count) => `${count} tulisan`,
   },
   search: {
     title: "Cari Tulisan",
     intro:
-      "Telusuri seluruh arsip — berdasarkan judul, kutipan, tag, atau kategori.",
+      "Telusuri seluruh arsip, berdasarkan judul, kutipan, tag, atau kategori.",
     placeholder: "Cari judul, topik, atau tag…",
     label: "Cari",
     resultsLabel: (count) =>
@@ -251,25 +251,25 @@ const id: Dict = {
     eyebrow: "Kontak",
     title: "Saya senang mendengar dari Anda.",
     blurb:
-      "Kritik, saran, dan pertanyaan teologis sangat saya hargai. Tulisan ini ditulis pelan-pelan, dan dialog membuatnya lebih hidup. Kirim email — saya membaca semua, walau membalas mungkin butuh waktu.",
+      "Kritik, saran, dan pertanyaan teologis sangat saya hargai. Tulisan ini ditulis pelan-pelan, dan dialog membuatnya lebih hidup. Kirim email, saya membaca semua, walau membalas mungkin butuh waktu.",
     primaryEmail: "andreassina6a@gmail.com",
     cta: "Kirim email",
     questions: "Pertanyaan",
     feedback: "Kritik",
     suggestions: "Saran",
     questionsBody:
-      "Pertanyaan tentang teks Alkitab, doktrin, atau topik tulisan tertentu — sebanyak yang Anda mau.",
+      "Pertanyaan tentang teks Alkitab, doktrin, atau topik tulisan tertentu, sebanyak yang Anda mau.",
     feedbackBody:
       "Kritik yang membangun adalah hadiah. Kalau Anda menemukan kekeliruan eksegetis, historis, atau argumentatif, tolong tunjukkan.",
     suggestionsBody:
       "Topik yang ingin saya tulis berikutnya, perspektif yang belum saya jangkau, atau bacaan yang sebaiknya saya pelajari.",
     fullPageTitle: "Hubungi saya.",
     fullPageIntro:
-      "Halaman ini adalah pintu yang sengaja saya buka. Tulisan SinnerSaved bukan monolog — saya berusaha menulis dengan rendah hati dan terbuka untuk diperbaiki. Kalau ada sesuatu yang Anda ingin sampaikan — kritik, saran, pertanyaan, atau sekadar percakapan — silakan kirim ke email di bawah.",
+      "Halaman ini adalah pintu yang sengaja saya buka. Tulisan SinnerSaved bukan monolog, saya berusaha menulis dengan rendah hati dan terbuka untuk diperbaiki. Kalau ada sesuatu yang ingin Anda sampaikan, entah kritik, saran, pertanyaan, atau sekadar percakapan, silakan kirim ke email di bawah.",
     sendEmail: "Kirim email",
     or: "atau",
     closing:
-      "Saya membaca setiap pesan. Untuk pertanyaan teologis, mohon sertakan konteks — saya berusaha menjawab dengan hati-hati, bukan cepat.",
+      "Saya membaca setiap pesan. Untuk pertanyaan teologis, mohon sertakan konteksnya, saya berusaha menjawab dengan hati-hati, bukan cepat.",
   },
   footer: {
     tagline:
@@ -308,7 +308,7 @@ const en: Dict = {
   hero: {
     tagline: "Notes of a sinner saved by grace",
     intro:
-      "SinnerSaved is a place where I write slowly — about Scripture, doctrine, culture, and the honest notes of a sinner saved by grace.",
+      "SinnerSaved is a place where I write slowly, about Scripture, doctrine, culture, and the honest notes of a sinner saved by grace.",
     cta: "Start reading",
     explore: "Browse categories →",
   },
@@ -321,42 +321,42 @@ const en: Dict = {
     readingTime: (m) => `${m} min read`,
   },
   ruangAlkitab: {
-    eyebrow: "01 / Scripture Room",
-    title: "Text. Context. Original tongue.",
+    eyebrow: "01 / Reading & Text",
+    title: "One verse at a time, slowly.",
     blurb:
-      "Reading Scripture from its historical, cultural, and original-language setting — without losing the warmth of faith.",
+      "Reading Scripture from its historical, cultural, and original-language setting, without losing the warmth of faith.",
     factsLabel: "Biblical Facts",
     factsHint: "Hover or tap to flip",
     didYouKnow: "Did you know?",
     flipBack: "Flip card",
-    latest: "Latest in Scripture Room",
+    latest: "Latest in Reading & Text",
     seeMore: "See all →",
   },
   ruangTeologi: {
-    eyebrow: "02 / Theology Room",
-    title: "Understanding faith with clarity and humility.",
+    eyebrow: "02 / The Word's Truth",
+    title: "Knowing what we believe.",
     blurb:
-      "Exploring doctrine, apologetics, and questions of faith — so we come to know God and his word more deeply.",
+      "Exploring doctrine, apologetics, and questions of faith, so we come to know God and his word more deeply.",
   },
   popular: {
     eyebrow: "Most Read",
     title: "What readers are reading.",
     blurb:
-      "The pieces readers have been opening most lately — a good place to begin.",
+      "The pieces readers have been opening most lately, a good place to begin.",
     rankLabel: "Rank",
   },
   ruangLensa: {
-    eyebrow: "03 / Gospel Lens",
+    eyebrow: "03 / Gospel & Culture",
     title: "The Gospel reads the world.",
     blurb:
-      "Looking at culture, figures, and our age through the Gospel's lens — a different way of seeing the ordinary.",
+      "Looking at culture, figures, and our age through the Gospel's lens, a different way of seeing the ordinary.",
   },
   sinnersNote: {
-    eyebrow: "04 / Sinner's Note",
+    eyebrow: "04 / Notes of Faith",
     title: "Small notes from a sinner.",
     blurb:
-      "Honest, unpolished reflections — fragments of faith, failure, and grace that find me again and again.",
-    sideText: "By a sinner — saved by grace",
+      "Honest, unpolished reflections: fragments of faith, failure, and grace that find me again and again.",
+    sideText: "By a sinner, saved by grace",
     readNote: "Read note →",
   },
   archive: {
@@ -365,16 +365,16 @@ const en: Dict = {
     all: "All",
     emptyTitle: "No pieces in this sub-category yet.",
     emptyBody:
-      "I write slowly — try again in a few days, or explore another sub-category above.",
+      "I write slowly, try again in a few days, or explore another sub-category above.",
     arsipTitle: "Full Archive",
     arsipIntro:
-      "Every piece I've published — Scripture studies, doctrine, cultural reflections, and personal notes.",
+      "Every piece I've published: Scripture studies, doctrine, cultural reflections, and personal notes.",
     arsipLabel: (count) => `${count} ${count === 1 ? "piece" : "pieces"}`,
   },
   search: {
     title: "Search",
     intro:
-      "Search the entire archive — by title, excerpt, tag, or category.",
+      "Search the entire archive, by title, excerpt, tag, or category.",
     placeholder: "Search titles, topics, or tags…",
     label: "Search",
     resultsLabel: (count) =>
@@ -406,25 +406,25 @@ const en: Dict = {
     eyebrow: "Contact",
     title: "I'd love to hear from you.",
     blurb:
-      "Criticism, suggestions, and theological questions are deeply welcome. These pieces are written slowly, and dialogue makes them more alive. Send an email — I read every one, though replies may take time.",
+      "Criticism, suggestions, and theological questions are deeply welcome. These pieces are written slowly, and dialogue makes them more alive. Send an email, I read every one, though replies may take time.",
     primaryEmail: "andreassina6a@gmail.com",
     cta: "Send email",
     questions: "Questions",
     feedback: "Criticism",
     suggestions: "Suggestions",
     questionsBody:
-      "Questions about a biblical text, doctrine, or a particular piece — as many as you'd like.",
+      "Questions about a biblical text, doctrine, or a particular piece, as many as you'd like.",
     feedbackBody:
       "Constructive criticism is a gift. If you spot an exegetical, historical, or logical mistake, please point it out.",
     suggestionsBody:
       "Topics you'd like me to write about next, perspectives I'm missing, or books I should read.",
     fullPageTitle: "Get in touch.",
     fullPageIntro:
-      "This page is a deliberately open door. SinnerSaved is not meant to be a monologue — I try to write humbly and stay open to correction. If there's anything you'd like to share — criticism, a suggestion, a question, or simply a conversation — please use the email below.",
+      "This page is a deliberately open door. SinnerSaved is not meant to be a monologue, I try to write humbly and stay open to correction. If there's anything you'd like to share, criticism, a suggestion, a question, or simply a conversation, please use the email below.",
     sendEmail: "Send email",
     or: "or",
     closing:
-      "I read every message. For theological questions, please include context — I try to answer carefully, not quickly.",
+      "I read every message. For theological questions, please include the context, I try to answer carefully, not quickly.",
   },
   footer: {
     tagline:

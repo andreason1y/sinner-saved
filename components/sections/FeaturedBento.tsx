@@ -11,7 +11,7 @@ import { useLocale } from "@/components/i18n/LocaleProvider";
 
 function categoryName(slug: string, locale: Locale) {
   const cat = CATEGORIES.find((c) => c.slug === slug);
-  if (!cat) return "—";
+  if (!cat) return "";
   return locale === "en" ? (cat.nameEn ?? cat.name) : cat.name;
 }
 

@@ -7,7 +7,7 @@ import { SITE } from "@/lib/site";
 // route automatically, so every shared link gets a branded 1200x630 image
 // even when a post has no cover photo.
 export const runtime = "nodejs";
-export const alt = `${SITE.name} — Catatan Iman`;
+export const alt = `${SITE.name} · Catatan Iman`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

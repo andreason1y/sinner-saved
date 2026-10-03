@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Arsip Tulisan",
   description:
-    "Semua tulisan yang pernah diterbitkan di SinnerSaved — dari tafsir Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
+    "Semua tulisan yang pernah diterbitkan di SinnerSaved, dari tafsir Alkitab, doktrin, refleksi budaya, hingga catatan pribadi.",
   openGraph: {
-    title: "Arsip Tulisan — SinnerSaved",
+    title: "Arsip Tulisan · SinnerSaved",
     description:
       "Semua tulisan yang pernah diterbitkan di SinnerSaved.",
     type: "website",
