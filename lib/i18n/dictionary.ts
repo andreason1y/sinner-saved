@@ -152,9 +152,9 @@ const id: Dict = {
     contactSubs: "Kritik · Saran · Pertanyaan",
   },
   hero: {
-    tagline: "Catatan iman seorang pendosa",
+    tagline: "Kajian Alkitab & Refleksi Iman",
     intro:
-      "SinnerSaved adalah tempat saya menulis pelan-pelan, tentang teks Alkitab, doktrin, budaya, dan catatan-catatan jujur seorang pendosa yang diselamatkan oleh kasih karunia.",
+      "Kumpulan tulisan dan kajian seputar pembacaan Alkitab, telaah teologi, serta kehidupan orang percaya di tengah zaman ini.",
     cta: "Mulai membaca",
     explore: "Telusuri kategori →",
   },
@@ -273,7 +273,7 @@ const id: Dict = {
   },
   footer: {
     tagline:
-      "Membaca Alkitab dengan jujur, berpikir dengan tertib, dan hidup dalam kasih karunia.",
+      "Menggali Kitab Suci, memahami doktrin, dan hidup dalam kasih karunia.",
     builtWith: "Built with Next.js · Tailwind · Framer Motion · Supabase",
     glory: "Bagi kemuliaan Allah.",
     sectionContact: "Kontak",
@@ -306,9 +306,9 @@ const en: Dict = {
     contactSubs: "Critique · Suggestions · Questions",
   },
   hero: {
-    tagline: "Notes of a sinner saved by grace",
+    tagline: "Biblical Studies & Faith Reflections",
     intro:
-      "SinnerSaved is a place where I write slowly, about Scripture, doctrine, culture, and the honest notes of a sinner saved by grace.",
+      "A collection of writings and studies examining Scripture, theological inquiry, and Christian living in our contemporary age.",
     cta: "Start reading",
     explore: "Browse categories →",
   },
@@ -428,7 +428,7 @@ const en: Dict = {
   },
   footer: {
     tagline:
-      "Reading Scripture honestly, thinking carefully, living in grace.",
+      "Examining Scripture, understanding doctrine, and living in grace.",
     builtWith: "Built with Next.js · Tailwind · Framer Motion · Supabase",
     glory: "For the glory of God.",
     sectionContact: "Contact",

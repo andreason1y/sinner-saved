@@ -13,8 +13,8 @@ export function Hero() {
 
   // A complete sentence with one elegant italic phrase — set large in a
   // high-contrast Garamond, the way a printed frontispiece would carry it.
-  const headPre = locale === "en" ? "Thinking slowly, reading Scripture with " : "Berpikir perlahan, membaca Alkitab dengan ";
-  const headEm = locale === "en" ? "honesty." : "kejujuran.";
+  const headPre = locale === "en" ? "Biblical studies, doctrine, and " : "Kajian Alkitab, doktrin, dan ";
+  const headEm = locale === "en" ? "reflections of faith." : "refleksi iman.";
 
   const verse =
     locale === "en"
