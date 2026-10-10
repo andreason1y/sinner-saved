@@ -60,9 +60,10 @@ const verseCache = new Map<string, string | null>();
  * fall back to the external reader link.
  */
 async function loadVerse(canonical: string, locale: string): Promise<string | null> {
-  if (locale === "id") {
-    const local = getVerse(canonical);
-    if (local) return local.text;
+  const local = getVerse(canonical);
+  if (local) {
+    if (locale === "en" && local.textEn) return local.textEn;
+    return local.text;
   }
 
   const key = `${locale}:${normalizeRef(canonical)}`;
@@ -89,9 +90,10 @@ async function loadVerse(canonical: string, locale: string): Promise<string | nu
 /** Synchronous peek: returns string (have text), null (known-missing), or
  *  undefined (not yet resolved → needs async load). */
 function peekVerse(canonical: string, locale: string): string | null | undefined {
-  if (locale === "id") {
-    const local = getVerse(canonical);
-    if (local) return local.text;
+  const local = getVerse(canonical);
+  if (local) {
+    if (locale === "en" && local.textEn) return local.textEn;
+    return local.text;
   }
   const key = `${locale}:${normalizeRef(canonical)}`;
   return verseCache.has(key) ? verseCache.get(key) ?? null : undefined;
@@ -217,10 +219,9 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
     if (el instanceof HTMLElement) showFor(el);
   }
 
-  // On touch devices, intercept the tap: open a bottom sheet instead of
-  // navigating away. The sheet's button performs the actual navigation.
+  // Intercept clicks to open the modal bottom sheet with full verse text,
+  // preventing accidental full-page navigation to SABDA!
   function onClick(e: React.MouseEvent) {
-    if (!coarseRef.current) return;
     const el = (e.target as HTMLElement).closest(".scripture-ref");
     if (!(el instanceof HTMLElement)) return;
     e.preventDefault();
@@ -321,9 +322,11 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
                 {t.post.scriptureLoading}
               </p>
             ) : pop.text ? (
-              <p className="serif-display mt-2 max-h-60 overflow-hidden text-sm leading-snug text-ink-800 dark:text-ink-100">
-                {pop.text}
-              </p>
+              <div className="mt-2 max-h-72 overflow-y-auto pr-1">
+                <p className="serif-display text-xs leading-relaxed text-ink-800 dark:text-ink-100 whitespace-pre-line">
+                  {pop.text}
+                </p>
+              </div>
             ) : (
               <p className="mt-1 text-[11px] text-sacred-700 dark:text-sacred-300">
                 {t.post.scriptureOpen}
@@ -376,9 +379,11 @@ export function ScriptureLinker({ children }: { children: React.ReactNode }) {
                   {t.post.scriptureLoading}
                 </p>
               ) : sheet.text ? (
-                <p className="serif-display mt-3 text-lg leading-relaxed text-ink-900 dark:text-ink-50">
-                  {sheet.text}
-                </p>
+                <div className="mt-3 max-h-[60vh] overflow-y-auto pr-1">
+                  <p className="serif-display text-base leading-relaxed text-ink-900 dark:text-ink-50 whitespace-pre-line">
+                    {sheet.text}
+                  </p>
+                </div>
               ) : (
                 <p className="mt-3 text-sm text-ink-600 dark:text-ink-300">
                   Buka referensi ini di Alkitab SABDA untuk membaca teks lengkapnya.

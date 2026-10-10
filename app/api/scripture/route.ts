@@ -195,11 +195,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "missing ref" }, { status: 400 });
   }
 
-  // Indonesian: curated local first (instant + hand-verified).
-  if (lang === "id") {
-    const local = getVerse(ref);
-    if (local) {
-      return withCache({ ref: local.ref, text: local.text, source: "local" });
+  // Curated local first (instant + hand-verified).
+  const local = getVerse(ref);
+  if (local) {
+    if (lang === "en" && local.textEn) {
+      return withCache({ ref: local.ref, text: local.textEn, source: "local", lang: "en" });
+    }
+    if (lang === "id") {
+      return withCache({ ref: local.ref, text: local.text, source: "local", lang: "id" });
     }
   }
 
