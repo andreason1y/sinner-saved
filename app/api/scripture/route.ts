@@ -90,48 +90,60 @@ async function fetchEnglish(p: ParsedRef): Promise<string | null> {
 }
 
 // ── Indonesian: helloao (translation auto-discovered) ─────────────────────
-// Warm-lambda cache for the resolved Indonesian translation id.
+// Warm-lambda cache for the ordered list of Indonesian translation ids.
 // undefined = not yet resolved, null = none available.
-let cachedIndonesian: string | null | undefined;
+let cachedIndonesian: string[] | null | undefined;
 
-async function resolveIndonesian(): Promise<string | null> {
-  if (process.env.BIBLE_TRANSLATION) return process.env.BIBLE_TRANSLATION;
-  if (cachedIndonesian !== undefined) return cachedIndonesian;
+async function resolveIndonesian(): Promise<string[]> {
+  if (process.env.BIBLE_TRANSLATION) return [process.env.BIBLE_TRANSLATION];
+  if (cachedIndonesian !== undefined) return cachedIndonesian ?? [];
   try {
     const res = await fetch(`${HELLOAO_BASE}/available_translations.json`, {
       next: { revalidate },
     });
-    if (!res.ok) return (cachedIndonesian = null);
+    if (!res.ok) {
+      cachedIndonesian = null;
+      return [];
+    }
     const data: unknown = await res.json();
     const list: any[] = Array.isArray(data)
       ? data
       : (data as any)?.translations ?? [];
 
+    // Strict language-code match. The looser "languageEnglishName contains
+    // Indonesia" test also admitted regional languages (Bhasa Buli, id
+    // bzq_seed), which then won the first slot and their missing books made
+    // every reference come back empty.
     const isIndonesian = (t: any) => {
       const lng = String(t?.language ?? t?.languageCode ?? "").toLowerCase();
-      const en = String(
-        t?.languageEnglishName ?? t?.languageName ?? ""
-      ).toLowerCase();
       return (
         lng === "ind" ||
         lng === "id" ||
         lng.startsWith("id-") ||
-        lng.startsWith("ind") ||
-        en.includes("indonesia")
+        lng.startsWith("ind")
       );
     };
 
-    const candidates = list.filter(isIndonesian);
-    const tb = candidates.find((t) =>
-      /terjemahan baru|(^|[^a-z])tb([^a-z]|$)/i.test(
-        `${t?.name ?? ""} ${t?.shortName ?? ""} ${t?.id ?? ""}`
-      )
-    );
-    const chosen = tb ?? candidates[0];
-    cachedIndonesian = chosen ? String(chosen.id ?? chosen.shortName) : null;
-    return cachedIndonesian;
+    // Full-Bible translations first. Some Indonesian ids on helloao are New
+    // Testament only (ind_ags), so a single hard pick 404s every OT reference.
+    const rank = (t: any) => {
+      const tag = `${t?.name ?? ""} ${t?.shortName ?? ""} ${t?.id ?? ""}`;
+      if (/terjemahan baru|(^|[^a-z])tb([^a-z]|$)/i.test(tag)) return 0;
+      if (/^(ind_obo|ind_ayt|ind_tsi)$/.test(String(t?.id ?? ""))) return 1;
+      return 2;
+    };
+
+    const ids = list
+      .filter(isIndonesian)
+      .sort((a, b) => rank(a) - rank(b))
+      .map((t) => String(t?.id ?? t?.shortName ?? ""))
+      .filter(Boolean);
+
+    cachedIndonesian = ids.length ? ids.slice(0, 4) : null;
+    return cachedIndonesian ?? [];
   } catch {
-    return (cachedIndonesian = null);
+    cachedIndonesian = null;
+    return [];
   }
 }
 
@@ -149,32 +161,35 @@ function extractText(content: unknown): string {
 
 async function fetchIndonesian(p: ParsedRef): Promise<string | null> {
   if (p.verseStart == null) return null;
-  const translation = await resolveIndonesian();
-  if (!translation) return null;
-  try {
-    const res = await fetch(
-      `${HELLOAO_BASE}/${translation}/${p.usfm}/${p.chapter}.json`,
-      { next: { revalidate } }
-    );
-    if (!res.ok) return null;
-    const data: any = await res.json();
-    const content = data?.chapter?.content;
-    if (!Array.isArray(content)) return null;
+  const translations = await resolveIndonesian();
+  const end = p.verseEnd ?? p.verseStart;
 
-    const end = p.verseEnd ?? p.verseStart;
-    const parts: string[] = [];
-    for (const item of content) {
-      if (item?.type !== "verse") continue;
-      const num = Number(item.number);
-      if (!Number.isFinite(num) || num < p.verseStart || num > end) continue;
-      const text = extractText(item.content).trim();
-      if (text) parts.push(text);
+  for (const translation of translations) {
+    try {
+      const res = await fetch(
+        `${HELLOAO_BASE}/${translation}/${p.usfm}/${p.chapter}.json`,
+        { next: { revalidate } }
+      );
+      if (!res.ok) continue;
+      const data: any = await res.json();
+      const content = data?.chapter?.content;
+      if (!Array.isArray(content)) continue;
+
+      const parts: string[] = [];
+      for (const item of content) {
+        if (item?.type !== "verse") continue;
+        const num = Number(item.number);
+        if (!Number.isFinite(num) || num < p.verseStart || num > end) continue;
+        const text = extractText(item.content).trim();
+        if (text) parts.push(text);
+      }
+      const joined = parts.join(" ").replace(/\s+/g, " ").trim();
+      if (joined) return joined;
+    } catch {
+      continue;
     }
-    const joined = parts.join(" ").replace(/\s+/g, " ").trim();
-    return joined || null;
-  } catch {
-    return null;
   }
+  return null;
 }
 
 function withCache(body: Record<string, unknown>, status = 200) {
