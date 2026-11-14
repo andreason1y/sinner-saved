@@ -12,7 +12,7 @@ export const STATIC_POSTS: StaticPost[] = [
     excerpt:
       "Mefiboset, cucu Saul yang timpang karena pelarian, hidup di Lodebar tanpa kedudukan dan menyangka Daud membencinya. Namun Daud yang mencari dia oleh karena perjanjiannya dengan Yonatan, memanggil dia dengan namanya, dan memberi dia tempat tetap di meja raja.",
     cover:
-      "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=1600&auto=format&fit=crop&q=80",
+      "/images/daud-dan-mefiboset-part1.webp",
     mainCategory: "ruang-alkitab",
     subCategory: "tokoh-alkitab",
     tags: [
